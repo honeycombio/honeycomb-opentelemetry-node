@@ -1,5 +1,8 @@
-# Default Community Health Files
+# Honeycomb OpenTelemetry Distro for JavaScript
 
-This repository contains default community health files for repositories in the Honeycomb organization and will automatically be picked up if they are not overwritten.
+[![OSS Lifecycle](https://img.shields.io/osslifecycle/honeycombio/honeycomb-opentelemetry-js)](https://github.com/honeycombio/home/blob/main/honeycomb-oss-lifecycle-and-practices.md)
+<!-- TODO: uncomment once repo is public -->
+<!-- [![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-js.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-js) -->
 
-More details on this repository structure can be found here: https://docs.github.com/en/github/building-a-strong-community/creating-a-default-community-health-file
+This is Honeycomb's distribution of OpenTelemetry for JavaScript.
+It makes getting started with OpenTelemetry and Honeycomb easier!

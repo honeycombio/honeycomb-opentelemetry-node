@@ -1,0 +1,2 @@
+# honeycomb-opentelemetry-js changelog
+
