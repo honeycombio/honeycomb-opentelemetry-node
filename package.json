@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/honeycombio/honeycomb-opentelemetry-js/issues"
   },
-  "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme"
+  "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
 }
