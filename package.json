@@ -23,6 +23,9 @@
     "nodejs",
     "tracing"
   ],
+  "engines": {
+    "node": ">=14"
+  },
   "bugs": {
     "url": "https://github.com/honeycombio/honeycomb-opentelemetry-js/issues"
   },
