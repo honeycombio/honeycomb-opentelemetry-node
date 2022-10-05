@@ -1,37 +1,25 @@
 {
-  "name": "@honeycombio/opentelemetry",
+  "name": "@honeycombio/opentelemetry-node",
   "version": "0.0.1",
   "description": "Honeycomb OpenTelemetry Distro for JavaScript",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
+  "main": "index.js",
   "scripts": {
-    "build-all": "npm run build -ws",
-    "clean-all": "npm run clean -ws",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "dev": "tsc --watch --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/honeycombio/honeycomb-opentelemetry-js.git"
   },
-  "keywords": [
-    "honeycomb",
-    "honeycombio",
-    "opentelemetry",
-    "otel",
-    "nodejs",
-    "tracing"
-  ],
-  "engines": {
-    "node": ">=14"
-  },
   "bugs": {
     "url": "https://github.com/honeycombio/honeycomb-opentelemetry-js/issues"
   },
-  "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme",
-  "devDependencies": {
-    "typescript": "^4.8.4"
-  },
-  "workspaces": [
-    "packages/opentelemetry-node"
-  ]
+  "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme"
 }
