@@ -43,3 +43,9 @@ Format and lint scripts can either be run at the root (to include everything) or
 
 `npm run lint` will specify files that have linting errors.
 `npm run lint-fix` will try to fix the linting errors.
+
+## Recommended Plugins for VSCode
+
+ESLint (dbaeumer.vscode-eslint)
+Prettier (esbenp.prettier-vscode)
+Prettier ESLint (rvest.vs-code-prettier-eslint)
