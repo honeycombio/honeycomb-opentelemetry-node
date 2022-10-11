@@ -11,6 +11,7 @@
     ".eslintrc.js",
     "src",
     "test",
-    "tools"
+    "tools",
+    "*.config.js"
   ]
 }

@@ -11,7 +11,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test": "npm run test -ws"
+    "test-all": "npm run test -ws"
   },
   "repository": {
     "type": "git",

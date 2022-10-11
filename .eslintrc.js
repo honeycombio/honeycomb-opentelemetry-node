@@ -9,16 +9,16 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
   ],
   overrides: [
     // turn off noisy rules for eslintrcjs and test for now
     {
-      // files: ['*.js'],
+      files: ['*.js, *.ts, *.test.ts, /packages/opentelemetry-node/src/*.test.ts'],
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-var-requires': 'off'
       },
     },
   ],
