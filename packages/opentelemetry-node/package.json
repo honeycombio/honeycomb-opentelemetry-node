@@ -1,17 +1,26 @@
 {
   "name": "@honeycombio/opentelemetry-node",
   "version": "0.0.1",
-  "description": "Honeycomb OpenTelemetry Distro for JavaScript",
+  "description": "Honeycomb OpenTelemetry Distro for Node",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "dev": "tsc --watch --preserveWatchOutput",
+    "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "2.7.1",
     "typescript": "^4.8.4"
   },
   "repository": {

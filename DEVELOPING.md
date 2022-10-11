@@ -35,3 +35,17 @@ npm run clean -w @honeycombio/opentelemetry-node
 npm run build
 npm run clean
 ```
+
+Format and lint scripts can either be run at the root (to include everything) or in the individual directory.
+
+`npm run check-format` will specify files that will have formatting changes made.
+`npm run format` will fix the changes; most times you'll just want to run this command.
+
+`npm run lint` will specify files that have linting errors.
+`npm run lint-fix` will try to fix the linting errors.
+
+## Recommended Plugins for VSCode
+
+ESLint (dbaeumer.vscode-eslint)
+Prettier (esbenp.prettier-vscode)
+Prettier ESLint (rvest.vs-code-prettier-eslint)

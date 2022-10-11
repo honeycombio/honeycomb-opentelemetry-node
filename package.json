@@ -7,6 +7,10 @@
   "scripts": {
     "build-all": "npm run build -ws",
     "clean-all": "npm run clean -ws",
+    "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,6 +33,12 @@
   },
   "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "2.7.1",
     "typescript": "^4.8.4"
   },
   "workspaces": [
