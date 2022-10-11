@@ -3,7 +3,9 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": "dist",
+    "module": "CommonJS",
+    "declaration": true
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "*.config.js"]
 }

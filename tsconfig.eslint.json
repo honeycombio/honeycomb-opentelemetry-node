@@ -12,6 +12,7 @@
     "src",
     "test",
     "tools",
-    "*.config.js"
+    "./*.js", // root javascript files
+    "./.*.js", // root javascript config files
   ]
 }
