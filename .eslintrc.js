@@ -13,11 +13,12 @@ module.exports = {
     'prettier',
   ],
   overrides: [
-    // turn off noisy rules for eslintrcjs
+    // turn off noisy rules for eslintrcjs and test for now
     {
-      files: ['*.js'],
+      // files: ['*.js'],
       rules: {
         '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
       },
     },
   ],
