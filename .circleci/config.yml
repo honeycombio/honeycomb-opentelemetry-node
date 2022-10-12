@@ -30,6 +30,8 @@ jobs:
       - image: cimg/node:16.16
     # https://circleci.com/docs/collect-test-data/#jest
     steps:
+      - checkout
+      - run: npm ci
       - run:
           name: Install JUnit coverage reporter
           # command: yarn add --dev jest-junit
