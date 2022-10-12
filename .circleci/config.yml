@@ -57,9 +57,7 @@ workflows:
               only:
                 - main
     jobs:
-      - test:
-          requires:
-            - lint
+      - test
 
   build:
     jobs:
