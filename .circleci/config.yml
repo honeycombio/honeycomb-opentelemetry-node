@@ -17,8 +17,17 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
+  test:
+    docker:
+      - image: cimg/node:16.16
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run test-all
+
 workflows:
   build:
     jobs:
       - check-format
       - lint
+      - test
