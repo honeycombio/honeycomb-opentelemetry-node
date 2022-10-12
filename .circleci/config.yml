@@ -31,7 +31,7 @@ jobs:
     # https://circleci.com/docs/collect-test-data/#jest
     steps:
       - checkout
-      - run: npm ci
+      - run: npm i
       - run:
           name: Install JUnit coverage reporter
           # command: yarn add --dev jest-junit
@@ -43,6 +43,8 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
+          path: ./reports/
+      - store_artifacts:
           path: ./reports/
 
 workflows:
