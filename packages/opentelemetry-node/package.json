@@ -12,7 +12,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test": "jest --config ./jest.config.js"
+    "test": "jest --config ./jest.config.js --no-cache -u"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.39.0",

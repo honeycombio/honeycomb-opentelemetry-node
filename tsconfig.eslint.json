@@ -14,5 +14,6 @@
     "tools",
     "./*.js", // root javascript files
     "./.*.js", // root javascript config files
+    "./**/.*.js" // package javascript config files
   ]
 }
