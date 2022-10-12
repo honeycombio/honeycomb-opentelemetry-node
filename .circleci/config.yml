@@ -48,6 +48,19 @@ jobs:
           path: ./reports/
 
 workflows:
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - test:
+          requires:
+            - lint
+
   build:
     jobs:
       - check-format
