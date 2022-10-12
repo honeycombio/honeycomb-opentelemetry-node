@@ -25,9 +25,28 @@ jobs:
       - run: npm ci
       - run: npm run test-all
 
+  test-jest-output:
+    docker:
+      - image: cimg/node:16.16
+    # https://circleci.com/docs/collect-test-data/#jest
+    steps:
+      - run:
+          name: Install JUnit coverage reporter
+          # command: yarn add --dev jest-junit
+          command: npm i --save-dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          # command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          command: npm run test-all-ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/
+      - store_test_results:
+          path: ./reports/
+
 workflows:
   build:
     jobs:
       - check-format
       - lint
       - test
+      - test-jest-output
