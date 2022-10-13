@@ -23,4 +23,3 @@ updates:
         - "type: dependencies"
     reviewers:
         - "honeycombio/telemetry-team"
-# try to kick off ci
