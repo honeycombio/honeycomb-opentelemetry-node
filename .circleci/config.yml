@@ -1,0 +1,72 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.16
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm run build-all
+
+  check-format:
+    docker:
+      - image: cimg/node:16.16
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run check-format
+
+  lint:
+    docker:
+      - image: cimg/node:16.16
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    docker:
+      - image: cimg/node:16.16
+    # https://circleci.com/docs/collect-test-data/#jest
+    steps:
+      - checkout
+      - run: npm i
+      - run:
+          name: Install JUnit coverage reporter
+          # command: yarn add --dev jest-junit
+          command: npm i --save-dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          # command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          command: npm run test-all-ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/
+      - store_test_results:
+          path: ./reports/
+      - store_artifacts:
+          path: ./reports/
+
+workflows:
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - test
+
+  build:
+    jobs:
+      - check-format
+      - lint
+      - test:
+          requires:
+            - check-format
+            - lint
+      - build:
+          requires:
+            - test
