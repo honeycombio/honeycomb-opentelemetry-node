@@ -5,7 +5,6 @@
 
 version: 2
 updates:
-  # root directory
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
@@ -14,12 +13,3 @@ updates:
       - "type: dependencies"
     reviewers:
       - "honeycombio/telemetry-team"
-  # opentelemetry-node
-  - package-ecosystem: "npm"
-    directory: "/packages/opentelemetry-node"
-    schedule:
-        interval: "monthly"
-    labels:
-        - "type: dependencies"
-    reviewers:
-        - "honeycombio/telemetry-team"
