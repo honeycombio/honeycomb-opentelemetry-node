@@ -9,6 +9,5 @@
   },
   "dependencies": {
     "@honeycombio/opentelemetry": "file:../dist"
-  },
-  "type": "module"
+  }
 }

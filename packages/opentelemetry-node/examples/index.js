@@ -1,3 +1,3 @@
-import { sayHello } from '@honeycombio/opentelemetry-node';
+const sayHello = require('@honeycombio/opentelemetry-node');
 
 console.log(sayHello());
