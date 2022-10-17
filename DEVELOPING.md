@@ -44,6 +44,10 @@ Format and lint scripts can either be run at the root (to include everything) or
 `npm run lint` will specify files that have linting errors.
 `npm run lint-fix` will try to fix the linting errors.
 
+## Example Applications
+
+- [Hello World](packages/opentelemetry-node/examples) is a simple javascript application. It has a readme for example development. 
+
 ## Recommended Plugins for VSCode
 
 ESLint (dbaeumer.vscode-eslint)
