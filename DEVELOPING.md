@@ -46,7 +46,7 @@ Format and lint scripts can either be run at the root (to include everything) or
 
 ## Example Applications
 
-- [Hello World](packages/opentelemetry-node/examples) is a simple javascript application. It has a readme for example development. 
+- [Hello World](packages/opentelemetry-node/examples/hello-world/) is a simple javascript application. It has a readme for example development. 
 
 ## Recommended Plugins for VSCode
 
