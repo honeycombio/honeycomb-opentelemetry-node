@@ -14,7 +14,7 @@ module.exports = {
   overrides: [
     // turn off noisy rules for now
     {
-      files: ['*.js, **/*.ts'],
+      files: ['*.js', '*.ts'],
       extends: [
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
