@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/honeycombio/honeycomb-opentelemetry-js#readme",
   "dependencies": {
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.33.0",
     "@opentelemetry/resources": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.33.0"
   }
