@@ -1,1 +1,1 @@
-export { addHoneycomb } from './opentelemetry-node';
+export { Honeycomb } from './opentelemetry-node';
