@@ -1,10 +1,8 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
-
-const traceExporter = new OTLPTraceExporter();
+import { honeycombTraceExporter } from './grpc-trace-exporter';
 
 export function Honeycomb(): NodeSDK {
   return new NodeSDK({
-    traceExporter,
+    traceExporter: honeycombTraceExporter({ apiKey: 'testkey' }),
   });
 }
