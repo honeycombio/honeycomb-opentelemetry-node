@@ -1,14 +1,14 @@
 {
-  "name": "example",
+  "name": "hello-node",
   "version": "0.0.1",
   "description": "Honeycomb OpenTelemetry Distro for JavaScript",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
   "scripts": {
-    "setup":  "cd ../../.. && npm install && npm run build-all",
+    "setup": "cd ../../packages/opentelemetry-node && npm install && npm run build",
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@honeycombio/opentelemetry-node": "file:../../dist"
+    "@honeycombio/opentelemetry-node": "file:../../packages/opentelemetry-node/dist"
   }
 }
