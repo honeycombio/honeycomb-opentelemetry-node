@@ -4,10 +4,8 @@
 
 // use interface for typechecking
 
-const HONEYCOMB_DEFAULT_ENDPOINT = 'https://api.honeycomb.io';
-
 export interface HoneycombOptions {
-  apiKey?: string;
+  apiKey: string;
   endpoint?: string;
   serviceName?: string;
   // for honeycomb classic, or metrics/logs
@@ -18,9 +16,3 @@ export interface HoneycombOptions {
   protocol?: string;
 }
 
-export function setDefaultOptions(
-  options: Partial<HoneycombOptions> = {},
-): HoneycombOptions {
-  options.endpoint = HONEYCOMB_DEFAULT_ENDPOINT;
-  return options;
-}
