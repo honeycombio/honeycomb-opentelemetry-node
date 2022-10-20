@@ -9,12 +9,11 @@
   "include": [
     // whatever paths you intend to lint
     ".eslintrc.js",
-    "src",
-    "test",
-    "tools",
+    "packages/opentelemetry-node/src/",
+    "packages/opentelemetry-node/test/",
     "./*.js", // root javascript files
     "./.*.js", // root javascript config files
     "./**/.*.js", // package javascript config files
-    "./**/*.js" // package javascript config files
+    "./**/*.js" // package javascript files
   ]
 }

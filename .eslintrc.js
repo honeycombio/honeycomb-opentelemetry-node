@@ -5,17 +5,14 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  plugins: ['@typescript-eslint'],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'prettier'],
   overrides: [
     // turn off noisy rules for now
     {
-      files: ['*.js, **/*.ts'],
+      plugins: ['@typescript-eslint'],
+      files: ['*.ts'],
       extends: [
+        'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
       ],
       rules: {
@@ -24,6 +21,9 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-var-requires': 'off',
       },
+    },
+    {
+      files: ['*.js'],
     },
   ],
   parser: '@typescript-eslint/parser',

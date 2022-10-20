@@ -5,4 +5,3 @@ coverage
 
 
 packages/**/.eslintrc.js
-packages/**/examples
