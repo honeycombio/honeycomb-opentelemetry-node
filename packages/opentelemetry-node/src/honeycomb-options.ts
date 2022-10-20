@@ -13,7 +13,7 @@ export interface HoneycombOptions {
   // for honeycomb classic, or metrics/logs
   dataset?: string;
   // x-otlp-version, api key, others?
-  headers?: string;
+  headers?: object;
   // grpc, http, http/json
   protocol?: string;
 }
