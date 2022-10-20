@@ -6,4 +6,9 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 const sayHello = () => 'Hello world!';
 
 console.log(sayHello());
-addHoneycomb().start();
+const sdk = addHoneycomb();
+
+sdk
+  .start()
+  .then(() => console.log('Tracing initialized'))
+  .catch((error) => console.log('Error initializing tracing', error));
