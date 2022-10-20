@@ -8,7 +8,7 @@
     "build-all": "npm run build -ws",
     "clean-all": "npm run clean -ws",
     "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
-    "example": "cd ./packages/opentelemetry-node/examples/hello-world/ && npm run setup && npm start",
+    "example-node": "cd ./packages/opentelemetry-node/examples/hello-world/ && npm run setup && npm start",
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
