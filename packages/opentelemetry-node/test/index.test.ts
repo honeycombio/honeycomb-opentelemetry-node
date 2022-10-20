@@ -1,5 +1,7 @@
-import { sayHello } from '../src/index';
+import { addHoneycomb } from '../src/index';
+import { NodeSDK } from '@opentelemetry/sdk-node';
 
-test('should say hello to the world', () => {
-  expect(sayHello()).toBe('Hello world!');
+test('it should return a NodeSDK', () => {
+  const honeycomb = addHoneycomb();
+  expect(honeycomb instanceof NodeSDK);
 });
