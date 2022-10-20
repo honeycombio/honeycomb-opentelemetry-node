@@ -1,4 +1,7 @@
-const { Honeycomb } = require('@honeycombio/opentelemetry-node');
+const {
+  Honeycomb,
+  honeycombTraceExporter,
+} = require('@honeycombio/opentelemetry-node');
 const { diag, DiagConsoleLogger, DiagLogLevel } = require('@opentelemetry/api');
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
@@ -6,7 +9,9 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 const sayHello = () => 'Hello world!';
 
 console.log(sayHello());
-const sdk = Honeycomb();
+const sdk = Honeycomb({
+  traceExporter: honeycombTraceExporter,
+});
 
 sdk
   .start()
