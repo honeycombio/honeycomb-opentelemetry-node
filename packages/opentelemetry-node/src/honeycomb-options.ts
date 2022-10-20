@@ -18,10 +18,6 @@ export interface HoneycombOptions {
   protocol?: string;
 }
 
-// export function setDefaultEndpoint(): HoneycombOptions {
-//   return
-// }
-
 export function setDefaultOptions(
   options: Partial<HoneycombOptions> = {},
 ): HoneycombOptions {
