@@ -1,9 +1,9 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { honeycombGrpcTraceExporter } from './grpc-trace-exporter';
+import { honeycombHttpTraceExporter } from './http-trace-exporter';
 
-export function HoneycombGrpc(): NodeSDK {
+export function HoneycombHttp(): NodeSDK {
   return new NodeSDK({
-    traceExporter: honeycombGrpcTraceExporter({
+    traceExporter: honeycombHttpTraceExporter({
       apiKey: 'test-key',
     }),
   });
