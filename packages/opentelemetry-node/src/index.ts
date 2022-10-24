@@ -1,2 +1,2 @@
-export { Honeycomb } from './opentelemetry-node';
-export { honeycombTraceExporter } from './grpc-trace-exporter';
+export { HoneycombGrpc } from './opentelemetry-node';
+export { honeycombGrpcTraceExporter } from './grpc-trace-exporter';
