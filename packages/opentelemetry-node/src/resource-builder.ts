@@ -4,7 +4,7 @@ import { getEnv } from '@opentelemetry/core';
 import { HoneycombOptions } from './honeycomb-options';
 
 // TODO: generate as part of the build process from package.json
-const version = '0.1.0';
+export const version = '0.1.0';
 
 export function addResource(options?: HoneycombOptions): Resource {
   // get OTel environemt which includes common properties like service name
