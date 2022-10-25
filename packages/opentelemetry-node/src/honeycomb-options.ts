@@ -15,4 +15,3 @@ export interface HoneycombOptions {
   // grpc, http, http/json
   protocol?: string;
 }
-
