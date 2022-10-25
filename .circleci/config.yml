@@ -1,33 +1,57 @@
 version: 2.1
 
-jobs:
-  build:
+filters_always: &filters_always
+  filters:
+    tags:
+      only: /.*/
+
+filters_publish: &filters_publish
+  filters:
+    tags:
+      only: /^v[0-9].*/
+    branches:
+      ignore: /.*/
+
+executors:
+  node:
     docker:
       - image: cimg/node:16.16
+  github:
+    docker:
+      - image: cibuilds/github:0.13.0
+
+jobs:
+  build:
+    executor: node
     steps:
       - checkout
       - run: npm i
       - run: npm run build-all
+      - run: mkdir -p ~/artifacts
+      - run: cp ./dist/* ~/artifacts/
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - artifacts
+      - store_artifacts:
+          path: ~/artifacts
 
   check-format:
-    docker:
-      - image: cimg/node:16.16
+    executor: node
     steps:
       - checkout
       - run: npm ci
       - run: npm run check-format
 
   lint:
-    docker:
-      - image: cimg/node:16.16
+    executor: node
     steps:
       - checkout
       - run: npm ci
       - run: npm run lint
 
   test:
-    docker:
-      - image: cimg/node:16.16
+    executor: node
     # https://circleci.com/docs/collect-test-data/#jest
     steps:
       - checkout
@@ -47,6 +71,31 @@ jobs:
       - store_artifacts:
           path: ./reports/
 
+  publish_github:
+    executor: github
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: "Artifacts being published"
+          command: |
+            echo "about to publish to tag ${CIRCLE_TAG}"
+            ls -l ~/artifacts/*
+      - run:
+          name: "GHR Draft"
+          command: ghr -draft -n ${CIRCLE_TAG} -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ~/artifacts
+
+  publish_npm:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: store npm auth token
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish
+
 workflows:
   nightly:
     triggers:
@@ -61,12 +110,21 @@ workflows:
 
   build:
     jobs:
-      - check-format
-      - lint
+      - check-format:
+          <<: *filters_always
+      - lint:
+          <<: *filters_always
       - test:
-          requires:
-            - check-format
-            - lint
+          <<: *filters_always
       - build:
+          <<: *filters_always
           requires:
             - test
+      - publish_github:
+          <<: *filters_publish
+          requires:
+            - build
+      - publish_npm:
+          <<: *filters_publish
+          requires:
+            - build
