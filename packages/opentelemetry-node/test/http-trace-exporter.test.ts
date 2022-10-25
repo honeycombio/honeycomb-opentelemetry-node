@@ -1,4 +1,4 @@
-import { honeycombTraceExporter } from '../src/grpc-trace-exporter';
+import { honeycombTraceExporter } from '../src/http-trace-exporter';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 
 test('it should return an OTLPTraceExporter', () => {
