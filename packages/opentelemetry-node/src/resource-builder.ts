@@ -7,6 +7,7 @@ import { HoneycombOptions } from './honeycomb-options';
 const version = '0.1.0';
 
 export function addResource(options?: HoneycombOptions): Resource {
+  // get OTel environemt which includes common properties like service name
   const env = getEnv();
 
   // determine service name in (precedence order): env var -> option -> default
