@@ -1,6 +1,6 @@
 const {
-  Honeycomb,
-  // honeycombTraceExporter,
+  // Honeycomb,
+  honeycombTraceExporter,
 } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
@@ -8,7 +8,7 @@ const {
   DiagLogLevel,
   trace,
 } = require('@opentelemetry/api');
-// const { NodeSDK } = require('@opentelemetry/sdk-node');
+const { NodeSDK } = require('@opentelemetry/sdk-node');
 
 const http = require('node:http');
 const hostname = '127.0.0.1';
@@ -19,14 +19,11 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 const HONEYCOMB_API_KEY = process.env.HONEYCOMB_API_KEY || 'testkey';
 const serviceName = process.env.OTEL_SERVICE_NAME || 'hello-node';
 
-// use Honeycomb SDK and pass args directly
-const sdk = Honeycomb(HONEYCOMB_API_KEY, serviceName);
-
 // use Honeycomb Exporter with Node SDK
-// const sdk = new NodeSDK({
-//   traceExporter: honeycombTraceExporter({ apiKey: HONEYCOMB_API_KEY }),
-//   serviceName,
-// });
+const sdk = new NodeSDK({
+  traceExporter: honeycombTraceExporter({ apiKey: HONEYCOMB_API_KEY }),
+  serviceName,
+});
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
