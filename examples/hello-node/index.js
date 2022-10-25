@@ -1,7 +1,4 @@
-const {
-  // Honeycomb,
-  honeycombTraceExporter,
-} = require('@honeycombio/opentelemetry-node');
+const { honeycombTraceExporter } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
@@ -16,12 +13,10 @@ const port = 3000;
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-const HONEYCOMB_API_KEY = process.env.HONEYCOMB_API_KEY || 'testkey';
+const apiKey = process.env.HONEYCOMB_API_KEY || 'testkey';
 const serviceName = process.env.OTEL_SERVICE_NAME || 'hello-node';
-
-// use Honeycomb Exporter with Node SDK
 const sdk = new NodeSDK({
-  traceExporter: honeycombTraceExporter({ apiKey: HONEYCOMB_API_KEY }),
+  traceExporter: honeycombTraceExporter({ apiKey }),
   serviceName,
 });
 
