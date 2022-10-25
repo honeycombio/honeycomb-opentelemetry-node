@@ -1,13 +1,24 @@
 import { Resource, ResourceAttributes } from '@opentelemetry/resources';
+import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+import { getEnv } from '@opentelemetry/core';
+import { HoneycombOptions } from './honeycomb-options';
 
-// TODO: detect env vars for resources
-// maybe use getEnv() from @opentelemetry/core
-// https://github.com/open-telemetry/opentelemetry-js/blob/a7d053ae5a9fb073ccc3b639c3359fba19594e3d/packages/opentelemetry-core/src/platform/node/environment.ts
+// TODO: generate as part of the build process from package.json
+const version = "0.1.0";
 
-// TODO: add honeycomb attributes for distro version and runtime_version
-// https://github.com/open-telemetry/opentelemetry-js/blob/a7d053ae5a9fb073ccc3b639c3359fba19594e3d/packages/opentelemetry-core/src/platform/node/sdk-info.ts
+export function addResource(options?: HoneycombOptions): Resource {
+  const env = getEnv();
 
-export function addResource(): Resource {
-  const resourceAttrs: ResourceAttributes = {};
+  // determine service name in (precedence order): env var -> option -> default
+  // TODO: try to detect process name and use in place of default nodejs
+  const serviceName: string = env?.OTEL_SERVICE_NAME || options?.serviceName || "unknown_service:nodejs";
+
+  const resourceAttrs: ResourceAttributes = {
+    "honeycomb.distro.version": version,
+    "honeycomb.distro.runtime_version": process.versions.node,
+    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+  };
+
+  // combine default resource with honeycomb resource
   return new Resource(resourceAttrs);
 }
