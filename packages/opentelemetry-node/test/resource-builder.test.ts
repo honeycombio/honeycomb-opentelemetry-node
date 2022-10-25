@@ -26,19 +26,15 @@ test('it should use options service name when set', () => {
 });
 
 describe('when OTEL_SERVICE_NAME env var is set', () => {
-  const env = process.env;
-
   beforeEach(() => {
-    jest.resetModules();
-    process.env = { ...env };
+    process.env.OTEL_SERVICE_NAME = 'my-awesome-service';
   });
 
   afterEach(() => {
-    process.env = env;
+    delete process.env.OTEL_SERVICE_NAME;
   });
 
   test('it should prefer service name in env var over options', () => {
-    process.env.OTEL_SERVICE_NAME = 'my-awesome-service';
     const options: HoneycombOptions = {
       serviceName: 'my-service',
     };
