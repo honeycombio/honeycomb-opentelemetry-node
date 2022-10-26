@@ -1,4 +1,4 @@
-const { honeycombTraceExporter } = require('../../dist/src/index.js');
+const { honeycombTraceExporter } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
