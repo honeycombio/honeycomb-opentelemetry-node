@@ -5,10 +5,10 @@
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
   "scripts": {
-    "setup": "cd ../../packages/opentelemetry-node && npm install && npm run build",
+    "setup": "cd ../.. && npm install && npm run build",
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@honeycombio/opentelemetry-node": "file:../../packages/opentelemetry-node/dist"
+    "@honeycombio/opentelemetry-node": "file:../../dist"
   }
 }
