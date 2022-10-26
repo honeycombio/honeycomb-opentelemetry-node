@@ -6,17 +6,13 @@
   "license": "Apache-2.0",
   "main": "./dist/src/index.js",
   "scripts": {
-    "build-all": "npm run build -ws",
     "build": "tsc --build",
-    "clean-all": "npm run clean -ws",
     "clean": "tsc --build --clean",
     "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "example-node": "cd ./examples/hello-node/ && npm run setup && npm start",
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test-all": "npm run test -ws",
-    "test-all-ci": "npm run test-ci -ws",
     "test": "jest --config ./jest.config.js --no-cache -u",
     "test-ci": "jest --config ./jest.config.js --ci --runInBand --reporters=default --reporters=jest-junit --no-cache -u"
   },
@@ -56,8 +52,5 @@
     "@opentelemetry/exporter-trace-otlp-proto": "^0.33.0",
     "@opentelemetry/resources": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.33.0"
-  },
-  "workspaces": [
-    "packages/opentelemetry-node"
-  ]
+  }
 }
