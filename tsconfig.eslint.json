@@ -1,6 +1,6 @@
 {
   // extend your base config to share compilerOptions, etc
-  "extends": "./tsconfig.base.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     // ensure that nobody can accidentally use this config for a build
     "noEmit": true,
@@ -8,12 +8,10 @@
   },
   "include": [
     // whatever paths you intend to lint
-    ".eslintrc.js",
-    "packages/opentelemetry-node/src/",
-    "packages/opentelemetry-node/test/",
+    "./src/",
+    "./test/",
     "./*.js", // root javascript files
     "./.*.js", // root javascript config files
-    "./**/.*.js", // package javascript config files
-    "./**/*.js" // package javascript files
+    "./examples/*/*.js" // examples javascript files
   ]
 }

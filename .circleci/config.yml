@@ -26,7 +26,7 @@ jobs:
     steps:
       - checkout
       - run: npm i
-      - run: npm run build-all
+      - run: npm run build
       - run: mkdir -p ~/artifacts
       # TODO: uncoment once /dist is popualted after building
       # - run: cp ./dist/* ~/artifacts/
@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Run tests with JUnit as reporter
           # command: jest --ci --runInBand --reporters=default --reporters=jest-junit
-          command: npm run test-all-ci
+          command: npm run test-ci
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
