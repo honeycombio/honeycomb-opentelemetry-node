@@ -14,6 +14,7 @@ test('it should return a Resource', () => {
 
 test('it should use options service name when set', () => {
   const options: HoneycombOptions = {
+    apiKey: 'dummy-key',
     serviceName: 'my-service',
   };
   const resource = addResource(options);
@@ -36,6 +37,7 @@ describe('when OTEL_SERVICE_NAME env var is set', () => {
 
   test('it should prefer service name in env var over options', () => {
     const options: HoneycombOptions = {
+      apiKey: 'dummy-key',
       serviceName: 'my-service',
     };
     const resource = addResource(options);
