@@ -1,19 +1,20 @@
 {
-  "name": "@honeycombio/opentelemetry",
+  "name": "@honeycombio/opentelemetry-node",
   "version": "0.0.1",
-  "description": "Honeycomb OpenTelemetry Distro for JavaScript",
+  "description": "Honeycomb OpenTelemetry Distro for Node",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
+  "main": "./dist/src/index.js",
   "scripts": {
-    "build-all": "npm run build -ws",
-    "clean-all": "npm run clean -ws",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
     "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "example-node": "cd ./examples/hello-node/ && npm run setup && npm start",
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test-all": "npm run test -ws",
-    "test-all-ci": "npm run test-ci -ws"
+    "test": "jest --config ./jest.config.js --no-cache -u",
+    "test-ci": "jest --config ./jest.config.js --ci --runInBand --reporters=default --reporters=jest-junit --no-cache -u"
   },
   "repository": {
     "type": "git",
@@ -46,8 +47,10 @@
     "prettier": "2.7.1",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"
-  },
-  "workspaces": [
-    "packages/opentelemetry-node"
-  ]
+  }, 
+  "dependencies": {
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.33.0",
+    "@opentelemetry/resources": "^1.7.0",
+    "@opentelemetry/sdk-node": "^0.33.0"
+  }
 }
