@@ -9,7 +9,7 @@ test('it should return a Resource', () => {
   expect(resource.attributes['honeycomb.distro.runtime_version']).toEqual(
     process.versions.node,
   );
-  expect(resource.attributes['service.name']).toEqual('unknown_service:nodejs');
+  expect(resource.attributes['service.name']).toEqual(undefined);
 });
 
 test('it should use options service name when set', () => {
