@@ -66,16 +66,9 @@ jobs:
   publish_github:
     executor: github
     steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: "Artifacts being published"
-          command: |
-            echo "about to publish to tag ${CIRCLE_TAG}"
-            ls -l ~/artifacts/*
       - run:
           name: "GHR Draft"
-          command: ghr -draft -n ${CIRCLE_TAG} -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG} ~/artifacts
+          command: ghr -draft -n ${CIRCLE_TAG} -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${CIRCLE_TAG}
 
   publish_npm:
     executor: node
