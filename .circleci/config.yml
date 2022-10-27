@@ -27,14 +27,6 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run build
-      - run: mkdir -p ~/artifacts
-      - run: cp ./dist/* ~/artifacts/
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - artifacts
-      - store_artifacts:
-          path: ~/artifacts
 
   check-format:
     executor: node
