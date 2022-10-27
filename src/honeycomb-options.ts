@@ -5,13 +5,23 @@
 // use interface for typechecking
 
 export interface HoneycombOptions {
-  apiKey: string;
-  endpoint?: string;
-  serviceName?: string;
-  // for honeycomb classic, or metrics/logs
+  apiKey?: string;
+  traceApiKey?: string;
+  metricsApiKey?: string;
+
   dataset?: string;
-  // x-otlp-version, api key, others?
-  headers?: object;
-  // grpc, http, http/json
+  metricsDataset?: string;
+
+  endpoint?: string;
+  tracesEndpoint?: string;
+  metricsEndpoint?: string;
+
+  serviceName?: string;
+  sampleRate?: number;
+  debug?: boolean;
   protocol?: string;
+}
+
+export function isLegacy({ apiKey }: HoneycombOptions): boolean {
+  return apiKey?.length === 32;
 }
