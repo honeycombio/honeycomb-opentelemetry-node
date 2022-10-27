@@ -28,8 +28,7 @@ jobs:
       - run: npm i
       - run: npm run build
       - run: mkdir -p ~/artifacts
-      # TODO: uncoment once /dist is popualted after building
-      # - run: cp ./dist/* ~/artifacts/
+      - run: cp ./dist/* ~/artifacts/
       - persist_to_workspace:
           root: ~/
           paths:
