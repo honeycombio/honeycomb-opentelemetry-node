@@ -34,6 +34,10 @@ export function getMetricsEndpoint(options: HoneycombOptions) {
   return options.metricsEndpoint || options.endpoint || HONEYCOMB_API_ENDPOINT;
 }
 
+export function getServiceName(options?: HoneycombOptions) {
+  return process.env.OTEL_SERVICE_NAME || options?.serviceName;
+}
+
 export function addDatasetHeader(options: HoneycombOptions): boolean {
   return isClassic(getTracesApikey(options)) && options.dataset != undefined;
 }
