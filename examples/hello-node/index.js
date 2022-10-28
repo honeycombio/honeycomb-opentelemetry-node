@@ -13,12 +13,9 @@ const port = 3000;
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-const apiKey = process.env.HONEYCOMB_API_KEY || 'testkey';
-const serviceName = process.env.OTEL_SERVICE_NAME || 'hello-node';
-const sdk = new NodeSDK({
-  traceExporter: honeycombTraceExporter({ apiKey }),
-  serviceName,
-});
+// const apiKey = process.env.HONEYCOMB_API_KEY || 'testkey';
+// const serviceName = process.env.OTEL_SERVICE_NAME || 'hello-node';
+const sdk = new HoneycombNodeSDK();
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;

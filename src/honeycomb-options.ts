@@ -1,12 +1,8 @@
-// TODO: detect env vars
-// maybe use getEnv() from @opentelemetry/core
-// https://github.com/open-telemetry/opentelemetry-js/blob/a7d053ae5a9fb073ccc3b639c3359fba19594e3d/packages/opentelemetry-core/src/platform/node/environment.ts
-
-// use interface for typechecking
+const HONEYCOMB_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
 
 export interface HoneycombOptions {
   apiKey?: string;
-  traceApiKey?: string;
+  tracesApiKey?: string;
   metricsApiKey?: string;
 
   dataset?: string;
@@ -22,6 +18,71 @@ export interface HoneycombOptions {
   protocol?: string;
 }
 
-export function isLegacy({ apiKey }: HoneycombOptions): boolean {
-  return apiKey?.length === 32;
+export function getTracesApikey(options: HoneycombOptions) {
+  return options.tracesApiKey || options.apiKey;
+}
+
+export function getTracesEndpoint(options: HoneycombOptions) {
+  return options.tracesEndpoint || options.endpoint;
+}
+
+export function getMetricsApikey(options: HoneycombOptions) {
+  return options.metricsApiKey || options.apiKey;
+}
+
+export function getMetricsEndpoint(options: HoneycombOptions) {
+  return options.metricsEndpoint || options.endpoint;
+}
+
+export function addDatasetHeader(options: HoneycombOptions): boolean {
+  return isClassic(getTracesApikey(options)) && options.dataset != undefined;
+}
+
+function isClassic(apikey: string | undefined): boolean {
+  return apikey?.length === 32;
+}
+
+export function applyEnvVars(options: HoneycombOptions) {
+  if (process.env.HONEYCOMB_APIKEY) {
+    options.apiKey = process.env.HONEYCOMB_APIKEY;
+  }
+  if (process.env.HONEYCOMB_TRACES_APIKEY) {
+    options.tracesApiKey = process.env.HONEYCOMB_TRACES_APIKEY;
+  }
+  if (process.env.HONEYCOMB_METRICS_APIKEY) {
+    options.metricsApiKey = process.env.HONEYCOMB_METRICS_APIKEY;
+  }
+
+  if (process.env.HONEYCOMB_DATASET) {
+    options.dataset = process.env.HONEYCOMB_DATASET;
+  }
+  if (process.env.HONEYCOMB_METRICS_DATASET) {
+    options.metricsDataset = process.env.HONEYCOMB_METRICS_DATASET;
+  }
+
+  if (process.env.HONEYCOMB_API_ENDPOINT) {
+    options.endpoint = process.env.HONEYCOMB_API_ENDPOINT;
+  }
+  if (process.env.HONEYCOMB_TRACES_ENDPOINT) {
+    options.tracesApiKey = process.env.HONEYCOMB_TRACES_ENDPOINT;
+  }
+  if (process.env.HONEYCOMB_METRICS_ENDPOINT) {
+    options.metricsEndpoint = process.env.HONEYCOMB_METRICS_ENDPOINT;
+  }
+
+  if (process.env.OTEL_SERVICE_NAME) {
+    options.serviceName = process.env.OTEL_SERVICE_NAME;
+  }
+  if (process.env.SAMPLE_RATE) {
+    const sampleRate = parseInt(process.env.SAMPLE_RATE);
+    if (sampleRate != NaN && sampleRate > 1) {
+      options.sampleRate = sampleRate;
+    }
+  }
+  if (process.env.DEBUG && process.env.DEBUG === "true") {
+    options.debug = true;
+  }
+  if (process.env.OTEL_EXPORTER_OTLP_PROTOCOL) {
+    options.serviceName = process.env.OTEL_SERVICE_NAME;
+  }
 }

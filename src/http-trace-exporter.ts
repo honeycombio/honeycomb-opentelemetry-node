@@ -1,26 +1,22 @@
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
-import { HoneycombOptions } from './honeycomb-options';
-import { isLegacy } from './honeycomb-options';
+import { addDatasetHeader, getTracesEndpoint, HoneycombOptions } from './honeycomb-options';
+import { getTracesApikey } from './honeycomb-options';
 
-const HONEYCOMB_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
 const TEAM_HEADER_KEY = 'x-honeycomb-team';
 const DATASET_HEADER_KEY = 'x-honeycomb-team';
 const OTLP_HEADER_KEY = 'x-otlp-version';
 const OTLP_PROTO_VERSION = '0.16.0';
 
-export function honeycombTraceExporter({
-  apiKey,
-  dataset
-}: HoneycombOptions): OTLPTraceExporter {
+export function honeycombTraceExporter(options: HoneycombOptions): OTLPTraceExporter {
   const HoneycombTraceExporterObject = {
-    url: HONEYCOMB_API_ENDPOINT,
+    url: getTracesEndpoint(options),
     headers: {
       [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
-      [TEAM_HEADER_KEY]: apiKey,
+      [TEAM_HEADER_KEY]: getTracesApikey(options),
     },
   };
-  if (isLegacy({ apiKey }) && dataset) {
-    HoneycombTraceExporterObject.headers[DATASET_HEADER_KEY] = dataset;
+  if (addDatasetHeader(options)) {
+    HoneycombTraceExporterObject.headers[DATASET_HEADER_KEY] = options.dataset;
   }
 
   return new OTLPTraceExporter(HoneycombTraceExporterObject);
