@@ -23,7 +23,7 @@ export function getTracesApikey(options: HoneycombOptions) {
 }
 
 export function getTracesEndpoint(options: HoneycombOptions) {
-  return options.tracesEndpoint || options.endpoint;
+  return options.tracesEndpoint || options.endpoint || HONEYCOMB_API_ENDPOINT;
 }
 
 export function getMetricsApikey(options: HoneycombOptions) {
@@ -31,7 +31,7 @@ export function getMetricsApikey(options: HoneycombOptions) {
 }
 
 export function getMetricsEndpoint(options: HoneycombOptions) {
-  return options.metricsEndpoint || options.endpoint;
+  return options.metricsEndpoint || options.endpoint || HONEYCOMB_API_ENDPOINT;
 }
 
 export function addDatasetHeader(options: HoneycombOptions): boolean {
@@ -75,11 +75,11 @@ export function applyEnvVars(options: HoneycombOptions) {
   }
   if (process.env.SAMPLE_RATE) {
     const sampleRate = parseInt(process.env.SAMPLE_RATE);
-    if (sampleRate != NaN && sampleRate > 1) {
+    if (!isNaN(sampleRate) && sampleRate > 1) {
       options.sampleRate = sampleRate;
     }
   }
-  if (process.env.DEBUG && process.env.DEBUG === "true") {
+  if (process.env.DEBUG && process.env.DEBUG === 'true') {
     options.debug = true;
   }
   if (process.env.OTEL_EXPORTER_OTLP_PROTOCOL) {

@@ -1,6 +1,5 @@
 import { Resource, ResourceAttributes } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
-import { getEnv } from '@opentelemetry/core';
 import { HoneycombOptions } from './honeycomb-options';
 
 // TODO: generate as part of the build process from package.json
@@ -13,7 +12,8 @@ export function addResource(options: HoneycombOptions): Resource {
   };
 
   if (options.serviceName) {
-    resourceAttrs[SemanticResourceAttributes.SERVICE_NAME] = options.serviceName;
+    resourceAttrs[SemanticResourceAttributes.SERVICE_NAME] =
+      options.serviceName;
   }
 
   // combine default resource with honeycomb resource

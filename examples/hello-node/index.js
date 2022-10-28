@@ -1,11 +1,10 @@
-const { honeycombTraceExporter } = require('@honeycombio/opentelemetry-node');
+const { HoneycombNodeSDK } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
   DiagLogLevel,
   trace,
 } = require('@opentelemetry/api');
-const { NodeSDK } = require('@opentelemetry/sdk-node');
 
 const http = require('node:http');
 const hostname = '127.0.0.1';
