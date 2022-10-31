@@ -3,7 +3,7 @@ import { HoneycombOptions, computeOptions } from './honeycomb-options';
 import { honeycombTraceExporter } from './http-trace-exporter';
 import { honeycombResource } from './resource-builder';
 
-export function buildNodeSDK(options?: HoneycombOptions): NodeSDK {
+export function Honeycomb(options?: HoneycombOptions): NodeSDK {
   const opts = computeOptions(options);
   return new NodeSDK({
     serviceName: opts.serviceName,

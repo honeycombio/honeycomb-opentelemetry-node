@@ -1,4 +1,4 @@
-const { buildNodeSDK } = require('@honeycombio/opentelemetry-node');
+const { Honeycomb } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
@@ -12,7 +12,7 @@ const port = 3000;
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-const sdk = buildNodeSDK();
+const sdk = Honeycomb();
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
