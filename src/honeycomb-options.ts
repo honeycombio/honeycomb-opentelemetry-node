@@ -15,7 +15,7 @@ export interface HoneycombOptions {
   serviceName?: string;
   sampleRate?: number;
   debug?: boolean;
-  protocol?: string;
+  protocol?: 'grpc' | 'http/protobuf' | 'http/json';
 }
 
 export function getTracesApikey(options: HoneycombOptions) {
