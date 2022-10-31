@@ -1,11 +1,12 @@
-import { addResource, version } from '../src/resource-builder';
+import { addResource } from '../src/resource-builder';
 import { Resource } from '@opentelemetry/resources';
 import { HoneycombOptions } from '../src/honeycomb-options';
+import { VERSION } from '../src/version';
 
 test('it should return a Resource', () => {
   const resource = addResource();
   expect(resource instanceof Resource);
-  expect(resource.attributes['honeycomb.distro.version']).toEqual(version);
+  expect(resource.attributes['honeycomb.distro.version']).toEqual(VERSION);
   expect(resource.attributes['honeycomb.distro.runtime_version']).toEqual(
     process.versions.node,
   );
@@ -19,7 +20,7 @@ test('it should use options service name when set', () => {
   };
   const resource = addResource(options);
   expect(resource instanceof Resource);
-  expect(resource.attributes['honeycomb.distro.version']).toEqual(version);
+  expect(resource.attributes['honeycomb.distro.version']).toEqual(VERSION);
   expect(resource.attributes['honeycomb.distro.runtime_version']).toEqual(
     process.versions.node,
   );
@@ -42,7 +43,7 @@ describe('when OTEL_SERVICE_NAME env var is set', () => {
     };
     const resource = addResource(options);
     expect(resource instanceof Resource);
-    expect(resource.attributes['honeycomb.distro.version']).toEqual(version);
+    expect(resource.attributes['honeycomb.distro.version']).toEqual(VERSION);
     expect(resource.attributes['honeycomb.distro.runtime_version']).toEqual(
       process.versions.node,
     );
