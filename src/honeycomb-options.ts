@@ -29,22 +29,13 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   const env = getHoneycombEnv();
   return {
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
-    protocol: env.OTEL_EXPORTER_OTLP_PROTOCOL || options?.protocol,
+    protocol: env.OTEL_EXPORTER_OTLP_PROTOCOL || options?.protocol || 'grpc',
     apiKey: env.HONEYCOMB_APIKEY || options?.apiKey,
-    tracesApiKey:
-      env.HONEYCOMB_TRACES_APIKEY || options?.tracesApiKey || options?.apiKey,
-    metricsApiKey:
-      env.HONEYCOMB_METRICS_APIKEY || options?.metricsApiKey || options?.apiKey,
-    endpoint:
-      env.HONEYCOMB_API_ENDPOINT || options?.endpoint || DEFAULT_API_ENDPOINT,
-    tracesEndpoint:
-      env.HONEYCOMB_TRACES_ENDPOINT ||
-      options?.tracesEndpoint ||
-      DEFAULT_API_ENDPOINT,
-    metricsEndpoint:
-      env.HONEYCOMB_METRICS_ENDPOINT ||
-      options?.metricsEndpoint ||
-      DEFAULT_API_ENDPOINT,
+    tracesApiKey: getTracesApiKey(env, options),
+    metricsApiKey: getMetricsApiKey(env, options),
+    endpoint: getEndpoint(env, options),
+    tracesEndpoint: getTracesEndpoint(env, options),
+    metricsEndpoint: getMetricsEndpoint(env, options),
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: env.SAMPLE_RATE || options?.sampleRate,
@@ -122,4 +113,63 @@ function parseOtlpProtocol(protocol?: string): OtlpProtocol | undefined {
   if (OtlpProtocols.includes(protocol as OtlpProtocol)) {
     return protocol as OtlpProtocol;
   }
+}
+
+function getTracesApiKey(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): string | undefined {
+  return (
+    env.HONEYCOMB_TRACES_APIKEY ||
+    env.HONEYCOMB_APIKEY ||
+    options.tracesApiKey ||
+    options.apiKey
+  );
+}
+
+function getMetricsApiKey(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): string | undefined {
+  return (
+    env.HONEYCOMB_METRICS_APIKEY ||
+    env.HONEYCOMB_APIKEY ||
+    options.metricsApiKey ||
+    options.apiKey
+  );
+}
+
+function getEndpoint(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): string {
+  return (
+    env.HONEYCOMB_API_ENDPOINT || options?.endpoint || DEFAULT_API_ENDPOINT
+  );
+}
+
+function getTracesEndpoint(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): string {
+  return (
+    env.HONEYCOMB_TRACES_ENDPOINT ||
+    env.HONEYCOMB_API_ENDPOINT ||
+    options.tracesEndpoint ||
+    options.endpoint ||
+    DEFAULT_API_ENDPOINT
+  );
+}
+
+function getMetricsEndpoint(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): string {
+  return (
+    env.HONEYCOMB_METRICS_ENDPOINT ||
+    env.HONEYCOMB_API_ENDPOINT ||
+    options.metricsEndpoint ||
+    options.endpoint ||
+    DEFAULT_API_ENDPOINT
+  );
 }
