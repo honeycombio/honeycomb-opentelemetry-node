@@ -7,7 +7,7 @@ export function Honeycomb(options?: HoneycombOptions): NodeSDK {
   const opts = computeOptions(options);
   return new NodeSDK({
     serviceName: opts.serviceName,
-    resource: honeycombResource(opts),
+    resource: honeycombResource(),
     traceExporter: honeycombTraceExporter(opts),
     // metricReader: honeycombMetricsReader(options),
     // spanProcessor: baggageSpanProcess(options),
