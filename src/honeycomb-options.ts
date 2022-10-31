@@ -30,7 +30,7 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   return {
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
     protocol: env.OTEL_EXPORTER_OTLP_PROTOCOL || options?.protocol || 'grpc',
-    apiKey: env.HONEYCOMB_APIKEY || options?.apiKey,
+    apiKey: env.HONEYCOMB_API_KEY || options?.apiKey,
     tracesApiKey: getTracesApiKey(env, options),
     metricsApiKey: getMetricsApiKey(env, options),
     endpoint: getEndpoint(env, options),
@@ -48,7 +48,7 @@ export function isClassic(apikey?: string): boolean {
 }
 
 export type HoneycombEnvironmentOptions = {
-  HONEYCOMB_APIKEY?: string;
+  HONEYCOMB_API_KEY?: string;
   HONEYCOMB_TRACES_APIKEY?: string;
   HONEYCOMB_METRICS_APIKEY?: string;
   HONEYCOMB_API_ENDPOINT?: string;
@@ -72,7 +72,7 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     HONEYCOMB_METRICS_ENDPOINT:
       process.env.HONEYCOMB_METRICS_ENDPOINT ||
       process.env.HONEYCOMB_API_ENDPOINT,
-    HONEYCOMB_APIKEY: process.env.HONEYCOMB_API_KEY,
+    HONEYCOMB_API_KEY: process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_TRACES_APIKEY:
       process.env.HONEYCOMB_TRACES_APIKEY || process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_METRICS_APIKEY:
@@ -121,7 +121,7 @@ function getTracesApiKey(
 ): string | undefined {
   return (
     env.HONEYCOMB_TRACES_APIKEY ||
-    env.HONEYCOMB_APIKEY ||
+    env.HONEYCOMB_API_KEY ||
     options.tracesApiKey ||
     options.apiKey
   );
@@ -133,7 +133,7 @@ function getMetricsApiKey(
 ): string | undefined {
   return (
     env.HONEYCOMB_METRICS_APIKEY ||
-    env.HONEYCOMB_APIKEY ||
+    env.HONEYCOMB_API_KEY ||
     options.metricsApiKey ||
     options.apiKey
   );
