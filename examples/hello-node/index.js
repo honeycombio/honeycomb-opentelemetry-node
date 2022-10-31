@@ -1,4 +1,4 @@
-const { HoneycombNodeSDK } = require('@honeycombio/opentelemetry-node');
+const { buildNodeSDK } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
@@ -12,13 +12,11 @@ const port = 3000;
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
-// const apiKey = process.env.HONEYCOMB_API_KEY || 'testkey';
-// const serviceName = process.env.OTEL_SERVICE_NAME || 'hello-node';
-const sdk = new HoneycombNodeSDK();
+const sdk = buildNodeSDK();
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'http/plain');
+  res.setHeader('Content-Type', 'application/json');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
   tracer.startActiveSpan('main', (span) => {
