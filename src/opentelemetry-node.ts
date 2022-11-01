@@ -3,7 +3,6 @@ import { HoneycombOptions, computeOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { configureHoneycombResource } from './resource-builder';
 
-
 /**
  * Builds and returns an instance of OpenTelemetry Node SDK.
  * @param options The HoneycombOptions used to configure the exporter
