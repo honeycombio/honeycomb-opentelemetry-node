@@ -12,7 +12,14 @@ const port = 3000;
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
+// uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
 const sdk = Honeycomb();
+
+// alternitively, provide apikey and service name using options
+// const sdk = Honeycomb({
+//   apiKey: "{apikey}",
+//   serviceName: "my-web-app",
+// })
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
