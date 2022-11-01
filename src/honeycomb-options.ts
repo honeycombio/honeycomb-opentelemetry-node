@@ -3,24 +3,56 @@ export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
 
+/**
+ * The options used to configure the Honeycomb Node SDK.
+ */
 export interface HoneycombOptions {
+  /** The API key used to send telemetry to Honeycomb. */
   apiKey?: string;
+
+  /** The API key used to send traces telemetry to Honeycomb. Defaults to apikey if not set. */
   tracesApiKey?: string;
+
+  /** The API key used to send merics telemetry to Honeycomb. Defaults to apikey if not set. */
   metricsApiKey?: string;
 
+  /** The API endpoint where telemetry is sent. Defaults to 'https://api.honeycomb.io' */
   endpoint?: string;
+
+  /** The API endpint where traces telemetry is sent. Defaults to endpoint if not set. */
   tracesEndpoint?: string;
+
+  /** The API endpoint where metrics telemetry is sent. Defaults to endpoint if not set. */
   metricsEndpoint?: string;
 
+  /** The dataset where traces telemetry is stored in Honeycomb. Only used when using a classic API key. */
   dataset?: string;
+
+  /** The dataset where metrics telemetry is stored in Honeycomb. */
   metricsDataset?: string;
 
+  /** The service name of the application and where traces telemetry is stored in Honeycomb. */
   serviceName?: string;
+
+  /** The sample rate used to determine whether a trace is exported. Defaults to 1 (send everything). */
   sampleRate?: number;
+
+  /** The debug flag enables additional logging that us useful when debugging your application. Do not use in production. */
   debug?: boolean;
+
+  /** The OTLP protocol used to send telemetry to Honeycomb. The default is 'http/protobuf'. */
   protocol?: OtlpProtocol;
 }
 
+/**
+ * Computes a consolidated HoneycombOptions using the passed in options and environment variables.
+ *
+ * @remarks
+ * The computed options prefer environment variables over the passed in options.
+ *
+ * @param options the base HoneycombOptions used to combine with environment variables
+ * @returns the computed HoneycombOptions
+ */
 export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   if (!options) {
     options = {};
@@ -43,10 +75,19 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   };
 }
 
+/**
+ * Determins whether the passed in apikey is clasic (32 chars) or not.
+ *
+ * @param apikey the apikey
+ * @returns a boolean to indicate if the apikey was a classic key
+ */
 export function isClassic(apikey?: string): boolean {
   return apikey?.length === 32;
 }
 
+/**
+ * HoneycombEnvironmentOptions is a type used to get honeycomb options from environment variables.
+ */
 export type HoneycombEnvironmentOptions = {
   HONEYCOMB_API_KEY?: string;
   HONEYCOMB_TRACES_APIKEY?: string;
@@ -63,6 +104,11 @@ export type HoneycombEnvironmentOptions = {
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
 };
 
+/**
+ * Gets an instance of the HoneycombEnvironmentOptions, reading environment variables.
+ *
+ * @returns an instance of HoneycombEnvironmentOptions
+ */
 export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
   return {
     HONEYCOMB_API_ENDPOINT: process.env.HONEYCOMB_API_ENDPOINT,
