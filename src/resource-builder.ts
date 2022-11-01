@@ -1,4 +1,4 @@
-import { Resource, ResourceAttributes } from '@opentelemetry/resources';
+import { Resource } from '@opentelemetry/resources';
 import { VERSION } from './version';
 
 /**

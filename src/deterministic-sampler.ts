@@ -20,10 +20,11 @@ export class DeterministicSampler implements Sampler {
       case 1:
         this._sampler = new AlwaysOnSampler();
         break;
-      default:
+      default: {
         const ratio = 1.0 / sampleRate;
         this._sampler = new TraceIdRatioBasedSampler(ratio);
         break;
+      }
     }
   }
 
