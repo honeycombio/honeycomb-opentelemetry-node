@@ -5,10 +5,10 @@ import {
   computeOptions,
 } from './honeycomb-options';
 
-const TEAM_HEADER_KEY = 'x-honeycomb-team';
-const DATASET_HEADER_KEY = 'x-honeycomb-team';
-const OTLP_HEADER_KEY = 'x-otlp-version';
-const OTLP_PROTO_VERSION = '0.16.0';
+export const TEAM_HEADER_KEY = 'x-honeycomb-team';
+export const DATASET_HEADER_KEY = 'x-honeycomb-dataset';
+export const OTLP_HEADER_KEY = 'x-otlp-version';
+export const OTLP_PROTO_VERSION = '0.16.0';
 
 export function honeycombTraceExporter(
   options?: HoneycombOptions,
@@ -19,12 +19,9 @@ export function honeycombTraceExporter(
     headers: {
       [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
       [TEAM_HEADER_KEY]: opts.tracesApiKey,
+      [DATASET_HEADER_KEY]: isClassic(opts.apiKey) ? opts.dataset : undefined,
     },
   };
-
-  if (isClassic(opts.tracesApiKey)) {
-    exporter.headers[DATASET_HEADER_KEY] = opts.dataset;
-  }
 
   return new OTLPTraceExporter(exporter);
 }
