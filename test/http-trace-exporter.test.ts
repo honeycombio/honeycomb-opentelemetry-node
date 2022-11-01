@@ -4,7 +4,7 @@ import {
   DATASET_HEADER_KEY,
   OTLP_HEADER_KEY,
   OTLP_PROTO_VERSION,
-} from '../src/http-trace-exporter';
+} from '../src/http-proto-trace-exporter';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { DEFAULT_API_ENDPOINT } from '../src/honeycomb-options';
 
