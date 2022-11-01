@@ -1,5 +1,10 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { HoneycombOptions, computeOptions } from './honeycomb-options';
+import { DeterministicSampler } from './deterministic-sampler';
+import {
+  HoneycombOptions,
+  computeOptions,
+  DEFAULT_SAMPLE_RATE,
+} from './honeycomb-options';
 import { honeycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { honeycombResource } from './resource-builder';
 
@@ -11,6 +16,6 @@ export function Honeycomb(options?: HoneycombOptions): NodeSDK {
     traceExporter: honeycombHttpProtoTraceExporter(opts),
     // metricReader: honeycombMetricsReader(options),
     // spanProcessor: baggageSpanProcess(options),
-    // sampler: honeycombSampler(),
+    sampler: new DeterministicSampler(opts.sampleRate || DEFAULT_SAMPLE_RATE),
   });
 }
