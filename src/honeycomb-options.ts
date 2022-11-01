@@ -1,4 +1,5 @@
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
+export const DEFAULT_SAMPLE_RATE = 1;
 
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
@@ -70,8 +71,8 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     metricsEndpoint: getMetricsEndpoint(env, options),
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
-    sampleRate: env.SAMPLE_RATE || options?.sampleRate,
-    debug: env.DEBUG || options?.debug,
+    sampleRate: getSampleRate(env, options),
+    debug: env.DEBUG || options?.debug || false,
   };
 }
 
@@ -218,4 +219,16 @@ function getMetricsEndpoint(
     options.endpoint ||
     DEFAULT_API_ENDPOINT
   );
+}
+
+function getSampleRate(
+  env: HoneycombEnvironmentOptions,
+  options: HoneycombOptions,
+): number {
+  if (env.SAMPLE_RATE && env.SAMPLE_RATE > 0) {
+    return env.SAMPLE_RATE;
+  } else if (options.sampleRate && options.sampleRate > 0) {
+    return options.sampleRate;
+  }
+  return DEFAULT_SAMPLE_RATE;
 }
