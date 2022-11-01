@@ -1,2 +1,2 @@
 export { Honeycomb } from './opentelemetry-node';
-export { honeycombHttpTraceExporter } from './http-trace-exporter';
+export { honeycombHttpProtoTraceExporter } from './http-trace-exporter';
