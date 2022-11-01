@@ -1,5 +1,6 @@
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
 export const DEFAULT_SAMPLE_RATE = 1;
+export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'grpc';
 
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
@@ -62,7 +63,10 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   const env = getHoneycombEnv();
   return {
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
-    protocol: env.OTEL_EXPORTER_OTLP_PROTOCOL || options?.protocol || 'grpc',
+    protocol:
+      env.OTEL_EXPORTER_OTLP_PROTOCOL ||
+      options?.protocol ||
+      DEFAULT_OTLP_EXPORTER_PROTOCOL,
     apiKey: env.HONEYCOMB_API_KEY || options?.apiKey,
     tracesApiKey: getTracesApiKey(env, options),
     metricsApiKey: getMetricsApiKey(env, options),
