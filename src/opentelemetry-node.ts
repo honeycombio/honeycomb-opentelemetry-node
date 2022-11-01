@@ -1,8 +1,16 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { honeycombTraceExporter } from './http-trace-exporter';
+import { HoneycombOptions, computeOptions } from './honeycomb-options';
+import { honeycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
+import { honeycombResource } from './resource-builder';
 
-export function Honeycomb(): NodeSDK {
+export function Honeycomb(options?: HoneycombOptions): NodeSDK {
+  const opts = computeOptions(options);
   return new NodeSDK({
-    traceExporter: honeycombTraceExporter({ apiKey: 'testkey' }),
+    serviceName: opts.serviceName,
+    resource: honeycombResource(),
+    traceExporter: honeycombHttpProtoTraceExporter(opts),
+    // metricReader: honeycombMetricsReader(options),
+    // spanProcessor: baggageSpanProcess(options),
+    // sampler: honeycombSampler(),
   });
 }
