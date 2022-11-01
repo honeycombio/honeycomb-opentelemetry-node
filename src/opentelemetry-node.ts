@@ -1,14 +1,20 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { HoneycombOptions, computeOptions } from './honeycomb-options';
-import { honeycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
-import { honeycombResource } from './resource-builder';
+import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
+import { configureHoneycombResource } from './resource-builder';
 
-export function Honeycomb(options?: HoneycombOptions): NodeSDK {
+
+/**
+ * Builds and returns an instance of OpenTelemetry Node SDK.
+ * @param options The HoneycombOptions used to configure the exporter
+ * @returns the configured NodeSDK instance
+ */
+export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
   const opts = computeOptions(options);
   return new NodeSDK({
     serviceName: opts.serviceName,
-    resource: honeycombResource(),
-    traceExporter: honeycombHttpProtoTraceExporter(opts),
+    resource: configureHoneycombResource(),
+    traceExporter: configureHoneycombHttpProtoTraceExporter(opts),
     // metricReader: honeycombMetricsReader(options),
     // spanProcessor: baggageSpanProcess(options),
     // sampler: honeycombSampler(),
