@@ -1,6 +1,6 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { HoneycombOptions, computeOptions } from './honeycomb-options';
-import { honeycombTraceExporter } from './http-trace-exporter';
+import { honeycombHttpTraceExporter } from './http-trace-exporter';
 import { honeycombResource } from './resource-builder';
 
 export function Honeycomb(options?: HoneycombOptions): NodeSDK {
@@ -8,7 +8,7 @@ export function Honeycomb(options?: HoneycombOptions): NodeSDK {
   return new NodeSDK({
     serviceName: opts.serviceName,
     resource: honeycombResource(),
-    traceExporter: honeycombTraceExporter(opts),
+    traceExporter: honeycombHttpTraceExporter(opts),
     // metricReader: honeycombMetricsReader(options),
     // spanProcessor: baggageSpanProcess(options),
     // sampler: honeycombSampler(),
