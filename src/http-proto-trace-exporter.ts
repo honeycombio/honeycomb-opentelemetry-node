@@ -15,7 +15,7 @@ export const OTLP_PROTO_VERSION = '0.16.0';
  * @param options The HoneycombOptions used to configure the exporter
  * @returns the configured OTLPTracesExporter instance
  */
-export function honeycombHttpProtoTraceExporter(
+export function configureHoneycombHttpProtoTraceExporter(
   options?: HoneycombOptions,
 ): OTLPTraceExporter {
   const opts = computeOptions(options);

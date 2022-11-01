@@ -1,5 +1,5 @@
 import {
-  honeycombHttpProtoTraceExporter,
+  configureHoneycombHttpProtoTraceExporter,
   TEAM_HEADER_KEY,
   DATASET_HEADER_KEY,
   OTLP_HEADER_KEY,
@@ -13,13 +13,13 @@ const apikey = '0000000000000000000000'; // 22 chars
 const classicApikey = '00000000000000000000000000000000'; // 32 chars
 
 test('it should return an OTLPTraceExporter', () => {
-  const traceExporter = honeycombHttpProtoTraceExporter();
+  const traceExporter = configureHoneycombHttpProtoTraceExporter();
   expect(traceExporter instanceof OTLPTraceExporter);
 });
 
 describe('with a regular apikey', () => {
   test('it should set the team and not the dataset headers', () => {
-    const traceExporter = honeycombHttpProtoTraceExporter({
+    const traceExporter = configureHoneycombHttpProtoTraceExporter({
       apiKey: apikey,
       dataset: dataset,
     });
@@ -41,7 +41,7 @@ describe('with a regular apikey', () => {
     });
 
     test('it should set the team and dataset headers from env vars', () => {
-      const traceExporter = honeycombHttpProtoTraceExporter({
+      const traceExporter = configureHoneycombHttpProtoTraceExporter({
         apiKey: 'apikey',
         dataset: 'dataset',
       });
@@ -55,7 +55,7 @@ describe('with a regular apikey', () => {
 
 describe('with a classic apikey', () => {
   test('it should set the team and dataset headers', () => {
-    const traceExporter = honeycombHttpProtoTraceExporter({
+    const traceExporter = configureHoneycombHttpProtoTraceExporter({
       apiKey: classicApikey,
       dataset: dataset,
     });
@@ -77,7 +77,7 @@ describe('with a classic apikey', () => {
     });
 
     test('it should set the team and dataset headers from env vars', () => {
-      const traceExporter = honeycombHttpProtoTraceExporter({
+      const traceExporter = configureHoneycombHttpProtoTraceExporter({
         apiKey: 'apikey',
         dataset: 'dataset',
       });

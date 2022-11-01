@@ -1,4 +1,4 @@
-const { Honeycomb } = require('@honeycombio/opentelemetry-node');
+const { configureHoneycombSDK } = require('@honeycombio/opentelemetry-node');
 const {
   diag,
   DiagConsoleLogger,
@@ -13,7 +13,7 @@ const port = 3000;
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 
 // uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
-const sdk = Honeycomb();
+const sdk = configureHoneycombSDK();
 
 // alternitively, provide apikey and service name using options
 // const sdk = Honeycomb({
