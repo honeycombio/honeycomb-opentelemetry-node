@@ -23,7 +23,7 @@ const sdk = Honeycomb();
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
   tracer.startActiveSpan('main', (span) => {
