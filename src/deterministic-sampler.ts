@@ -6,6 +6,11 @@ import {
   AlwaysOffSampler,
   TraceIdRatioBasedSampler,
 } from '@opentelemetry/sdk-trace-base';
+import { DEFAULT_SAMPLE_RATE } from './honeycomb-options';
+
+export function configureDeterministicSampler(sampleRate?: number) {
+  return new DeterministicSampler(sampleRate || DEFAULT_SAMPLE_RATE);
+}
 
 export class DeterministicSampler implements Sampler {
   private _sampleRate: number;
