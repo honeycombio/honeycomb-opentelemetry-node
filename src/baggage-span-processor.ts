@@ -1,10 +1,27 @@
 import {
-  Attributes,
-  BaggageEntry,
   Context,
   propagation,
+  BaggageEntry,
+  Attributes,
 } from '@opentelemetry/api';
-import { NoopSpanProcessor, Span } from '@opentelemetry/sdk-trace-base';
+import {
+  BatchSpanProcessor,
+  NoopSpanProcessor,
+  Span,
+  SpanExporter,
+} from '@opentelemetry/sdk-trace-base';
+
+export class BatchWithBaggageProcessor extends BatchSpanProcessor {
+  private bsp: BaggageSpanProcessor;
+
+  constructor(exporter: SpanExporter) {
+    super(exporter);
+    this.bsp = new BaggageSpanProcessor();
+  }
+  onStart(span: Span, parentContext: Context): void {
+    this.bsp.onStart(span, parentContext);
+  }
+}
 
 export class BaggageSpanProcessor extends NoopSpanProcessor {
   onStart(span: Span, parentContext: Context): void {
