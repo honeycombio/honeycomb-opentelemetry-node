@@ -49,8 +49,9 @@ export class DeterministicSampler implements Sampler {
       links,
     );
     return {
-      decision: result.decision,
+      ...result,
       attributes: {
+        ...result.attributes,
         SampleRate: this._sampleRate,
       },
     };
