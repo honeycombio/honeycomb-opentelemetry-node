@@ -34,26 +34,11 @@ describe('BaggageSpanProcessor', () => {
     );
   });
 
-  test('transforms entries from Baggage into Attributes', () => {
-    const attrs = baggageProcessor.transformBaggageEntries(bag.getAllEntries());
-
-    expect(attrs).toEqual(expectedAttrs);
-  });
-
-  test('with setAttributes and separate transform function', () => {
+  test('onStart adds current Baggage entries to a span as attributes', () => {
     expect(span.attributes).toEqual({});
     const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
 
     baggageProcessor.onStart(span, ctx);
-
-    expect(span.attributes).toEqual(expectedAttrs);
-  });
-
-  test('with an onStart that uses forEach and setAttribute', () => {
-    expect(span.attributes).toEqual({});
-    const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
-
-    baggageProcessor.forEachOnStart(span, ctx);
 
     expect(span.attributes).toEqual(expectedAttrs);
   });
