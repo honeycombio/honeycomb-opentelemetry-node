@@ -82,4 +82,12 @@ export class BaggageSpanProcessor extends NoopSpanProcessor {
       {}, // initial value for attrs before accumulating
     );
   }
+
+  forEachOnStart(span: Span, parentContext: Context): void {
+    (propagation.getBaggage(parentContext)?.getAllEntries() ?? []).forEach(
+      (entry) => {
+        span.setAttribute(entry[0], entry[1].value);
+      },
+    );
+  }
 }

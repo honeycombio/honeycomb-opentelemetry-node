@@ -1,32 +1,54 @@
 import { BaggageSpanProcessor } from '../src/baggage-span-processor';
 import {
   propagation,
-  baggageEntryMetadataFromString,
+  ROOT_CONTEXT,
+  SpanKind,
+  TraceFlags,
 } from '@opentelemetry/api';
+import { BasicTracerProvider, Span } from '@opentelemetry/sdk-trace-base';
 
-test('transforms entries from Baggage into Attributes', () => {
+describe('BaggageSpanProcessor', () => {
   const baggageProcessor = new BaggageSpanProcessor();
 
-  const luggage = propagation.createBaggage({
-    key1: { value: 'd4cda95b652f4a1592b449d5929fda1b' },
-    'with/slash': { value: 'with spaces' },
-    key3: { value: 'c88815a7-0fa9-4d95-a1f1-cdccce3c5c2a' },
-    key4: {
-      value: 'foo',
-      metadata: baggageEntryMetadataFromString(
-        'key4prop1=value1;key4prop2=value2;key4prop3WithNoValue',
-      ),
-    },
+  const bag = propagation.createBaggage({
+    brand: { value: 'samsonite' },
   });
 
-  const attrs = baggageProcessor.transformBaggageEntries(
-    luggage.getAllEntries(),
+  const expectedAttrs = {
+    brand: 'samsonite',
+  };
+
+  const span = new Span(
+    new BasicTracerProvider().getTracer('baggage-testing'),
+    ROOT_CONTEXT,
+    'Edward W. Span',
+    {
+      traceId: 'e4cda95b652f4a1592b449d5929fda1b',
+      spanId: '7e0c63257de34c92',
+      traceFlags: TraceFlags.SAMPLED,
+    },
+    SpanKind.SERVER,
   );
 
-  expect(attrs).toEqual({
-    key1: 'd4cda95b652f4a1592b449d5929fda1b',
-    key3: 'c88815a7-0fa9-4d95-a1f1-cdccce3c5c2a',
-    key4: 'foo',
-    'with/slash': 'with spaces',
+  test('transforms entries from Baggage into Attributes', () => {
+    const attrs = baggageProcessor.transformBaggageEntries(bag.getAllEntries());
+
+    expect(attrs).toEqual(expectedAttrs);
+  });
+
+  test('with setAttributes and separate transform function', () => {
+    const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
+
+    baggageProcessor.onStart(span, ctx);
+
+    expect(span.attributes).toEqual(expectedAttrs);
+  });
+
+  test('with an onStart that uses forEach and setAttribute', () => {
+    const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
+
+    baggageProcessor.forEachOnStart(span, ctx);
+
+    expect(span.attributes).toEqual(expectedAttrs);
   });
 });
