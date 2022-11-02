@@ -15,8 +15,8 @@ diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
 // uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
 const sdk = configureHoneycombSDK();
 
-// alternitively, provide apikey and service name using options
-// const sdk = Honeycomb({
+// alternatively, provide apikey and service name using options
+// const sdk = configureHoneycombSDK({
 //   apiKey: "{apikey}",
 //   serviceName: "my-web-app",
 // })
