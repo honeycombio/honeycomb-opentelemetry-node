@@ -37,6 +37,7 @@ describe('BaggageSpanProcessor', () => {
   });
 
   test('with setAttributes and separate transform function', () => {
+    expect(span.attributes).toEqual({});
     const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
 
     baggageProcessor.onStart(span, ctx);
@@ -45,6 +46,7 @@ describe('BaggageSpanProcessor', () => {
   });
 
   test('with an onStart that uses forEach and setAttribute', () => {
+    expect(span.attributes).toEqual({});
     const ctx = propagation.setBaggage(ROOT_CONTEXT, bag);
 
     baggageProcessor.forEachOnStart(span, ctx);
