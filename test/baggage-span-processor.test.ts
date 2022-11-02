@@ -18,17 +18,21 @@ describe('BaggageSpanProcessor', () => {
     brand: 'samsonite',
   };
 
-  const span = new Span(
-    new BasicTracerProvider().getTracer('baggage-testing'),
-    ROOT_CONTEXT,
-    'Edward W. Span',
-    {
-      traceId: 'e4cda95b652f4a1592b449d5929fda1b',
-      spanId: '7e0c63257de34c92',
-      traceFlags: TraceFlags.SAMPLED,
-    },
-    SpanKind.SERVER,
-  );
+  let span: Span;
+
+  beforeEach(() => {
+    span = new Span(
+      new BasicTracerProvider().getTracer('baggage-testing'),
+      ROOT_CONTEXT,
+      'Edward W. Span',
+      {
+        traceId: 'e4cda95b652f4a1592b449d5929fda1b',
+        spanId: '7e0c63257de34c92',
+        traceFlags: TraceFlags.SAMPLED,
+      },
+      SpanKind.SERVER,
+    );
+  });
 
   test('transforms entries from Baggage into Attributes', () => {
     const attrs = baggageProcessor.transformBaggageEntries(bag.getAllEntries());
