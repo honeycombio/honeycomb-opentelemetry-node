@@ -27,6 +27,16 @@ const getSamplingResult = (sampler: DeterministicSampler): SamplingResult => {
   );
 };
 
+it('sampler with rate of undefined configures inner AlwaysOnSampler', () => {
+  const sampler = configureDeterministicSampler();
+  expect(sampler instanceof DeterministicSampler);
+  expect(sampler.toString()).toBe('DeterministicSampler(AlwaysOnSampler)');
+
+  const result = getSamplingResult(sampler);
+  expect(result.decision).toBe(SamplingDecision.RECORD_AND_SAMPLED);
+  expect(result.attributes).toEqual({ SampleRate: 1 });
+});
+
 it('sampler with rate of 1 configures inner AlwaysOnSampler', () => {
   const sampler = configureDeterministicSampler(1);
   expect(sampler instanceof DeterministicSampler);
