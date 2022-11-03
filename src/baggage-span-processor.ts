@@ -19,6 +19,11 @@ import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exp
  * for sending telemetry to Honeycomb. The processor will duplicate
  * baggage entries on span start and queue spans for batch send.
  *
+ * ⚠ Caution ⚠️
+ *
+ * Do not put sensitive information in Baggage. See {@link BaggageSpanProcessor}
+ * for more details.
+ *
  * @param opts {@link HoneycombOptions} used to configure export to Honeycomb
  * @returns a configured {@link BatchWithBaggageSpanProcessor} for baggage attribute duping,
  *   span batching, and export to Honeycomb
