@@ -5,7 +5,16 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  extends: ['eslint:recommended', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:import/recommended', 'prettier'],
+  rules: {
+    'sort-imports': [
+      'error',
+      {
+        ignoreCase: true,
+        ignoreDeclarationSort: true,
+      },
+    ],
+  },
   overrides: [
     // turn off noisy rules for now
     {
@@ -14,6 +23,7 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
+        'plugin:import/typescript',
       ],
       rules: {
         '@typescript-eslint/no-unsafe-argument': 'off',
