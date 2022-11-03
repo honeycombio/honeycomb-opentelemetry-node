@@ -1,5 +1,7 @@
+import { SpanExporter } from '@opentelemetry/sdk-trace-base';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { configureDeterministicSampler } from './deterministic-sampler';
+import { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
 import { HoneycombOptions, computeOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { configureHoneycombResource } from './resource-builder';
@@ -14,9 +16,16 @@ export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
   return new NodeSDK({
     serviceName: opts.serviceName,
     resource: configureHoneycombResource(),
-    traceExporter: configureHoneycombHttpProtoTraceExporter(opts),
+    traceExporter: getSpanExporter(opts),
     // metricReader: honeycombMetricsReader(options),
     // spanProcessor: baggageSpanProcess(options),
     sampler: configureDeterministicSampler(opts.sampleRate),
   });
+}
+
+export function getSpanExporter(options: HoneycombOptions): SpanExporter {
+  if (options.protocol == 'grpc') {
+    return configureHoneycombGrpcTraceExporter(options);
+  }
+  return configureHoneycombHttpProtoTraceExporter(options);
 }
