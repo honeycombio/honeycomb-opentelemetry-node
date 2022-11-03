@@ -3,7 +3,6 @@ import {
   propagation,
   Baggage,
   BaggageEntry,
-  Attributes,
 } from '@opentelemetry/api';
 import {
   BatchSpanProcessor,
@@ -48,6 +47,12 @@ export class BatchWithBaggageSpanProcessor extends BatchSpanProcessor {
     this.bsp = new BaggageSpanProcessor();
   }
 
+  /**
+   * Delegates to {@link BaggageSpanProcessor.onStart()}
+   *
+   * @param span a {@link Span} being started
+   * @param parentContext the {@link Context} in which `span` was started
+   */
   onStart(span: Span, parentContext: Context): void {
     this.bsp.onStart(span, parentContext);
   }
@@ -75,6 +80,13 @@ export class BatchWithBaggageSpanProcessor extends BatchSpanProcessor {
  * values will appear in all outgoing HTTP headers from the application.
  */
 export class BaggageSpanProcessor extends NoopSpanProcessor {
+  /**
+   * Adds an attribute to the `span` for each {@link Baggage} key and {@link BaggageEntry | entry value}
+   * present in the `parentContext`.
+   *
+   * @param span a {@link Span} being started
+   * @param parentContext the {@link Context} in which `span` was started
+   */
   onStart(span: Span, parentContext: Context): void {
     (propagation.getBaggage(parentContext)?.getAllEntries() ?? []).forEach(
       (entry) => {
