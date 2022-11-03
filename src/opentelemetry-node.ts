@@ -1,6 +1,6 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { configureDeterministicSampler } from './deterministic-sampler';
-import { HoneycombOptions, computeOptions } from './honeycomb-options';
+import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { configureHoneycombResource } from './resource-builder';
 
