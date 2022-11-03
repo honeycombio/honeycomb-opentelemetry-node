@@ -12,3 +12,5 @@ test('it should return a NodeSDK', () => {
   const honeycomb = configureHoneycombSDK();
   expect(honeycomb instanceof NodeSDK);
 });
+
+test.todo('when debug is set to true, use diag log level of debug');

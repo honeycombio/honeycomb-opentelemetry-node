@@ -3,7 +3,7 @@ import { configureDeterministicSampler } from './deterministic-sampler';
 import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
-
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 /**
  * Builds and returns an instance of OpenTelemetry Node SDK.
  * @param options The HoneycombOptions used to configure the exporter
@@ -11,6 +11,11 @@ import { configureHoneycombResource } from './resource-builder';
  */
 export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
   const opts = computeOptions(options);
+  
+  if (opts.debug) {
+    diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+  }
+  
   return new NodeSDK({
     serviceName: opts.serviceName,
     resource: configureHoneycombResource(),
