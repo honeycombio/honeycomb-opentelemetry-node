@@ -11,11 +11,12 @@ import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
  */
 export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
   const opts = computeOptions(options);
-  
+
   if (opts.debug) {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+    diag.debug(JSON.stringify(opts)); //TODO: pretty format this
   }
-  
+
   return new NodeSDK({
     serviceName: opts.serviceName,
     resource: configureHoneycombResource(),
