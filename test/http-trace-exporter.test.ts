@@ -1,10 +1,10 @@
+import { configureHoneycombHttpProtoTraceExporter } from '../src/http-proto-trace-exporter';
 import {
-  configureHoneycombHttpProtoTraceExporter,
-  TEAM_HEADER_KEY,
   DATASET_HEADER_KEY,
   OTLP_HEADER_KEY,
   OTLP_PROTO_VERSION,
-} from '../src/http-proto-trace-exporter';
+  TEAM_HEADER_KEY,
+} from '../src/exporter-consts';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { DEFAULT_API_ENDPOINT } from '../src/honeycomb-options';
 
