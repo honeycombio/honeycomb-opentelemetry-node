@@ -2,7 +2,7 @@ import {
   configureDeterministicSampler,
   DeterministicSampler,
 } from '../src/deterministic-sampler';
-import { ROOT_CONTEXT, SpanKind, TraceFlags, trace } from '@opentelemetry/api';
+import { ROOT_CONTEXT, SpanKind, trace, TraceFlags } from '@opentelemetry/api';
 import {
   SamplingDecision,
   SamplingResult,

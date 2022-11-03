@@ -1,8 +1,8 @@
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import {
+  computeOptions,
   HoneycombOptions,
   isClassic,
-  computeOptions,
 } from './honeycomb-options';
 
 export const TEAM_HEADER_KEY = 'x-honeycomb-team';

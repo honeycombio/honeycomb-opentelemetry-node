@@ -1,8 +1,8 @@
 import {
-  Context,
-  propagation,
   Baggage,
   BaggageEntry,
+  Context,
+  propagation,
 } from '@opentelemetry/api';
 import {
   BatchSpanProcessor,
