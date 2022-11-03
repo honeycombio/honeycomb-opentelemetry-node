@@ -15,15 +15,18 @@ import { HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 
 /**
+ * Builds and returns a span processor with an exporter configured
+ * for sending telemetry to Honeycomb. The processor will duplicate
+ * baggage entries on span start and queue spans for batch send.
  *
  * @param opts {@link HoneycombOptions} used to configure export to Honeycomb
- * @returns a configured {@link BatchWithBaggageProcessor} for baggage attribute duping,
+ * @returns a configured {@link BatchWithBaggageSpanProcessor} for baggage attribute duping,
  *   span batching, and export to Honeycomb
  */
-export function configureBatchWithBaggageProcessor(
+export function configureBatchWithBaggageSpanProcessor(
   opts?: HoneycombOptions,
-): BatchWithBaggageProcessor {
-  return new BatchWithBaggageProcessor(
+): BatchWithBaggageSpanProcessor {
+  return new BatchWithBaggageSpanProcessor(
     configureHoneycombHttpProtoTraceExporter(opts),
   );
 }
@@ -32,7 +35,7 @@ export function configureBatchWithBaggageProcessor(
  * A span processor that behaves like a {@link BatchSpanProcessor} with the
  * addition of {@link BaggageSpanProcessor} behavior during onStart.
  */
-export class BatchWithBaggageProcessor extends BatchSpanProcessor {
+export class BatchWithBaggageSpanProcessor extends BatchSpanProcessor {
   private bsp: BaggageSpanProcessor;
 
   constructor(exporter: SpanExporter) {

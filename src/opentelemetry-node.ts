@@ -1,6 +1,6 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { configureDeterministicSampler } from './deterministic-sampler';
-import { configureBatchWithBaggageProcessor } from './baggage-span-processor';
+import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
 import { HoneycombOptions, computeOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
 
@@ -15,7 +15,7 @@ export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
     serviceName: opts.serviceName,
     resource: configureHoneycombResource(),
     // metricReader: honeycombMetricsReader(options),
-    spanProcessor: configureBatchWithBaggageProcessor(opts),
+    spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
     sampler: configureDeterministicSampler(opts.sampleRate),
   });
 }
