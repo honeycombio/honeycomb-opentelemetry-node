@@ -17,7 +17,7 @@ clean: clean-smoke-tests
 	npm run clean
 
 example:
-	cd smoke-tests && docker-compose up --build app-hellonode
+	npm run example-node
 
 smoke-tests/collector/data.json:
 	@echo ""
