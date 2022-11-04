@@ -16,6 +16,9 @@ clean: clean-smoke-tests
 	rm -rf ./examples/hello-node/node_modules
 	npm run clean
 
+example:
+	cd smoke-tests && docker-compose up --build app-hellonode
+
 smoke-tests/collector/data.json:
 	@echo ""
 	@echo "+++ Zhuzhing smoke test's Collector data.json"
@@ -48,4 +51,4 @@ unsmoke:
 ## use this for local testing
 resmoke: unsmoke smoke
 
-.PHONY: build test clean-smoke-tests clean smoke unsmoke resmoke smoke-sdk-grpc smoke-sdk-http smoke-sdk
+.PHONY: build test clean-smoke-tests clean example smoke unsmoke resmoke smoke-sdk-grpc smoke-sdk-http smoke-sdk
