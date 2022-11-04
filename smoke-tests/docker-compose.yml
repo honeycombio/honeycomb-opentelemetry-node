@@ -31,8 +31,9 @@ services:
       <<: *env_base
     ports:
       - "127.0.0.1:3000:3000"
-    volumes:
-      - ../dist:/usr/dist
+      # dont need volumes since we're building in docker container now
+      # volumes:
+      # - ../dist:/usr/dist/src
 
   # app-sdk-http:
   #   <<: *app_base
