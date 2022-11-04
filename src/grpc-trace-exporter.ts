@@ -6,9 +6,9 @@ import {
   TEAM_HEADER_KEY,
 } from './exporter-utils';
 import {
+  computeOptions,
   HoneycombOptions,
   isClassic,
-  computeOptions,
 } from './honeycomb-options';
 import { Metadata } from '@grpc/grpc-js';
 jest.useFakeTimers();
