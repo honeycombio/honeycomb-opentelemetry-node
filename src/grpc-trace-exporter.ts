@@ -4,7 +4,7 @@ import {
   OTLP_HEADER_KEY,
   OTLP_PROTO_VERSION,
   TEAM_HEADER_KEY,
-} from './exporter-consts';
+} from './exporter-utils';
 import {
   HoneycombOptions,
   isClassic,

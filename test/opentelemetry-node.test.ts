@@ -1,10 +1,8 @@
-import {
-  configureHoneycombSDK,
-  getSpanExporter,
-} from '../src/opentelemetry-node';
+import { configureHoneycombSDK } from '../src/opentelemetry-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { OTLPTraceExporter as GrpcOTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { OTLPTraceExporter as HttpProtoExporter } from '@opentelemetry/exporter-trace-otlp-proto';
+import { getSpanExporter } from '../src/exporter-utils';
 
 test('it should return a NodeSDK', () => {
   const honeycomb = configureHoneycombSDK();

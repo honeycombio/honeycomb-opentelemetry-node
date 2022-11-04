@@ -1,9 +1,9 @@
-import { Context, SpanKind, Attributes, Link } from '@opentelemetry/api';
+import { Attributes, Context, Link, SpanKind } from '@opentelemetry/api';
 import {
+  AlwaysOffSampler,
+  AlwaysOnSampler,
   Sampler,
   SamplingResult,
-  AlwaysOnSampler,
-  AlwaysOffSampler,
   TraceIdRatioBasedSampler,
 } from '@opentelemetry/sdk-trace-base';
 import { DEFAULT_SAMPLE_RATE } from './honeycomb-options';
