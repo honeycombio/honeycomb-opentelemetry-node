@@ -11,6 +11,10 @@ import {
   isClassic,
 } from './honeycomb-options';
 import { Metadata } from '@grpc/grpc-js';
+
+// enable fake timers so timeouts work more relieably. This is required
+// to stop import errors from otlp-grpc-trace-base originating from onInit
+// https://jestjs.io/docs/timer-mocks#enable-fake-timers
 jest.useFakeTimers();
 
 /**
