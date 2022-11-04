@@ -9,9 +9,13 @@ export const OTLP_HEADER_KEY = 'x-otlp-version';
 export const OTLP_PROTO_VERSION = '0.16.0';
 
 /**
+ * Configures and returns a {@link SpanExporter} based on the OTLP protocol
+ * provided via options.
  *
- * @param options
- * @returns
+ * Defaults to a http/protobuf exporter if not configured.
+ *
+ * @param options the {@link HoneycombOptions} used to configure the exporter
+ * @returns a {@link SpanExporter} configured to send telemetry to Honeycomb
  */
 export function getSpanExporter(options?: HoneycombOptions): SpanExporter {
   if (options?.protocol == 'grpc') {
