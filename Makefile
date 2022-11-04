@@ -40,7 +40,10 @@ smoke-sdk: smoke-sdk-grpc smoke-sdk-http
 smoke-later: smoke-sdk
 
 smoke:
-	cd smoke-tests && docker-compose up --build
+	@echo ""
+	@echo "+++ Placeholder for Smoking all the tests."
+	@echo ""
+	cd smoke-tests && docker-compose up -d --build && docker-compose down --volumes
 
 unsmoke:
 	@echo ""
