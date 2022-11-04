@@ -43,7 +43,7 @@ unsmoke:
 	@echo ""
 	@echo "+++ Spinning down the smokers."
 	@echo ""
-	cd smoke-tests && docker-compose down
+	cd smoke-tests && docker-compose down --volumes
 
 ## use this for local testing
 resmoke: unsmoke smoke
