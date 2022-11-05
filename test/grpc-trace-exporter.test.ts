@@ -5,7 +5,7 @@ import {
   OTLP_PROTO_VERSION,
   TEAM_HEADER_KEY,
 } from '../src/exporter-utils';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 
 const dataset = 'my-dataset';
 const apikey = '0000000000000000000000'; // 22 chars
