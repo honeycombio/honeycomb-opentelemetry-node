@@ -1,7 +1,13 @@
 import { ExportResult, ExportResultCode } from '@opentelemetry/core';
 import { ReadableSpan, SpanExporter } from '@opentelemetry/sdk-trace-base';
 
-export class CompositeSpanExporter implements SpanExporter {
+export function configureCompositeExporter(
+  exporters: SpanExporter[],
+): SpanExporter {
+  return new CompositeSpanExporter(exporters);
+}
+
+class CompositeSpanExporter implements SpanExporter {
   private _exporters: SpanExporter[];
 
   constructor(exporters: SpanExporter[]) {
