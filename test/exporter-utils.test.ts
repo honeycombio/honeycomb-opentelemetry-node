@@ -2,6 +2,13 @@ import { OTLPTraceExporter as GrpcOTLPTraceExporter } from '@opentelemetry/expor
 import { OTLPTraceExporter as HttpProtoOTLPExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import { getSpanExporter } from '../src/exporter-utils';
 
+beforeEach(() => {
+  // enable fake timers so timeouts work more relieably. This is required
+  // to stop import errors from otlp-grpc-trace-base originating from onInit
+  // https://jestjs.io/docs/timer-mocks#enable-fake-timers
+  jest.useFakeTimers();
+});
+
 describe('getSpanExporter', () => {
   it('gprc returns grpc exporter', () => {
     const exporter = getSpanExporter({

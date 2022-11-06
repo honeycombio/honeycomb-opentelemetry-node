@@ -12,11 +12,6 @@ import {
 } from './honeycomb-options';
 import { Metadata } from '@grpc/grpc-js';
 
-// enable fake timers so timeouts work more relieably. This is required
-// to stop import errors from otlp-grpc-trace-base originating from onInit
-// https://jestjs.io/docs/timer-mocks#enable-fake-timers
-jest.useFakeTimers();
-
 /**
  * Builds and returns an OTLP Traces exporter that sends telemetry over gRPC
  * @param options The HoneycombOptions used to configure the exporter

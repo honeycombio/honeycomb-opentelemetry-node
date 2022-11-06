@@ -11,6 +11,13 @@ const dataset = 'my-dataset';
 const apikey = '0000000000000000000000'; // 22 chars
 const classicApikey = '00000000000000000000000000000000'; // 32 chars
 
+beforeEach(() => {
+  // enable fake timers so timeouts work more relieably. This is required
+  // to stop import errors from otlp-grpc-trace-base originating from onInit
+  // https://jestjs.io/docs/timer-mocks#enable-fake-timers
+  jest.useFakeTimers();
+});
+
 test('it should return an OTLPTraceExporter', () => {
   const traceExporter = configureHoneycombGrpcTraceExporter();
   expect(traceExporter instanceof OTLPTraceExporter);
