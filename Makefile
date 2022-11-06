@@ -33,7 +33,6 @@ smoke-sdk-http: smoke-tests/collector/data.json
 	@echo ""
 	@echo "+++ PLACEHOLDER: Running HTTP smoke tests."
 	@echo ""
-	cd smoke-tests && bats ./smoke-sdk-http.bats --report-formatter junit --output ./
 
 smoke-sdk: smoke-sdk-grpc smoke-sdk-http
 
