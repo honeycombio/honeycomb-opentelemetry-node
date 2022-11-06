@@ -15,5 +15,11 @@ npm run setup
 ### Running the main application
 
 ```bash
-npm start
+HONEYCOMB_API_KEY={apikey} OTEL_SERVICE_NAME="hello-node" npm start
+```
+
+Alternatively, to export telemetry using `gRPC` instad of `http/protobuf`:
+
+```bash
+HONEYCOMB_API_KEY={apikey} OTEL_SERVICE_NAME="hello-node" OTEL_EXPORTER_OTLP_PROTOCOL=grpc npm start
 ```
