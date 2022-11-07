@@ -11,17 +11,17 @@ export function configureLocalExporter(
 }
 
 export class LocalExporter implements SpanExporter {
-  private _traceUrl?: string;
+  private _traceUrl = '';
 
   constructor(serviceName?: string, apikey?: string) {
-    if (serviceName && apikey) {
-      this.initalize(serviceName, apikey);
-    } else {
-      // TODO: log error
-    }
+    this.initalize(serviceName, apikey);
   }
 
   initalize(serviceName?: string, apikey?: string) {
+    if (!serviceName || !apikey) {
+      // TODO: log error
+      return;
+    }
     let environment: string | undefined;
     let team: string | undefined;
 
@@ -30,16 +30,22 @@ export class LocalExporter implements SpanExporter {
         [TEAM_HEADER_KEY]: apikey,
       },
     };
-    axios.get('https://api.honeycomb.io/1/auth', options).then((resp) => {
-      if (resp.status == 200) {
-        environment = resp.data.environment?.slug;
-        team = resp.data.team?.slug;
-      }
-    });
+    axios.get('https://api.honeycomb.io/1/auth', options).then(
+      (resp) => {
+        if (resp.status == 200) {
+          const response: Response = resp.data;
+          environment = response.environment?.slug;
+          team = response.team?.slug;
+        }
+      },
+      (error) => {
+        // TODO: log error
+      },
+    );
 
     if (team) {
       this._traceUrl += `https://ui.honeycomb.io/${team}`;
-      if (isClassic(apikey)) {
+      if (isClassic(apikey) && environment) {
         this._traceUrl += `/environments/${environment}`;
       }
       this._traceUrl += `/datasets/${serviceName}/trace/trace_id`;
@@ -66,4 +72,17 @@ export class LocalExporter implements SpanExporter {
   shutdown(): Promise<void> {
     return Promise.resolve();
   }
+}
+
+interface Response {
+  environment?: EnvironmentResponse;
+  team?: TeamResponse;
+}
+
+interface EnvironmentResponse {
+  slug?: string;
+}
+
+interface TeamResponse {
+  slug?: string;
 }
