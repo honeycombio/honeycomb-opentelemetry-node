@@ -14,7 +14,7 @@ export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
 
   if (opts.debug) {
     diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
-    diag.debug(JSON.stringify(opts)); //TODO: pretty format this
+    diag.debug(JSON.stringify(opts, null, 2));
   }
 
   return new NodeSDK({
