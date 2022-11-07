@@ -40,10 +40,8 @@ class LocalExporter implements SpanExporter {
           team = response.team?.slug;
         }
       },
-      (error) => {
-        console.log(
-          'WARN: failed to get auth data from Honeycomb API',
-        );
+      () => {
+        console.log('WARN: failed to get auth data from Honeycomb API');
       },
     );
 
