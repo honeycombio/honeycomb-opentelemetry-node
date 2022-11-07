@@ -1,23 +1,36 @@
-build:
-	npm run build
+# check if we've got node on the PATH
+ifeq (, $(shell command -v node))
+	$(info Couldn't find node. We're not going to get far without it.)
+  npm_scripts=''
+else
+  # render the keys from "scripts" in package.json as a space-delimited string
+	npm_scripts=$(shell node -e "console.log(Object.keys(require('.' + require('path').sep + 'package.json').scripts || {}).join(' '))")
+endif
 
-test: build
-	npm run test
+default: check-format lint test
 
+# for each package.json "scripts" key, define a target that runs that key with npm
+.PHONY: $(npm_scripts)
+#: From scripts in package.json
+$(npm_scripts):
+	npm run $@
+
+example-node: build
+
+example: example-node
+
+#: cleans up smoke test output
 clean-smoke-tests:
 	rm -rf ./smoke-tests/collector/data.json
 	rm -rf ./smoke-tests/collector/data-results/*.json
 	rm -rf ./smoke-tests/report.*
 
-clean: clean-smoke-tests
+#: cleans up TS build, smoke test output, and example app detritus
+squeaky-clean: clean clean-smoke-tests
 	rm -rf ./examples/dist
 	rm -rf ./examples/node_modules
 	rm -rf ./examples/hello-node/dist
 	rm -rf ./examples/hello-node/node_modules
-	npm run clean
-
-example:
-	npm run example-node
 
 smoke-tests/collector/data.json:
 	@echo ""
@@ -50,7 +63,7 @@ unsmoke:
 	@echo ""
 	cd smoke-tests && docker-compose down --volumes
 
-## use this for local testing
+#: use this for local smoke testing
 resmoke: unsmoke smoke
 
-.PHONY: build test clean-smoke-tests clean example smoke unsmoke resmoke smoke-sdk-grpc smoke-sdk-http smoke-sdk
+.PHONY: clean-smoke-tests example smoke unsmoke resmoke smoke-sdk-grpc smoke-sdk-http smoke-sdk
