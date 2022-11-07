@@ -8,7 +8,7 @@ import {
 import { HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { LocalExporter } from './local-exporter';
-import { CompositeSpanExporter } from './compositie-exporter';
+import { configureCompositeExporter } from './composite-exporter';
 
 /**
  * Builds and returns a span processor with an exporter configured
@@ -34,7 +34,7 @@ export function configureBatchWithBaggageSpanProcessor(
   // TODO: use local visualiations option instead
   if (opts?.debug) {
     return new BatchWithBaggageSpanProcessor(
-      new CompositeSpanExporter([exporter, new LocalExporter()]),
+      configureCompositeExporter([exporter, new LocalExporter()]),
     );
   }
   return new BatchWithBaggageSpanProcessor(exporter);
