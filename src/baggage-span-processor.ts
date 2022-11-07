@@ -6,9 +6,9 @@ import {
   SpanExporter,
 } from '@opentelemetry/sdk-trace-base';
 import { HoneycombOptions } from './honeycomb-options';
-import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 import { configureLocalExporter } from './local-exporter';
 import { configureCompositeExporter } from './composite-exporter';
+import { getSpanExporter } from './exporter-utils';
 
 /**
  * Builds and returns a span processor with an exporter configured
@@ -27,7 +27,7 @@ import { configureCompositeExporter } from './composite-exporter';
 export function configureBatchWithBaggageSpanProcessor(
   opts?: HoneycombOptions,
 ): BatchWithBaggageSpanProcessor {
-  const exporter = configureHoneycombHttpProtoTraceExporter(opts);
+  const exporter = getSpanExporter(opts);
 
   // if local visualisations enabled, create composite exporter configured
   // to send to both local exporter and main exporter

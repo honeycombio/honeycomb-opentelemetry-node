@@ -1,6 +1,6 @@
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
 export const DEFAULT_SAMPLE_RATE = 1;
-export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'grpc';
+export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
 
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];

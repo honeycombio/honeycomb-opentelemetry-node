@@ -1,19 +1,20 @@
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto';
 import {
+  DATASET_HEADER_KEY,
+  OTLP_HEADER_KEY,
+  OTLP_PROTO_VERSION,
+  TEAM_HEADER_KEY,
+} from './exporter-utils';
+import {
   computeOptions,
   HoneycombOptions,
   isClassic,
 } from './honeycomb-options';
 
-export const TEAM_HEADER_KEY = 'x-honeycomb-team';
-export const DATASET_HEADER_KEY = 'x-honeycomb-dataset';
-export const OTLP_HEADER_KEY = 'x-otlp-version';
-export const OTLP_PROTO_VERSION = '0.16.0';
-
 /**
  * Builds and returns an OTLP Traces exporter that sends data over http/protobuf
- * @param options The HoneycombOptions used to configure the exporter
- * @returns the configured OTLPTracesExporter instance
+ * @param options The {@link HoneycombOptions} used to configure the exporter
+ * @returns a {@link SpanExporter} configured to send telemetry to Honeycomb over http/protobuf
  */
 export function configureHoneycombHttpProtoTraceExporter(
   options?: HoneycombOptions,
