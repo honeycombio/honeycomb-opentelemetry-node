@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "jest --config ./jest.config.js --no-cache -u --silent",
-    "test-ci": "jest --config ./jest.config.js --ci --runInBand --reporters=default --reporters=jest-junit --no-cache -u"
+    "test-ci": "jest --config ./jest.config.js --ci --runInBand --reporters=default --reporters=jest-junit --no-cache -u --silent"
   },
   "repository": {
     "type": "git",
