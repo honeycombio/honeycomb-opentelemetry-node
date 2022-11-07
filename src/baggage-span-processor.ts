@@ -31,7 +31,6 @@ export function configureBatchWithBaggageSpanProcessor(
 
   // if local visualisations enabled, create composite exporter configured
   // to send to both local exporter and main exporter
-  // TODO: use local visualiations option instead
   if (opts?.debug) {
     return new BatchWithBaggageSpanProcessor(
       configureCompositeExporter([exporter, configureLocalExporter(opts)]),
