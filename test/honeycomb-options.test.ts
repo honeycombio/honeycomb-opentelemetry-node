@@ -15,6 +15,35 @@ test('it should have an apiKey property on the HoneycombOptions object', () => {
   expect(testApiKey).toEqual(true);
 });
 
+describe('missing option warnings', () => {
+  describe('service name', () => {
+    const consoleSpy = jest
+      .spyOn(console, 'warn')
+      .mockImplementation(() => undefined);
+
+    afterEach(() => {
+      consoleSpy.mockClear();
+    });
+
+    afterAll(() => {
+      consoleSpy.mockRestore();
+    });
+    it('for missing service name', () => {
+      computeOptions({});
+      expect(consoleSpy).toHaveBeenCalled();
+      expect(consoleSpy.mock.calls[0][0]).toContain(
+        'WARN: Missing service name',
+      );
+    });
+    it('does not warn if service name is present', () => {
+      computeOptions({ serviceName: 'heeeeey' });
+      expect(consoleSpy).not.toHaveBeenCalled();
+    });
+  });
+  it.todo('for missing dataset when using classic API key');
+  it.todo('for missing API key');
+});
+
 describe('isClassic', () => {
   it('should return true for a clasic key', () => {
     // classic keys are 32 chars long

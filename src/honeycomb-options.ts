@@ -70,7 +70,8 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     env.OTEL_EXPORTER_OTLP_PROTOCOL ||
     options?.protocol ||
     DEFAULT_OTLP_EXPORTER_PROTOCOL;
-  return {
+
+  const opts = {
     ...options,
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
     protocol: protocol,
@@ -89,6 +90,14 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
       options?.localVisualizations ||
       false,
   };
+
+  if (opts.serviceName == '' || opts.serviceName == undefined) {
+    console.warn(
+      'WARN: Missing service name. Specify either SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node',
+    );
+  }
+
+  return opts;
 }
 
 /**
