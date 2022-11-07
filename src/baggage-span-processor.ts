@@ -7,7 +7,7 @@ import {
 } from '@opentelemetry/sdk-trace-base';
 import { HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
-import { LocalExporter } from './local-exporter';
+import { configureLocalExporter } from './local-exporter';
 import { configureCompositeExporter } from './composite-exporter';
 
 /**
@@ -34,7 +34,7 @@ export function configureBatchWithBaggageSpanProcessor(
   // TODO: use local visualiations option instead
   if (opts?.debug) {
     return new BatchWithBaggageSpanProcessor(
-      configureCompositeExporter([exporter, new LocalExporter()]),
+      configureCompositeExporter([exporter, configureLocalExporter(opts)]),
     );
   }
   return new BatchWithBaggageSpanProcessor(exporter);
