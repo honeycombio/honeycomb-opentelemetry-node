@@ -8,12 +8,12 @@ import axios from 'axios';
  *
  * @remark This is not for production use.
  * @param options The {@link HoneycombOptions} used to configure the exporter
- * @returns the configured {@link LocalExporter} instance
+ * @returns the configured {@link ConsoleTraceLinkExporter} instance
  */
-export function configureLocalExporter(
+export function configureConsoleTraceLinkExporter(
   options: HoneycombOptions,
 ): SpanExporter {
-  return new LocalExporter(options.serviceName, options.tracesApiKey);
+  return new ConsoleTraceLinkExporter(options.serviceName, options.tracesApiKey);
 }
 
 /**
@@ -21,7 +21,7 @@ export function configureLocalExporter(
  *
  * @remark This is not for production use.
  */
-class LocalExporter implements SpanExporter {
+class ConsoleTraceLinkExporter implements SpanExporter {
   private _traceUrl = '';
 
   constructor(serviceName?: string, apikey?: string) {
@@ -84,7 +84,7 @@ class LocalExporter implements SpanExporter {
 }
 
 /**
- * Builds and returns a URL that is used to log when a trace is completed in the {@link LocalExporter}.
+ * Builds and returns a URL that is used to log when a trace is completed in the {@link ConsoleTraceLinkExporter}.
  *
  * @param apikey the Honeycom API key used to retrieve the Honeycomb team and environment
  * @param serviceName the Honeycomb service name (or classic dataset) where data is stored
