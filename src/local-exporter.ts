@@ -19,7 +19,9 @@ export class LocalExporter implements SpanExporter {
 
   initalize(serviceName?: string, apikey?: string) {
     if (!serviceName || !apikey) {
-      // TODO: log error
+      console.log(
+        'WARN: local visualisations not enabled - must have both service name and API key configured.',
+      );
       return;
     }
     let environment: string | undefined;
@@ -39,7 +41,9 @@ export class LocalExporter implements SpanExporter {
         }
       },
       (error) => {
-        // TODO: log error
+        console.log(
+          'WARN: failed to get auth data from Honeycomb API',
+        );
       },
     );
 
