@@ -1,9 +1,4 @@
-import {
-  Baggage,
-  BaggageEntry,
-  Context,
-  propagation,
-} from '@opentelemetry/api';
+import { Context, propagation } from '@opentelemetry/api';
 import {
   BatchSpanProcessor,
   NoopSpanProcessor,
@@ -11,7 +6,7 @@ import {
   SpanExporter,
 } from '@opentelemetry/sdk-trace-base';
 import { HoneycombOptions } from './honeycomb-options';
-import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
+import { getSpanExporter } from './exporter-utils';
 
 /**
  * Builds and returns a span processor with an exporter configured
@@ -30,9 +25,7 @@ import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exp
 export function configureBatchWithBaggageSpanProcessor(
   opts?: HoneycombOptions,
 ): BatchWithBaggageSpanProcessor {
-  return new BatchWithBaggageSpanProcessor(
-    configureHoneycombHttpProtoTraceExporter(opts),
-  );
+  return new BatchWithBaggageSpanProcessor(getSpanExporter(opts));
 }
 
 /**
