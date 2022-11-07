@@ -1,9 +1,9 @@
 # check if we've got node on the PATH
-ifeq (, $(shell command -v node))
+ifeq (, $(shell which node))
 	$(info Couldn't find node. We're not going to get far without it.)
-  npm_scripts=''
+	npm_scripts=''
 else
-  # render the keys from "scripts" in package.json as a space-delimited string
+	# render the keys from "scripts" in package.json as a space-delimited string
 	npm_scripts=$(shell node -e "console.log(Object.keys(require('.' + require('path').sep + 'package.json').scripts || {}).join(' '))")
 endif
 
