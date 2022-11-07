@@ -358,6 +358,44 @@ describe('sample rate option', () => {
   });
 });
 
+describe('local visualizations option', () => {
+  afterEach(() => {
+    delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
+  });
+
+  it('defaults to false', () => {
+    const options = computeOptions();
+    expect(options.localVisualizations).toBe(false);
+  });
+
+  it('uses provided option if set', () => {
+    const options = computeOptions({
+      localVisualizations: true,
+    });
+    expect(options.localVisualizations).toBe(true);
+  });
+
+  it('returns true if env var is set', () => {
+    process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS = 'true';
+    const options = computeOptions();
+    expect(options.localVisualizations).toBe(true);
+  });
+
+  it('returns false if env var is set', () => {
+    process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS = 'false';
+    const options = computeOptions();
+    expect(options.localVisualizations).toBe(false);
+  });
+
+  it('prefers value from env var over provided options', () => {
+    process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS = 'true';
+    const options = computeOptions({
+      localVisualizations: false,
+    });
+    expect(options.localVisualizations).toBe(true);
+  });
+});
+
 describe('protocol', () => {
   afterEach(() => {
     delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;

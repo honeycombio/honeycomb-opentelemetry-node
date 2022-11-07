@@ -17,7 +17,9 @@ export const OTLP_PROTO_VERSION = '0.16.0';
  * @param options the {@link HoneycombOptions} used to configure the exporter
  * @returns a {@link SpanExporter} configured to send telemetry to Honeycomb
  */
-export function getSpanExporter(options?: HoneycombOptions): SpanExporter {
+export function getHoneycombSpanExporter(
+  options?: HoneycombOptions,
+): SpanExporter {
   if (options?.protocol == 'grpc') {
     return configureHoneycombGrpcTraceExporter(options);
   }

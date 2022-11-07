@@ -44,6 +44,9 @@ export interface HoneycombOptions {
 
   /** The OTLP protocol used to send telemetry to Honeycomb. The default is 'http/protobuf'. */
   protocol?: OtlpProtocol;
+
+  /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
+  localVisualizations?: boolean;
 }
 
 /**
@@ -77,6 +80,10 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
     debug: env.DEBUG || options?.debug || false,
+    localVisualizations:
+      env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
+      options?.localVisualizations ||
+      false,
   };
 }
 
@@ -104,6 +111,7 @@ export type HoneycombEnvironmentOptions = {
   HONEYCOMB_METRICS_DATASET?: string;
   SAMPLE_RATE?: number;
   DEBUG?: boolean;
+  HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS?: boolean;
 
   OTEL_SERVICE_NAME?: string;
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
@@ -131,7 +139,10 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     HONEYCOMB_DATASET: process.env.HONEYCOMB_DATASET,
     HONEYCOMB_METRICS_DATASET: process.env.HOENYCOMB_METRICS_DATASET,
     SAMPLE_RATE: parseSampleRate(process.env.SAMPLE_RATE),
-    DEBUG: parseDebug(process.env.DEBUG),
+    DEBUG: parseBoolean(process.env.DEBUG),
+    HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
+      process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS,
+    ),
 
     OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
     OTEL_EXPORTER_OTLP_PROTOCOL: parseOtlpProtocol(
@@ -149,12 +160,12 @@ function parseSampleRate(sampleRateStr?: string): number | undefined {
   }
 }
 
-function parseDebug(debug?: string): boolean | undefined {
-  if (debug) {
-    if (debug === 'true') {
+function parseBoolean(value?: string): boolean | undefined {
+  if (value) {
+    if (value === 'true') {
       return true;
     }
-    if (debug === 'false') {
+    if (value === 'false') {
       return false;
     }
   }
