@@ -13,10 +13,6 @@ class LocalExporter implements SpanExporter {
   private _traceUrl = '';
 
   constructor(serviceName?: string, apikey?: string) {
-    this.initalize(serviceName, apikey);
-  }
-
-  initalize(serviceName?: string, apikey?: string) {
     if (!serviceName || !apikey) {
       console.log(
         'WARN: disabling local visualisations - must have both service name and API key configured.',
@@ -32,9 +28,9 @@ class LocalExporter implements SpanExporter {
     axios.get('https://api.honeycomb.io/1/auth', options).then(
       (resp) => {
         if (resp.status === 200) {
-          const respData: Response = resp.data;
+          const respData: AuthResponse = resp.data;
           if (respData.team?.slug) {
-            this._traceUrl = this.buildTraceUrl(
+            this._traceUrl = buildTraceUrl(
               apikey,
               serviceName,
               respData.team?.slug,
@@ -73,23 +69,23 @@ class LocalExporter implements SpanExporter {
   shutdown(): Promise<void> {
     return Promise.resolve();
   }
-
-  buildTraceUrl(
-    apikey: string,
-    serviceName: string,
-    team: string,
-    environment?: string,
-  ): string {
-    let url = `https://ui.honeycomb.io/${team}`;
-    if (!isClassic(apikey) && environment) {
-      url += `/environments/${environment}`;
-    }
-    url += `/datasets/${serviceName}/trace?trace_id`;
-    return url;
-  }
 }
 
-interface Response {
+export function buildTraceUrl(
+  apikey: string,
+  serviceName: string,
+  team: string,
+  environment?: string,
+): string {
+  let url = `https://ui.honeycomb.io/${team}`;
+  if (!isClassic(apikey) && environment) {
+    url += `/environments/${environment}`;
+  }
+  url += `/datasets/${serviceName}/trace?trace_id`;
+  return url;
+}
+
+interface AuthResponse {
   environment?: EnvironmentResponse;
   team?: TeamResponse;
 }
