@@ -26,9 +26,7 @@ class CompositeSpanExporter implements SpanExporter {
 
   async shutdown(): Promise<void> {
     const results: Promise<void>[] = [];
-    this._exporters.forEach(async (exporter) =>
-      results.push(exporter.shutdown()),
-    );
+    this._exporters.forEach((exporter) => results.push(exporter.shutdown()));
     await Promise.all(results);
   }
 }
