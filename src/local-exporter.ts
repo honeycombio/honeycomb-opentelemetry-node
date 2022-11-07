@@ -54,7 +54,7 @@ export class LocalExporter implements SpanExporter {
       spans.forEach((span) => {
         // only log root spans (ones without a parent span)
         if (!span.parentSpanId) {
-          console.debug(
+          console.log(
             `Honeycomb link: ${this._traceUrl}=${span.spanContext().traceId}`,
           );
         }
