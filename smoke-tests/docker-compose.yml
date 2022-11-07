@@ -1,0 +1,53 @@
+version: '3.0'
+
+x-env-base: &env_base
+  HONEYCOMB_API_ENDPOINT: http://collector:4317
+  HONEYCOMB_API_KEY: bogus_key
+  HONEYCOMB_DATASET: bogus_dataset
+  HONEYCOMB_METRICS_DATASET: bogus_dataset
+  OTEL_METRIC_EXPORT_INTERVAL: 100
+  OTEL_SERVICE_NAME: "hello-node-example"
+  DEBUG: "true"
+
+x-app-base: &app_base
+  build:
+    context: ../
+    dockerfile: ./examples/hello-node/Dockerfile
+  image: honeycomb/hello-node
+  depends_on:
+    - collector
+
+services:
+  collector:
+    image: otel/opentelemetry-collector:0.52.0
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - "./collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml"
+      - "./collector:/var/lib"
+
+  app-hellonode:
+    <<: *app_base
+    environment:
+      <<: *env_base
+    ports:
+      - "127.0.0.1:3000:3000"
+      # dont need volumes since we're building in docker container now
+      # volumes:
+      # - ../dist:/usr/dist/src
+
+  # app-sdk-http:
+  #   <<: *app_base
+  #   environment:
+  #     <<: *env_base
+  #     HONEYCOMB_API_ENDPOINT: http://collector:4318
+  #     OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+  #   ports:
+  #     - "127.0.0.1:5001:5001"
+
+  # app-sdk-grpc:
+  #   <<: *app_base
+  #   environment:
+  #     <<: *env_base
+  #     OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+  #   ports:
+  #     - "127.0.0.1:5001:5001"

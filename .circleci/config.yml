@@ -12,6 +12,9 @@ filters_publish: &filters_publish
     branches:
       ignore: /.*/
 
+orbs:
+  bats: circleci/bats@1.0.0
+
 executors:
   node:
     docker:
@@ -63,6 +66,32 @@ jobs:
       - store_artifacts:
           path: ./reports/
 
+  smoke_test:
+    machine:
+      image: ubuntu-2004:202107-02
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./
+      - bats/install
+      - run:
+          name: What's the BATS?
+          command: |
+            which bats
+            bats --version
+      - run:
+          name: Smoke Test Placeholder
+          command: make smoke
+      # - store_test_results:
+      #     path: ./smoke-tests/
+      # - store_artifacts:
+      #     path: ./smoke-tests/report.xml
+      # - store_artifacts:
+      #     path: ./smoke-tests/collector/data-results
+      - run:
+          name: Extinguish the flames
+          command: make unsmoke
+
   publish_github:
     executor: github
     steps:
@@ -92,6 +121,9 @@ workflows:
                 - main
     jobs:
       - test
+      - smoke_test:
+          requires:
+            - test
 
   build:
     jobs:
@@ -101,6 +133,10 @@ workflows:
           <<: *filters_always
       - test:
           <<: *filters_always
+      - smoke_test:
+          requires:
+            - test
+          <<: *filters_always
       - build:
           <<: *filters_always
           requires:
@@ -109,9 +145,11 @@ workflows:
           <<: *filters_publish
           context: Honeycomb Secrets for Public Repos
           requires:
+            - smoke_test
             - build
       - publish_npm:
           <<: *filters_publish
           context: Honeycomb Secrets for Public Repos
           requires:
+            - smoke_test
             - build
