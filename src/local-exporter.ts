@@ -1,7 +1,6 @@
 import { ExportResult, ExportResultCode } from '@opentelemetry/core';
 import { ReadableSpan, SpanExporter } from '@opentelemetry/sdk-trace-base';
 import { HoneycombOptions, isClassic } from './honeycomb-options';
-import { TEAM_HEADER_KEY } from './http-proto-trace-exporter';
 import axios from 'axios';
 
 export function configureLocalExporter(
@@ -20,38 +19,38 @@ class LocalExporter implements SpanExporter {
   initalize(serviceName?: string, apikey?: string) {
     if (!serviceName || !apikey) {
       console.log(
-        'WARN: local visualisations not enabled - must have both service name and API key configured.',
+        'WARN: disabling local visualisations - must have both service name and API key configured.',
       );
       return;
     }
-    let environment: string | undefined;
-    let team: string | undefined;
 
     const options = {
       headers: {
-        [TEAM_HEADER_KEY]: apikey,
+        'x-honeycomb-team': apikey,
       },
     };
     axios.get('https://api.honeycomb.io/1/auth', options).then(
       (resp) => {
-        if (resp.status == 200) {
-          const response: Response = resp.data;
-          environment = response.environment?.slug;
-          team = response.team?.slug;
+        if (resp.status === 200) {
+          const respData: Response = resp.data;
+          if (respData.team?.slug) {
+            this._traceUrl = this.buildTraceUrl(
+              apikey,
+              serviceName,
+              respData.team?.slug,
+              respData.environment?.slug,
+            );
+          } else {
+            console.log(
+              'WARN: failed to extract team from Honeycom auth response',
+            );
+          }
         }
       },
       () => {
         console.log('WARN: failed to get auth data from Honeycomb API');
       },
     );
-
-    if (team) {
-      this._traceUrl += `https://ui.honeycomb.io/${team}`;
-      if (isClassic(apikey) && environment) {
-        this._traceUrl += `/environments/${environment}`;
-      }
-      this._traceUrl += `/datasets/${serviceName}/trace/trace_id`;
-    }
   }
 
   export(
@@ -73,6 +72,20 @@ class LocalExporter implements SpanExporter {
 
   shutdown(): Promise<void> {
     return Promise.resolve();
+  }
+
+  buildTraceUrl(
+    apikey: string,
+    serviceName: string,
+    team: string,
+    environment?: string,
+  ): string {
+    let url = `https://ui.honeycomb.io/${team}`;
+    if (!isClassic(apikey) && environment) {
+      url += `/environments/${environment}`;
+    }
+    url += `/datasets/${serviceName}/trace?trace_id`;
+    return url;
   }
 }
 
