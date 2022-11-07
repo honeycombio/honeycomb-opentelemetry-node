@@ -23,8 +23,12 @@ class CompositeSpanExporter implements SpanExporter {
     );
     resultCallback({ code: ExportResultCode.SUCCESS });
   }
-  shutdown(): Promise<void> {
-    this._exporters.forEach(async (exporter) => await exporter.shutdown());
-    return Promise.resolve();
+
+  async shutdown(): Promise<void> {
+    const results: Promise<void>[] = [];
+    this._exporters.forEach(async (exporter) =>
+      results.push(exporter.shutdown()),
+    );
+    await Promise.all(results);
   }
 }
