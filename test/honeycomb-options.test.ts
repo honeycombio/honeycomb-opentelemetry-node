@@ -357,3 +357,21 @@ describe('sample rate option', () => {
     expect(options.sampleRate).toBe(1);
   });
 });
+
+describe('protocol', () => {
+  afterEach(() => {
+    delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
+  });
+
+  it('defaults to protocol of http/protobuf', () => {
+    const options = computeOptions();
+    expect(options.protocol).toBe('http/protobuf');
+  });
+
+  it('uses provided protocol option if set', () => {
+    const options = computeOptions({
+      protocol: 'grpc',
+    });
+    expect(options.protocol).toBe('grpc');
+  });
+});
