@@ -10,7 +10,7 @@ export function configureLocalExporter(
   return new LocalExporter(options.serviceName, options.tracesApiKey);
 }
 
-export class LocalExporter implements SpanExporter {
+class LocalExporter implements SpanExporter {
   private _traceUrl = '';
 
   constructor(serviceName?: string, apikey?: string) {
