@@ -33,7 +33,10 @@ export function configureBatchWithBaggageSpanProcessor(
   // to send to both local exporter and main exporter
   if (opts?.localVisualizations) {
     return new BatchWithBaggageSpanProcessor(
-      configureCompositeExporter([hnyExporter, configureConsoleTraceLinkExporter(opts)]),
+      configureCompositeExporter([
+        hnyExporter,
+        configureConsoleTraceLinkExporter(opts),
+      ]),
     );
   }
   return new BatchWithBaggageSpanProcessor(hnyExporter);

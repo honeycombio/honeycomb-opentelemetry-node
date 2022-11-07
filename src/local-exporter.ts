@@ -13,7 +13,10 @@ import axios from 'axios';
 export function configureConsoleTraceLinkExporter(
   options: HoneycombOptions,
 ): SpanExporter {
-  return new ConsoleTraceLinkExporter(options.serviceName, options.tracesApiKey);
+  return new ConsoleTraceLinkExporter(
+    options.serviceName,
+    options.tracesApiKey,
+  );
 }
 
 /**
