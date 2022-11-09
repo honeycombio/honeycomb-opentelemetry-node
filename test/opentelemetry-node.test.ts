@@ -28,7 +28,6 @@ describe('debugging', () => {
   test('debug set to true outputs options to the console', () => {
     configureHoneycombSDK({ apiKey: 'FINDME', debug: true });
     expect(diag.debug).toHaveBeenCalledTimes(2); // diag.setLogger also tells you about itself
-    //[["@opentelemetry/api: Registered a global for diag v1.2.0."], ["{\"protocol\":\"grpc\".....]]
     expect(diagSpy.mock.calls[1][0]).toContain('FINDME');
   });
 });
