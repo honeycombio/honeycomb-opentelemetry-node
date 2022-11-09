@@ -80,7 +80,7 @@ jobs:
             which bats
             bats --version
       - run:
-          name: Smoke Test Placeholder
+          name: Smoke Test
           command: make smoke
       - store_test_results:
           path: ./smoke-tests/
