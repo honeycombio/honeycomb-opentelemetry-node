@@ -7,6 +7,10 @@ export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
 
+export const MISSING_SERVICE_NAME_ERROR =
+  'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node';
+export const MISSING_DATASET_NAME_ERROR =
+  'WARN: Missing dataset name. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
 /**
  * The options used to configure the Honeycomb Node SDK.
  */
@@ -92,9 +96,12 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   };
 
   if (!opts.serviceName) {
-    console.warn(
-      'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node',
-    );
+    console.warn(MISSING_SERVICE_NAME_ERROR);
+  }
+
+  if (!opts.dataset) {
+    //todo: only for classic
+    console.warn(MISSING_DATASET_NAME_ERROR);
   }
 
   return opts;

@@ -4,6 +4,8 @@ import {
   isClassic,
   maybeAppendMetricsPath,
   maybeAppendTracesPath,
+  MISSING_DATASET_NAME_ERROR,
+  MISSING_SERVICE_NAME_ERROR,
 } from '../src/honeycomb-options';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
@@ -16,31 +18,47 @@ test('it should have an apiKey property on the HoneycombOptions object', () => {
 });
 
 describe('missing option warnings', () => {
-  describe('service name', () => {
-    const consoleSpy = jest
-      .spyOn(console, 'warn')
-      .mockImplementation(() => undefined);
+  const consoleSpy = jest
+    .spyOn(console, 'warn')
+    .mockImplementation(() => undefined);
 
-    afterEach(() => {
-      consoleSpy.mockClear();
-    });
+  afterEach(() => {
+    consoleSpy.mockClear();
+  });
 
-    afterAll(() => {
-      consoleSpy.mockRestore();
-    });
+  afterAll(() => {
+    consoleSpy.mockRestore();
+  });
+
+  describe('service afgawfname', () => {
     it('for missing service name', () => {
       computeOptions({});
       expect(consoleSpy).toHaveBeenCalled();
-      expect(consoleSpy.mock.calls[0][0]).toContain(
-        'WARN: Missing service name',
-      );
+      const consoleOutput = consoleSpy.mock.calls.flat();
+      // expect(consoleOutput[0]).toEqual([])
+      // expect(consoleOutput[1]).toEqual([])
+      // expect(consoleOutput[2]).toEqual([])
+      expect(consoleOutput).toContain(MISSING_SERVICE_NAME_ERROR);
     });
     it('does not warn if service name is present', () => {
       computeOptions({ serviceName: 'heeeeey' });
-      expect(consoleSpy).not.toHaveBeenCalled();
+      const consoleOutput = consoleSpy.mock.calls.flat();
+      expect(consoleOutput).not.toContain(MISSING_SERVICE_NAME_ERROR);
     });
   });
-  it.todo('for missing dataset when using classic API key');
+
+  describe('missing dataset when using classic API key', () => {
+    it('for missing classic dataset name', () => {
+      computeOptions({});
+      // todo: only test classic
+      const consoleOutput = consoleSpy.mock.calls[0];
+      expect(consoleOutput).toContain(MISSING_DATASET_NAME_ERROR);
+    });
+    // it('does not warn if classic dataset name is present', () => {
+    //   computeOptions({ dataset: 'heeeeey' });
+    //   expect(consoleSpy).not.toHaveBeenCalled();
+    // });
+  });
   it.todo('for missing API key');
 });
 
