@@ -93,7 +93,7 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
 
   if (opts.serviceName == '' || opts.serviceName == undefined) {
     console.warn(
-      'WARN: Missing service name. Specify either SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node',
+      'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node',
     );
   }
 
