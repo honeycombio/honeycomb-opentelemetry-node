@@ -223,7 +223,7 @@ describe('traces endpoint', () => {
   it('does not append path for grpc exporter protocol', () => {
     const options = computeOptions({
       tracesEndpoint: 'my-custom-endpoint',
-      protocol: 'grpc'
+      protocol: 'grpc',
     });
     expect(options.tracesEndpoint).toBe('my-custom-endpoint');
   });
@@ -265,7 +265,7 @@ describe('metrics endpoint', () => {
   it('does not append path for grpc exporter protocol', () => {
     const options = computeOptions({
       metricsEndpoint: 'my-custom-endpoint',
-      protocol: 'grpc'
+      protocol: 'grpc',
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint');
   });
