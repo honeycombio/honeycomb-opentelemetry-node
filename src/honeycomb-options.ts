@@ -1,4 +1,4 @@
-export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io/v1/traces';
+export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
 export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
 
@@ -64,18 +64,19 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   }
 
   const env = getHoneycombEnv();
+  const protocol =
+    env.OTEL_EXPORTER_OTLP_PROTOCOL ||
+    options?.protocol ||
+    DEFAULT_OTLP_EXPORTER_PROTOCOL;
   return {
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
-    protocol:
-      env.OTEL_EXPORTER_OTLP_PROTOCOL ||
-      options?.protocol ||
-      DEFAULT_OTLP_EXPORTER_PROTOCOL,
+    protocol: protocol,
     apiKey: env.HONEYCOMB_API_KEY || options?.apiKey,
     tracesApiKey: getTracesApiKey(env, options),
     metricsApiKey: getMetricsApiKey(env, options),
     endpoint: getEndpoint(env, options),
-    tracesEndpoint: getTracesEndpoint(env, options),
-    metricsEndpoint: getMetricsEndpoint(env, options),
+    tracesEndpoint: getTracesEndpoint(env, options, protocol),
+    metricsEndpoint: getMetricsEndpoint(env, options, protocol),
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
@@ -210,30 +211,54 @@ function getEndpoint(
   );
 }
 
+/**
+ * Gets the metrics endpoint to export telemetry using environment variables and options.
+ *
+ * The endpoint will have /v1/traces appended for non-traces specific options.
+ */
 function getTracesEndpoint(
   env: HoneycombEnvironmentOptions,
   options: HoneycombOptions,
+  protocol: OtlpProtocol,
 ): string {
-  return (
-    env.HONEYCOMB_TRACES_ENDPOINT ||
-    env.HONEYCOMB_API_ENDPOINT ||
-    options.tracesEndpoint ||
-    options.endpoint ||
-    DEFAULT_API_ENDPOINT
-  );
+  if (env.HONEYCOMB_TRACES_ENDPOINT) {
+    return env.HONEYCOMB_TRACES_ENDPOINT;
+  }
+  if (env.HONEYCOMB_API_ENDPOINT) {
+    return maybeAppendTracesPath(env.HONEYCOMB_API_ENDPOINT, protocol);
+  }
+  if (options.tracesEndpoint) {
+    return options.tracesEndpoint;
+  }
+  if (options.endpoint) {
+    return maybeAppendTracesPath(options.endpoint, protocol);
+  }
+  return maybeAppendTracesPath(DEFAULT_API_ENDPOINT, protocol);
 }
 
+/**
+ * Gets the metrics endpoint to export telemetry using environment variables and options.
+ *
+ * The endpoint will have /v1/metrics appended for non-metrics specific options.
+ */
 function getMetricsEndpoint(
   env: HoneycombEnvironmentOptions,
   options: HoneycombOptions,
+  protocol: OtlpProtocol,
 ): string {
-  return (
-    env.HONEYCOMB_METRICS_ENDPOINT ||
-    env.HONEYCOMB_API_ENDPOINT ||
-    options.metricsEndpoint ||
-    options.endpoint ||
-    DEFAULT_API_ENDPOINT
-  );
+  if (env.HONEYCOMB_METRICS_ENDPOINT) {
+    return env.HONEYCOMB_METRICS_ENDPOINT;
+  }
+  if (env.HONEYCOMB_API_ENDPOINT) {
+    return maybeAppendMetricsPath(env.HONEYCOMB_API_ENDPOINT, protocol);
+  }
+  if (options.metricsEndpoint) {
+    return options.metricsEndpoint;
+  }
+  if (options.endpoint) {
+    return maybeAppendMetricsPath(options.endpoint, protocol);
+  }
+  return maybeAppendMetricsPath(DEFAULT_API_ENDPOINT, protocol);
 }
 
 function getSampleRate(
@@ -246,4 +271,43 @@ function getSampleRate(
     return options.sampleRate;
   }
   return DEFAULT_SAMPLE_RATE;
+}
+
+function isHttpProtocol(protcol?: OtlpProtocol): boolean {
+  switch (protcol) {
+    case 'http/json':
+    case 'http/protobuf':
+      return true;
+  }
+  return false;
+}
+
+/**
+ * Checks for and appends v1/traces to provided URL if missing when using an HTTP
+ * based exporter protocol.
+ *
+ * @param url the base URL to append traces path to if missing
+ * @param protocol the exporter protocol to send telemetry
+ * @returns the endpoint with traces path appended if missing
+ */
+export function maybeAppendTracesPath(url: string, protocol: OtlpProtocol) {
+  if (isHttpProtocol(protocol) && !url?.endsWith('v1/traces')) {
+    return url.endsWith('/') ? url + 'v1/traces' : url + '/v1/traces';
+  }
+  return url;
+}
+
+/**
+ * Checks for and appends v1/metrics to provided URL if missingwhen using an HTTP
+ * based exporter protocol.
+ *
+ * @param url the base URL to append traces path to if missing
+ * @param protocol the exporter protocol to send telemetry
+ * @returns the endpoint with traces path appended if missing
+ */
+export function maybeAppendMetricsPath(url: string, protocol: OtlpProtocol) {
+  if (isHttpProtocol(protocol) && !url?.endsWith('v1/metrics')) {
+    return url.endsWith('/') ? url + 'v1/traces' : url + '/v1/metrics';
+  }
+  return url;
 }

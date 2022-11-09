@@ -160,10 +160,9 @@ describe('endpoint', () => {
     delete process.env.HONEYCOMB_API_ENDPOINT;
   });
 
-  // TODO: default endpoint should be to http://api.honeycomb.io (without path)
   it('defaults to https://api.honeycomb.io', () => {
     const options = computeOptions();
-    expect(options.endpoint).toBe('https://api.honeycomb.io/v1/traces');
+    expect(options.endpoint).toBe('https://api.honeycomb.io');
   });
 
   it('uses provided option if set', () => {
@@ -197,7 +196,7 @@ describe('traces endpoint', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
     });
-    expect(options.tracesEndpoint).toBe('my-custom-endpoint');
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces');
   });
 
   it('uses provided option if set', () => {
@@ -220,6 +219,14 @@ describe('traces endpoint', () => {
     });
     expect(options.tracesEndpoint).toBe('my-custom-endpoint');
   });
+
+  it('does not append path for grpc exporter protocol', () => {
+    const options = computeOptions({
+      tracesEndpoint: 'my-custom-endpoint',
+      protocol: 'grpc'
+    });
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint');
+  });
 });
 
 describe('metrics endpoint', () => {
@@ -227,11 +234,11 @@ describe('metrics endpoint', () => {
     delete process.env.HONEYCOMB_METRICS_ENDPOINT;
   });
 
-  it('defaults to endpoint', () => {
+  it('defaults to endpoint with v1/metrics path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
     });
-    expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics');
   });
 
   it('uses provided option if set', () => {
@@ -251,6 +258,14 @@ describe('metrics endpoint', () => {
     process.env.HONEYCOMB_METRICS_ENDPOINT = 'my-custom-endpoint';
     const options = computeOptions({
       metricsEndpoint: 'another-endpoint',
+    });
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+  });
+
+  it('does not append path for grpc exporter protocol', () => {
+    const options = computeOptions({
+      metricsEndpoint: 'my-custom-endpoint',
+      protocol: 'grpc'
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint');
   });
