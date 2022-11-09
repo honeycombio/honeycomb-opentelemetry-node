@@ -31,18 +31,16 @@ services:
       <<: *env_base
     ports:
       - "127.0.0.1:3000:3000"
-      # dont need volumes since we're building in docker container now
-      # volumes:
-      # - ../dist:/usr/dist/src
 
-  # app-sdk-http:
-  #   <<: *app_base
-  #   environment:
-  #     <<: *env_base
-  #     HONEYCOMB_API_ENDPOINT: http://collector:4318
-  #     OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
-  #   ports:
-  #     - "127.0.0.1:5001:5001"
+  app-sdk-http:
+    <<: *app_base
+    environment:
+      <<: *env_base
+      # TODO: remove v1/traces after open PR merges to append path properly
+      HONEYCOMB_API_ENDPOINT: http://collector:4318/v1/traces
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+    ports:
+      - "127.0.0.1:3000:3000"
 
   # app-sdk-grpc:
   #   <<: *app_base
