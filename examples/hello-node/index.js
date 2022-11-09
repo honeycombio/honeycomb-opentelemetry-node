@@ -6,6 +6,7 @@ const hostname = '0.0.0.0';
 const port = 3000;
 
 // uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
+// enable debug output with env var DEBUG=true
 const sdk = configureHoneycombSDK();
 
 // alternatively, provide apikey and service name using options
