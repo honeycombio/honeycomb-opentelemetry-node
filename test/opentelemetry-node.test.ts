@@ -25,8 +25,6 @@ describe('debugging', () => {
     diagSpy.mockRestore();
   });
 
-  test.todo('when debug is set to true, use diag log level of debug');
-
   test('debug set to true outputs options to the console', () => {
     configureHoneycombSDK({ apiKey: 'FINDME', debug: true });
     expect(diag.debug).toHaveBeenCalledTimes(2); // diag.setLogger also tells you about itself
