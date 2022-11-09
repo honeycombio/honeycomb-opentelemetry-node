@@ -46,18 +46,22 @@ squeaky-clean: clean clean-smoke-tests
 	rm -rf ./examples/node_modules
 	rm -rf ./examples/hello-node/dist
 	rm -rf ./examples/hello-node/node_modules
+	npm run clean
+
+example: build
+	cd ./examples/hello-node/ && npm install && npm start
 
 smoke-tests/collector/data.json:
 	@echo ""
 	@echo "+++ Zhuzhing smoke test's Collector data.json"
 	@touch $@ && chmod o+w $@
 
-smoke-sdk-grpc: smoke-tests/collector/data.json
+smoke-sdk-grpc: build smoke-tests/collector/data.json
 	@echo ""
 	@echo "+++ PLACEHOLDER: Running gRPC smoke tests."
 	@echo ""
 
-smoke-sdk-http: smoke-tests/collector/data.json
+smoke-sdk-http: build smoke-tests/collector/data.json
 	@echo ""
 	@echo "+++ Running HTTP smoke tests."
 	@echo ""
