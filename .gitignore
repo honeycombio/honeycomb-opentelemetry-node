@@ -132,3 +132,4 @@ dist
 
 # test stuff
 junit.xml
+smoke-tests/collector/data.json
