@@ -71,8 +71,6 @@ jobs:
       image: ubuntu-2004:202107-02
     steps:
       - checkout
-      - attach_workspace:
-          at: ./
       - bats/install
       - run:
           name: What's the BATS?
