@@ -205,7 +205,7 @@ describe('traces endpoint', () => {
   it('defaults to endpoint set via env var', () => {
     process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
     const options = computeOptions();
-    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces')
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces');
   });
 
   it('uses provided option if set', () => {
@@ -254,7 +254,7 @@ describe('metrics endpoint', () => {
   it('defaults to endpoint set via env var', () => {
     process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
     const options = computeOptions();
-    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics')
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics');
   });
 
   it('uses provided option if set', () => {
@@ -452,17 +452,26 @@ describe('maybeAppendTracesPath', () => {
   });
 
   it('appends path for http/json protocol', () => {
-    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'http/json');
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io',
+      'http/json',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
   });
 
   it('appends path for http/protobuf protocol', () => {
-    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'http/protobuf');
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io',
+      'http/protobuf',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
   });
 
   it('does not double up forward slash if endpoint ends with one', () => {
-    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io/', 'http/json');
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io/',
+      'http/json',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
   });
 });
@@ -474,17 +483,26 @@ describe('maybeAppendMetricsPath', () => {
   });
 
   it('appends path for http/json protocol', () => {
-    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'http/json');
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io',
+      'http/json',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 
   it('appends path for http/protobuf protocol', () => {
-    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'http/protobuf');
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io',
+      'http/protobuf',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 
   it('does not double up forward slash if endpoint ends with one', () => {
-    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io/', 'http/json');
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io/',
+      'http/json',
+    );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 });
