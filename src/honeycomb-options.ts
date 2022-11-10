@@ -214,7 +214,9 @@ function getEndpoint(
 /**
  * Gets the traces endpoint to export telemetry using environment variables and options.
  *
- * The endpoint will have /v1/traces appended for non-traces specific options.
+ * When sending over HTTP protocols, the endpoint will include the path '/v1/traces' if
+ * set via HONEYCOMB_API_ENDPOINT or the endpoint option. The path is not appended for
+ * endpoints set via HONEYCOMB_TRACES_ENDPOINT or the tracesEndpoint option.
  */
 function getTracesEndpoint(
   env: HoneycombEnvironmentOptions,
@@ -239,7 +241,9 @@ function getTracesEndpoint(
 /**
  * Gets the metrics endpoint to export telemetry using environment variables and options.
  *
- * The endpoint will have /v1/metrics appended for non-metrics specific options.
+ * When sending over HTTP protocols, the endpoint will include the path '/v1/metrics' if
+ * set via HONEYCOMB_API_ENDPOINT or the endpoint option. The path is not appended for
+ * endpoints set via HONEYCOMB_METRICS_ENDPOINT or the metricsEndpoint option.
  */
 function getMetricsEndpoint(
   env: HoneycombEnvironmentOptions,
