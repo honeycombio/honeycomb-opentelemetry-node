@@ -1,6 +1,28 @@
 # Developing
 
-When you first clone the directory 
+## Prerequisites
+
+Required:
+
+- Node.js (minimum version declared in package.json)
+
+Recommended:
+
+- Docker & Docker Compose - Required for running smoke-tests.
+  - [Docker Desktop](https://www.docker.com/products/docker-desktop/) is a reliable choice if you don't have your own preference.
+- [remake](https://remake.readthedocs.io/) - A better make.
+  - Each script defined in package.json is also a make target.
+    View them with `remake --tasks`.
+  - Make? When we've got npm scripts? Yes. See [Make Is Cool](#make-is-cool)
+- VS Code - plugins:
+  - ESLint (dbaeumer.vscode-eslint)
+  - Prettier (esbenp.prettier-vscode)
+  - Prettier ESLint (rvest.vs-code-prettier-eslint)
+
+## First Steps
+
+When you first clone the project:
+
 ```shell
 # from the top-level directory:
 npm install
@@ -15,7 +37,7 @@ npm run build
 npm run clean
 ```
 
-Format and lint scripts 
+Format and lint scripts
 
 `npm run check-format` will specify files that will have formatting changes made.
 `npm run format` will fix the changes; most times you'll just want to run this command.
@@ -23,7 +45,7 @@ Format and lint scripts
 `npm run lint` will specify files that have linting errors.
 `npm run lint-fix` will try to fix the linting errors.
 
-Testing scripts 
+Testing scripts
 
 `npm run test` will run the unit tests
 
@@ -33,8 +55,42 @@ Testing scripts
 
 To run the example from the root directory, run `npm run example-node`.
 
-## Recommended Plugins for VSCode
+## Make is Cool
 
-ESLint (dbaeumer.vscode-eslint)
-Prettier (esbenp.prettier-vscode)
-Prettier ESLint (rvest.vs-code-prettier-eslint)
+This is one of several projects maintained by the same group of people.
+That group has settled on Makefiles as a way to smooth the context-switching that occurs when moving between projects written in different languages using different tooling.
+Makefiles let us have a common set of commands in our workflows across projects.
+The command below use [remake](https://remake.readthedocs.io/), but are equally effective with `make`.
+
+### First Steps
+
+When you first clone the project:
+
+```shell
+# from the top-level directory, see the common project tasks
+remake --tasks
+
+# install dependencies and run the routine code checks
+remake
+```
+
+The build target compiles the typescript to javascript in a `dist` directory.
+The clean target removes the compiled javascript code from the `dist` directory.
+
+```shell
+# from the top-level directory:
+remake build
+remake clean
+```
+
+Format and lint scripts
+
+`remake check-format` will specify files that will have formatting changes made.
+`remake format` will fix the changes; most times you'll just want to run this command.
+
+`remake lint` will specify files that have linting errors.
+`remake lint-fix` will try to fix the linting errors.
+
+Testing scripts
+
+`remake test` will run the unit tests
