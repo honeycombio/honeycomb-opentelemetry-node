@@ -212,7 +212,7 @@ function getEndpoint(
 }
 
 /**
- * Gets the metrics endpoint to export telemetry using environment variables and options.
+ * Gets the traces endpoint to export telemetry using environment variables and options.
  *
  * The endpoint will have /v1/traces appended for non-traces specific options.
  */
