@@ -189,14 +189,21 @@ describe('endpoint', () => {
 
 describe('traces endpoint', () => {
   afterEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_TRACES_ENDPOINT;
   });
 
-  it('defaults to endpoint', () => {
+  it('defaults to endpoint with v1/traces path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
     });
     expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces');
+  });
+
+  it('defaults to endpoint set via env var', () => {
+    process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
+    const options = computeOptions();
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces')
   });
 
   it('uses provided option if set', () => {
@@ -231,6 +238,7 @@ describe('traces endpoint', () => {
 
 describe('metrics endpoint', () => {
   afterEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_METRICS_ENDPOINT;
   });
 
@@ -239,6 +247,12 @@ describe('metrics endpoint', () => {
       endpoint: 'my-custom-endpoint',
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics');
+  });
+
+  it('defaults to endpoint set via env var', () => {
+    process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
+    const options = computeOptions();
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics')
   });
 
   it('uses provided option if set', () => {
