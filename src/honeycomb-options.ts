@@ -127,11 +127,9 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
   return {
     HONEYCOMB_API_ENDPOINT: process.env.HONEYCOMB_API_ENDPOINT,
     HONEYCOMB_TRACES_ENDPOINT:
-      process.env.HONEYCOMB_TRACES_ENDPOINT ||
-      process.env.HONEYCOMB_API_ENDPOINT,
+      process.env.HONEYCOMB_TRACES_ENDPOINT,
     HONEYCOMB_METRICS_ENDPOINT:
-      process.env.HONEYCOMB_METRICS_ENDPOINT ||
-      process.env.HONEYCOMB_API_ENDPOINT,
+      process.env.HONEYCOMB_METRICS_ENDPOINT,
     HONEYCOMB_API_KEY: process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_TRACES_APIKEY:
       process.env.HONEYCOMB_TRACES_APIKEY || process.env.HONEYCOMB_API_KEY,
