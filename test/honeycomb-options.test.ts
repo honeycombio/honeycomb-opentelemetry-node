@@ -2,6 +2,8 @@ import {
   computeOptions,
   HoneycombOptions,
   isClassic,
+  maybeAppendMetricsPath,
+  maybeAppendTracesPath,
 } from '../src/honeycomb-options';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
@@ -160,10 +162,9 @@ describe('endpoint', () => {
     delete process.env.HONEYCOMB_API_ENDPOINT;
   });
 
-  // TODO: default endpoint should be to http://api.honeycomb.io (without path)
   it('defaults to https://api.honeycomb.io', () => {
     const options = computeOptions();
-    expect(options.endpoint).toBe('https://api.honeycomb.io/v1/traces');
+    expect(options.endpoint).toBe('https://api.honeycomb.io');
   });
 
   it('uses provided option if set', () => {
@@ -190,14 +191,21 @@ describe('endpoint', () => {
 
 describe('traces endpoint', () => {
   afterEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_TRACES_ENDPOINT;
   });
 
-  it('defaults to endpoint', () => {
+  it('defaults to endpoint with v1/traces path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
     });
-    expect(options.tracesEndpoint).toBe('my-custom-endpoint');
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces');
+  });
+
+  it('defaults to endpoint set via env var', () => {
+    process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
+    const options = computeOptions();
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint/v1/traces');
   });
 
   it('uses provided option if set', () => {
@@ -220,18 +228,33 @@ describe('traces endpoint', () => {
     });
     expect(options.tracesEndpoint).toBe('my-custom-endpoint');
   });
+
+  it('does not append path for grpc exporter protocol', () => {
+    const options = computeOptions({
+      tracesEndpoint: 'my-custom-endpoint',
+      protocol: 'grpc',
+    });
+    expect(options.tracesEndpoint).toBe('my-custom-endpoint');
+  });
 });
 
 describe('metrics endpoint', () => {
   afterEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_METRICS_ENDPOINT;
   });
 
-  it('defaults to endpoint', () => {
+  it('defaults to endpoint with v1/metrics path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
     });
-    expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics');
+  });
+
+  it('defaults to endpoint set via env var', () => {
+    process.env.HONEYCOMB_API_ENDPOINT = 'my-custom-endpoint';
+    const options = computeOptions();
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint/v1/metrics');
   });
 
   it('uses provided option if set', () => {
@@ -251,6 +274,14 @@ describe('metrics endpoint', () => {
     process.env.HONEYCOMB_METRICS_ENDPOINT = 'my-custom-endpoint';
     const options = computeOptions({
       metricsEndpoint: 'another-endpoint',
+    });
+    expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+  });
+
+  it('does not append path for grpc exporter protocol', () => {
+    const options = computeOptions({
+      metricsEndpoint: 'my-custom-endpoint',
+      protocol: 'grpc',
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint');
   });
@@ -411,5 +442,67 @@ describe('protocol', () => {
       protocol: 'grpc',
     });
     expect(options.protocol).toBe('grpc');
+  });
+});
+
+describe('maybeAppendTracesPath', () => {
+  it('does not append path for grpc protocol', () => {
+    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'grpc');
+    expect(endpoint).toBe('https://api.honeycomb.io');
+  });
+
+  it('appends path for http/json protocol', () => {
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io',
+      'http/json',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+
+  it('appends path for http/protobuf protocol', () => {
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io',
+      'http/protobuf',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+
+  it('does not double up forward slash if endpoint ends with one', () => {
+    const endpoint = maybeAppendTracesPath(
+      'https://api.honeycomb.io/',
+      'http/json',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+});
+
+describe('maybeAppendMetricsPath', () => {
+  it('does not append path for grpc protocol', () => {
+    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'grpc');
+    expect(endpoint).toBe('https://api.honeycomb.io');
+  });
+
+  it('appends path for http/json protocol', () => {
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io',
+      'http/json',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
+  });
+
+  it('appends path for http/protobuf protocol', () => {
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io',
+      'http/protobuf',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
+  });
+
+  it('does not double up forward slash if endpoint ends with one', () => {
+    const endpoint = maybeAppendMetricsPath(
+      'https://api.honeycomb.io/',
+      'http/json',
+    );
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 });

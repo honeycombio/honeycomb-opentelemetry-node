@@ -23,7 +23,7 @@ describe('with a regular apikey', () => {
       apiKey: apikey,
       dataset: dataset,
     });
-    expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT);
+    expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT + '/v1/traces');
     expect(traceExporter.headers[OTLP_HEADER_KEY]).toBe(OTLP_PROTO_VERSION);
     expect(traceExporter.headers[TEAM_HEADER_KEY]).toBe(apikey);
     expect(traceExporter.headers[DATASET_HEADER_KEY]).toBeUndefined();
@@ -45,7 +45,7 @@ describe('with a regular apikey', () => {
         apiKey: 'apikey',
         dataset: 'dataset',
       });
-      expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT);
+      expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT + '/v1/traces');
       expect(traceExporter.headers[OTLP_HEADER_KEY]).toBe(OTLP_PROTO_VERSION);
       expect(traceExporter.headers[TEAM_HEADER_KEY]).toBe(apikey);
       expect(traceExporter.headers[DATASET_HEADER_KEY]).toBeUndefined();
@@ -59,7 +59,7 @@ describe('with a classic apikey', () => {
       apiKey: classicApikey,
       dataset: dataset,
     });
-    expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT);
+    expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT + '/v1/traces');
     expect(traceExporter.headers[OTLP_HEADER_KEY]).toBe(OTLP_PROTO_VERSION);
     expect(traceExporter.headers[TEAM_HEADER_KEY]).toBe(classicApikey);
     expect(traceExporter.headers[DATASET_HEADER_KEY]).toBe(dataset);
@@ -81,7 +81,7 @@ describe('with a classic apikey', () => {
         apiKey: 'apikey',
         dataset: 'dataset',
       });
-      expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT);
+      expect(traceExporter.url).toBe(DEFAULT_API_ENDPOINT + '/v1/traces');
       expect(traceExporter.headers[OTLP_HEADER_KEY]).toBe(OTLP_PROTO_VERSION);
       expect(traceExporter.headers[TEAM_HEADER_KEY]).toBe(classicApikey);
       expect(traceExporter.headers[DATASET_HEADER_KEY]).toBe(dataset);
