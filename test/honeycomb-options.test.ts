@@ -2,6 +2,8 @@ import {
   computeOptions,
   HoneycombOptions,
   isClassic,
+  maybeAppendMetricsPath,
+  maybeAppendTracesPath,
 } from '../src/honeycomb-options';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
@@ -440,5 +442,49 @@ describe('protocol', () => {
       protocol: 'grpc',
     });
     expect(options.protocol).toBe('grpc');
+  });
+});
+
+describe('maybeAppendTracesPath', () => {
+  it('does not append path for grpc protocol', () => {
+    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'grpc');
+    expect(endpoint).toBe('https://api.honeycomb.io');
+  });
+
+  it('appends path for http/json protocol', () => {
+    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'http/json');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+
+  it('appends path for http/protobuf protocol', () => {
+    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io', 'http/protobuf');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+
+  it('does not double up forward slash if endpoint ends with one', () => {
+    const endpoint = maybeAppendTracesPath('https://api.honeycomb.io/', 'http/json');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/traces');
+  });
+});
+
+describe('maybeAppendMetricsPath', () => {
+  it('does not append path for grpc protocol', () => {
+    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'grpc');
+    expect(endpoint).toBe('https://api.honeycomb.io');
+  });
+
+  it('appends path for http/json protocol', () => {
+    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'http/json');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
+  });
+
+  it('appends path for http/protobuf protocol', () => {
+    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io', 'http/protobuf');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
+  });
+
+  it('does not double up forward slash if endpoint ends with one', () => {
+    const endpoint = maybeAppendMetricsPath('https://api.honeycomb.io/', 'http/json');
+    expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 });
