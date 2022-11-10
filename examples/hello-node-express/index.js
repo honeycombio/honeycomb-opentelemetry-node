@@ -1,19 +1,23 @@
 const { configureHoneycombSDK } = require('@honeycombio/opentelemetry-node');
 const { trace } = require('@opentelemetry/api');
-
-const express = require('express');
-const app = express();
-const hostname = '0.0.0.0';
-const port = 3000;
+const {
+  getNodeAutoInstrumentations,
+} = require('@opentelemetry/auto-instrumentations-node');
 
 const sdk = configureHoneycombSDK({
   apiKey: process.env.HONEYCOMB_API_KEY || '',
   serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express',
   debug: true,
+  instrumentations: [getNodeAutoInstrumentations()],
 });
 
 // alternatively, use HONEYCOMB_API_KEY and OTEL_SERVICE_NAME and DEBUG environment variables
 // const sdk = configureHoneycombSDK();
+
+const express = require('express');
+const app = express();
+const hostname = '0.0.0.0';
+const port = 3000;
 
 app.get('/', (req, res) => {
   res.statusCode = 200;
