@@ -1,3 +1,4 @@
+import { InstrumentationOption } from '@opentelemetry/instrumentation';
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
 export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
@@ -47,6 +48,9 @@ export interface HoneycombOptions {
 
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
   localVisualizations?: boolean;
+
+  /** The instrumentations to be included. Defaults to none enabled. */
+  instrumentations?: InstrumentationOption[];
 }
 
 /**
@@ -81,6 +85,7 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
     debug: env.DEBUG || options?.debug || false,
+    instrumentations: options?.instrumentations,
     localVisualizations:
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
       options?.localVisualizations ||
