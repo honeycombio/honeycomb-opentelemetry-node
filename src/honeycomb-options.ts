@@ -311,7 +311,7 @@ export function maybeAppendTracesPath(url: string, protocol: OtlpProtocol) {
  */
 export function maybeAppendMetricsPath(url: string, protocol: OtlpProtocol) {
   if (isHttpProtocol(protocol) && !url?.endsWith('v1/metrics')) {
-    return url.endsWith('/') ? url + 'v1/traces' : url + '/v1/metrics';
+    return url.endsWith('/') ? url + 'v1/metrics' : url + '/v1/metrics';
   }
   return url;
 }
