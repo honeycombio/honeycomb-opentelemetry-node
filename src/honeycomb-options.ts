@@ -1,3 +1,5 @@
+import { NodeSDKConfiguration } from '@opentelemetry/sdk-node'
+
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
 export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
@@ -8,7 +10,7 @@ type OtlpProtocol = typeof OtlpProtocols[number];
 /**
  * The options used to configure the Honeycomb Node SDK.
  */
-export interface HoneycombOptions {
+export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
   /** The API key used to send telemetry to Honeycomb. */
   apiKey?: string;
 
@@ -69,6 +71,7 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     options?.protocol ||
     DEFAULT_OTLP_EXPORTER_PROTOCOL;
   return {
+    ...options,
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
     protocol: protocol,
     apiKey: env.HONEYCOMB_API_KEY || options?.apiKey,
