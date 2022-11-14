@@ -29,7 +29,7 @@ const getSamplingResult = (sampler: DeterministicSampler): SamplingResult => {
 
 it('sampler with rate of undefined configures inner AlwaysOnSampler', () => {
   const sampler = configureDeterministicSampler();
-  expect(sampler instanceof DeterministicSampler);
+  expect(sampler).toBeInstanceOf(DeterministicSampler);
   expect(sampler.toString()).toBe('DeterministicSampler(AlwaysOnSampler)');
 
   const result = getSamplingResult(sampler);
@@ -39,7 +39,7 @@ it('sampler with rate of undefined configures inner AlwaysOnSampler', () => {
 
 it('sampler with rate of 1 configures inner AlwaysOnSampler', () => {
   const sampler = configureDeterministicSampler(1);
-  expect(sampler instanceof DeterministicSampler);
+  expect(sampler).toBeInstanceOf(DeterministicSampler);
   expect(sampler.toString()).toBe('DeterministicSampler(AlwaysOnSampler)');
 
   const result = getSamplingResult(sampler);
@@ -49,7 +49,7 @@ it('sampler with rate of 1 configures inner AlwaysOnSampler', () => {
 
 it('sampler with rate of 0 configures inner AlwaysOffSampler', () => {
   const sampler = configureDeterministicSampler(0);
-  expect(sampler instanceof DeterministicSampler);
+  expect(sampler).toBeInstanceOf(DeterministicSampler);
   expect(sampler.toString()).toBe('DeterministicSampler(AlwaysOffSampler)');
 
   const result = getSamplingResult(sampler);
@@ -59,7 +59,7 @@ it('sampler with rate of 0 configures inner AlwaysOffSampler', () => {
 
 it('sampler with rate of 10 configures inner TraceIdRatioBased sampler with a ratio of 0.1', () => {
   const sampler = new DeterministicSampler(10);
-  expect(sampler instanceof DeterministicSampler);
+  expect(sampler).toBeInstanceOf(DeterministicSampler);
   expect(sampler.toString()).toBe(
     'DeterministicSampler(TraceIdRatioBased{0.1})',
   );

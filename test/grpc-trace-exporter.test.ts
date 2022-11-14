@@ -20,7 +20,7 @@ beforeEach(() => {
 
 test('it should return an OTLPTraceExporter', () => {
   const traceExporter = configureHoneycombGrpcTraceExporter();
-  expect(traceExporter instanceof OTLPTraceExporter);
+  expect(traceExporter).toBeInstanceOf(OTLPTraceExporter);
 });
 
 describe('with a regular apikey', () => {

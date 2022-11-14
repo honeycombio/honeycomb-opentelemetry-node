@@ -14,18 +14,18 @@ describe('getHoneycombSpanExporter', () => {
     const exporter = getHoneycombSpanExporter({
       protocol: 'grpc',
     });
-    expect(exporter instanceof GrpcOTLPTraceExporter);
+    expect(exporter).toBeInstanceOf(GrpcOTLPTraceExporter);
   });
   it('http/protobuf return http/proto exporter', () => {
     const exporter = getHoneycombSpanExporter({
       protocol: 'http/protobuf',
     });
-    expect(exporter instanceof HttpProtoOTLPExporter);
+    expect(exporter).toBeInstanceOf(HttpProtoOTLPExporter);
   });
   it('http/json return http/proto exporter', () => {
     const exporter = getHoneycombSpanExporter({
       protocol: 'http/json',
     });
-    expect(exporter instanceof HttpProtoOTLPExporter);
+    expect(exporter).toBeInstanceOf(HttpProtoOTLPExporter);
   });
 });

@@ -14,7 +14,7 @@ const classicApikey = '00000000000000000000000000000000'; // 32 chars
 
 test('it should return an OTLPTraceExporter', () => {
   const traceExporter = configureHoneycombHttpProtoTraceExporter();
-  expect(traceExporter instanceof OTLPTraceExporter);
+  expect(traceExporter).toBeInstanceOf(OTLPTraceExporter);
 });
 
 describe('with a regular apikey', () => {
