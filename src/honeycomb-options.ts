@@ -7,10 +7,13 @@ export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
 
-export const MISSING_SERVICE_NAME_ERROR =
-  'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter. If left unset, this will show up in Honeycomb as unknown_service:node';
+export const MISSING_API_KEY_ERROR =
+  'WARN: Missing api key. Specify either HONEYCOMB_API_KEY environment variable or apiKey in the options parameter.';
 export const MISSING_DATASET_NAME_ERROR =
   'WARN: Missing dataset name. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
+export const MISSING_SERVICE_NAME_ERROR =
+  'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter.  If left unset, this will show up in Honeycomb as unknown_service:node';
+
 /**
  * The options used to configure the Honeycomb Node SDK.
  */
@@ -94,6 +97,15 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
       options?.localVisualizations ||
       false,
   };
+
+  // TODO: add isPresent in JavaScript (not Java)
+  //   public static boolean isPresent(String value) {
+  //     return value != null && !value.isEmpty();
+  // }
+
+  if (!opts.apiKey) {
+    console.warn(MISSING_API_KEY_ERROR);
+  }
 
   if (!opts.serviceName) {
     console.warn(MISSING_SERVICE_NAME_ERROR);
