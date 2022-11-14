@@ -21,7 +21,7 @@ export class HoneycombSDK extends NodeSDK {
       // metricReader: honeycombMetricsReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
-    })
+    });
 
     if (opts.debug) {
       diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);

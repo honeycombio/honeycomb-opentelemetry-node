@@ -1,4 +1,4 @@
-import { NodeSDKConfiguration } from '@opentelemetry/sdk-node'
+import { NodeSDKConfiguration } from '@opentelemetry/sdk-node';
 
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
