@@ -1,34 +1,16 @@
-import { NodeSDK, NodeSDKConfiguration } from '@opentelemetry/sdk-node';
+import { NodeSDK } from '@opentelemetry/sdk-node';
 import { configureDeterministicSampler } from './deterministic-sampler';
 import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
-import { ContextManager, diag, DiagConsoleLogger, DiagLogLevel, TextMapPropagator } from '@opentelemetry/api';
-import { TracerConfig, SpanProcessor } from '@opentelemetry/sdk-trace-base';
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+
 /**
- * Builds and returns an instance of OpenTelemetry Node SDK.
- * @param options The HoneycombOptions used to configure the exporter
- * @returns the configured NodeSDK instance
+ * @class
+ * @classdesc Extends the OpenTelemetry NodeSDK class with Honeycomb specific configuration.
+ * @param options The HoneycombOptions used to configure the exporter.
+ * HoneycombOptions extends OpenTelemetry NodeSDKConfiguration.
  */
-
-export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
-  const opts = computeOptions(options);
-
-  if (opts.debug) {
-    diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
-    diag.debug(JSON.stringify(opts, null, 2));
-  }
-
-  return new NodeSDK({
-    serviceName: opts.serviceName,
-    resource: configureHoneycombResource(),
-    // metricReader: honeycombMetricsReader(options),
-    spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
-    sampler: configureDeterministicSampler(opts.sampleRate),
-  });
-}
-
-
 export class HoneycombSDK extends NodeSDK {
   constructor(options?: HoneycombOptions) {
     const opts = computeOptions(options);
@@ -36,7 +18,7 @@ export class HoneycombSDK extends NodeSDK {
       ...opts,
       serviceName: opts?.serviceName,
       resource: configureHoneycombResource(),
-      // metricReader: honeycombMetricsReader(options),
+      // metricReader: honeycombMetricsReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
     })

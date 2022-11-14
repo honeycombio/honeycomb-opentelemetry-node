@@ -1,4 +1,4 @@
-export { configureHoneycombSDK, HoneycombSDK } from './opentelemetry-node';
+export { HoneycombSDK } from './opentelemetry-node';
 export { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 export { configureDeterministicSampler } from './deterministic-sampler';
 export { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
