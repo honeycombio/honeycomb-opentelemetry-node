@@ -9,6 +9,7 @@
     "start": "node ./index.js"
   },
   "dependencies": {
-    "@honeycombio/opentelemetry-node": "file:../../dist/src"
+    "@honeycombio/opentelemetry-node": "file:../../dist/src",
+    "@opentelemetry/instrumentation-http": "^0.34.0"
   }
 }
