@@ -4,24 +4,28 @@ import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
+
 /**
- * Builds and returns an instance of OpenTelemetry Node SDK.
- * @param options The HoneycombOptions used to configure the exporter
- * @returns the configured NodeSDK instance
+ * @class
+ * @classdesc Extends the OpenTelemetry NodeSDK class with Honeycomb specific configuration.
+ * @param options The HoneycombOptions used to configure the exporter.
+ * HoneycombOptions extends OpenTelemetry NodeSDKConfiguration.
  */
-export function configureHoneycombSDK(options?: HoneycombOptions): NodeSDK {
-  const opts = computeOptions(options);
+export class HoneycombSDK extends NodeSDK {
+  constructor(options?: HoneycombOptions) {
+    const opts = computeOptions(options);
+    super({
+      ...opts,
+      serviceName: opts?.serviceName,
+      resource: configureHoneycombResource(),
+      // metricReader: honeycombMetricsReader(opts),
+      spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
+      sampler: configureDeterministicSampler(opts?.sampleRate),
+    });
 
-  if (opts.debug) {
-    diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
-    diag.debug(JSON.stringify(opts, null, 2));
+    if (opts.debug) {
+      diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.DEBUG);
+      diag.debug(JSON.stringify(opts, null, 2));
+    }
   }
-
-  return new NodeSDK({
-    serviceName: opts.serviceName,
-    resource: configureHoneycombResource(),
-    // metricReader: honeycombMetricsReader(options),
-    spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
-    sampler: configureDeterministicSampler(opts.sampleRate),
-  });
 }

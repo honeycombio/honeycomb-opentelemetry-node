@@ -1,4 +1,4 @@
-import { configureHoneycombSDK } from '../src/opentelemetry-node';
+import { HoneycombSDK } from '../src/opentelemetry-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 
 beforeEach(() => {
@@ -9,6 +9,6 @@ beforeEach(() => {
 });
 
 test('it should return a NodeSDK', () => {
-  const honeycomb = configureHoneycombSDK();
-  expect(honeycomb instanceof NodeSDK);
+  const honeycomb = new HoneycombSDK();
+  expect(honeycomb).toBeInstanceOf(NodeSDK);
 });

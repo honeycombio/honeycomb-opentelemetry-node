@@ -1,4 +1,4 @@
-import { configureHoneycombSDK } from '../src/opentelemetry-node';
+import { HoneycombSDK } from '../src/opentelemetry-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { diag } from '@opentelemetry/api';
 
@@ -10,8 +10,9 @@ beforeEach(() => {
 });
 
 test('it should return a NodeSDK', () => {
-  const honeycomb = configureHoneycombSDK();
-  expect(honeycomb instanceof NodeSDK);
+  const honeycomb = new HoneycombSDK();
+
+  expect(honeycomb).toBeInstanceOf(NodeSDK);
 });
 
 describe('debugging', () => {
@@ -26,7 +27,7 @@ describe('debugging', () => {
   });
 
   test('debug set to true outputs options to the console', () => {
-    configureHoneycombSDK({ apiKey: 'FINDME', debug: true });
+    new HoneycombSDK({ apiKey: 'FINDME', debug: true });
     expect(diag.debug).toHaveBeenCalledTimes(2); // diag.setLogger also tells you about itself
     expect(diagSpy.mock.calls[1][0]).toContain('FINDME');
   });

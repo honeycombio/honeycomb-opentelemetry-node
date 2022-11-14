@@ -1,19 +1,23 @@
-const { configureHoneycombSDK } = require('@honeycombio/opentelemetry-node');
+const { HoneycombSDK } = require('@honeycombio/opentelemetry-node');
 const { trace } = require('@opentelemetry/api');
+const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
+
+// uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
+// enable debug output with env var DEBUG=true
+const sdk = new HoneycombSDK({
+  instrumentations: [new HttpInstrumentation()],
+});
+
+// alternatively, provide apikey and service name using options
+// const sdk = new HoneycombSDK({
+//   apiKey: "{apikey}",
+//   serviceName: "my-web-app",
+//   instrumentations: [new HttpInstrumentation()],
+// })
 
 const http = require('node:http');
 const hostname = '0.0.0.0';
 const port = 3000;
-
-// uses HONEYCOMB_API_KEY and OTEL_SERVICE_NAME environment variables
-// enable debug output with env var DEBUG=true
-const sdk = configureHoneycombSDK();
-
-// alternatively, provide apikey and service name using options
-// const sdk = configureHoneycombSDK({
-//   apiKey: "{apikey}",
-//   serviceName: "my-web-app",
-// })
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
