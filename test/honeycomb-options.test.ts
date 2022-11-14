@@ -4,9 +4,13 @@ import {
   isClassic,
   maybeAppendMetricsPath,
   maybeAppendTracesPath,
+  MISSING_API_KEY_ERROR,
   MISSING_DATASET_NAME_ERROR,
   MISSING_SERVICE_NAME_ERROR,
 } from '../src/honeycomb-options';
+
+const classicApiKey = new Array(32).join('4');
+const apiKey = 'testkey';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,36 +34,58 @@ describe('missing option warnings', () => {
     consoleSpy.mockRestore();
   });
 
-  describe('service afgawfname', () => {
-    it('for missing service name', () => {
+  describe('API Key', () => {
+    it.todo('for missing API key');
+    it('warns on missing API Key', () => {
       computeOptions({});
-      expect(consoleSpy).toHaveBeenCalled();
-      const consoleOutput = consoleSpy.mock.calls.flat();
-      // expect(consoleOutput[0]).toEqual([])
-      // expect(consoleOutput[1]).toEqual([])
-      // expect(consoleOutput[2]).toEqual([])
-      expect(consoleOutput).toContain(MISSING_SERVICE_NAME_ERROR);
+      expect(consoleSpy).toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
+    });
+    it('does not warn if api key is present', () => {
+      computeOptions({ apiKey: 'test-key' });
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
+    });
+  });
+  describe('service name', () => {
+    it('warns on missing service name', () => {
+      computeOptions({});
+      expect(consoleSpy).toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
     });
     it('does not warn if service name is present', () => {
       computeOptions({ serviceName: 'heeeeey' });
-      const consoleOutput = consoleSpy.mock.calls.flat();
-      expect(consoleOutput).not.toContain(MISSING_SERVICE_NAME_ERROR);
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
     });
+    it.todo('warns if service name is present but empty string');
   });
 
-  describe('missing dataset when using classic API key', () => {
-    it('for missing classic dataset name', () => {
-      computeOptions({});
-      // todo: only test classic
-      const consoleOutput = consoleSpy.mock.calls[0];
-      expect(consoleOutput).toContain(MISSING_DATASET_NAME_ERROR);
+  describe('dataset name', () => {
+    describe('classic key', () => {
+      it('warns on missing dataset', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+      });
+
+      it('does not warn if dataset is present', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+          dataset: 'totally-present',
+        });
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+      });
+      it.todo('warns if dataset is present but empty string');
     });
-    // it('does not warn if classic dataset name is present', () => {
-    //   computeOptions({ dataset: 'heeeeey' });
-    //   expect(consoleSpy).not.toHaveBeenCalled();
-    // });
+    describe('environment key', () => {
+      it('does not warn on missing dataset', () => {
+        computeOptions({
+          apiKey: apiKey,
+        });
+        // TODO: need to add logic
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+      });
+      it.todo('warns if dataset is present');
+    });
   });
-  it.todo('for missing API key');
 });
 
 describe('isClassic', () => {
