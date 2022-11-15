@@ -18,6 +18,11 @@ test('it should return a NodeSDK', () => {
 describe('debugging', () => {
   const diagSpy = jest.spyOn(diag, 'debug').mockImplementation(() => undefined);
 
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_KEY;
+    delete process.env.HONEYCOMB_DATASET;
+  });
+
   afterEach(() => {
     diagSpy.mockClear();
   });
