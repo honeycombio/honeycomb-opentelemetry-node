@@ -2,9 +2,9 @@ FROM node:16
 
 # Create app directory
 WORKDIR /usr/src/app
-# copy everything from root directory (using docker-compose)
+
+# copy everything from root directory (must use smoke-tests/docker-compose)
 COPY . ./
-# COPY ./dist /usr/dist
 
 # Install app dependencies
 RUN npm install
@@ -13,22 +13,14 @@ RUN npm install
 # this transpiles ts to js in /dist/src directory
 RUN npm run build
 
-# If you are building your code for production
-# RUN npm ci --only=production
-
 # Bundle app source
 COPY . .
-# COPY ./examples/hello-node-express .
 
-# RUN npm ci --only=production
-
+# example app listens on port 3000
 EXPOSE 3000
 
+# symlink honeycomb sdk dependency
 RUN cd ./examples/hello-node-express/ && npm install
 
-# run example script from root package.json
-# CMD [ "npm", "run", "example-node-express" ]
-# CMD [ "npm", "install", "&&", "npm", "start" ]
-# CMD [ "npm", "start" ]
-# CMD [ "npm", "run", "example-ci" ]
+# run example express app
 CMD [ "node", "./examples/hello-node-express/index.js" ]
