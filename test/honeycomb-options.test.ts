@@ -1,15 +1,16 @@
 import {
   computeOptions,
   HoneycombOptions,
+  IGNORED_DATASET_ERROR,
   isClassic,
   maybeAppendMetricsPath,
   maybeAppendTracesPath,
   MISSING_API_KEY_ERROR,
-  MISSING_DATASET_NAME_ERROR,
+  MISSING_DATASET_ERROR,
   MISSING_SERVICE_NAME_ERROR,
 } from '../src/honeycomb-options';
 
-const classicApiKey = new Array(32).join('4');
+const classicApiKey = 'this is a string that is 32 char';
 const apiKey = 'testkey';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
@@ -35,7 +36,12 @@ describe('missing option warnings', () => {
   });
 
   describe('API Key', () => {
-    it.todo('for missing API key');
+    beforeEach(() => {
+      delete process.env.HONEYCOMB_API_KEY;
+    });
+    afterEach(() => {
+      delete process.env.HONEYCOMB_API_KEY;
+    });
     it('warns on missing API Key', () => {
       computeOptions({});
       expect(consoleSpy).toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
@@ -46,6 +52,12 @@ describe('missing option warnings', () => {
     });
   });
   describe('service name', () => {
+    beforeEach(() => {
+      delete process.env.OTEL_SERVICE_NAME;
+    });
+    afterEach(() => {
+      delete process.env.OTEL_SERVICE_NAME;
+    });
     it('warns on missing service name', () => {
       computeOptions({});
       expect(consoleSpy).toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
@@ -58,12 +70,18 @@ describe('missing option warnings', () => {
   });
 
   describe('dataset name', () => {
+    beforeEach(() => {
+      delete process.env.HONEYCOMB_API_KEY;
+    });
+    afterEach(() => {
+      delete process.env.HONEYCOMB_API_KEY;
+    });
     describe('classic key', () => {
       it('warns on missing dataset', () => {
         computeOptions({
           apiKey: classicApiKey,
         });
-        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
 
       it('does not warn if dataset is present', () => {
@@ -71,19 +89,30 @@ describe('missing option warnings', () => {
           apiKey: classicApiKey,
           dataset: 'totally-present',
         });
-        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
-      it.todo('warns if dataset is present but empty string');
+      it('warns if dataset is an empty string', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+          dataset: '',
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
     });
     describe('environment key', () => {
       it('does not warn on missing dataset', () => {
         computeOptions({
           apiKey: apiKey,
         });
-        // TODO: need to add logic
-        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_NAME_ERROR);
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
-      it.todo('warns if dataset is present');
+      it('warns if dataset is present', () => {
+        computeOptions({
+          apiKey: apiKey,
+          dataset: 'unnecessary dataset',
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(IGNORED_DATASET_ERROR);
+      });
     });
   });
 });
@@ -107,6 +136,9 @@ describe('isClassic', () => {
 });
 
 describe('apikey', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_KEY;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_KEY;
   });
@@ -139,6 +171,10 @@ describe('apikey', () => {
 });
 
 describe('traces apikey', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_KEY;
+    delete process.env.HONEYCOMB_TRACES_APIKEY;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_KEY;
     delete process.env.HONEYCOMB_TRACES_APIKEY;
@@ -185,6 +221,10 @@ describe('traces apikey', () => {
 });
 
 describe('metrics apikey', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_KEY;
+    delete process.env.HONEYCOMB_METRICS_APIKEY;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_KEY;
     delete process.env.HONEYCOMB_METRICS_APIKEY;
@@ -231,6 +271,9 @@ describe('metrics apikey', () => {
 });
 
 describe('endpoint', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_ENDPOINT;
   });
@@ -263,6 +306,10 @@ describe('endpoint', () => {
 });
 
 describe('traces endpoint', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
+    delete process.env.HONEYCOMB_TRACES_ENDPOINT;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_TRACES_ENDPOINT;
@@ -312,6 +359,10 @@ describe('traces endpoint', () => {
 });
 
 describe('metrics endpoint', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_ENDPOINT;
+    delete process.env.HONEYCOMB_METRICS_ENDPOINT;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_API_ENDPOINT;
     delete process.env.HONEYCOMB_METRICS_ENDPOINT;
@@ -361,6 +412,9 @@ describe('metrics endpoint', () => {
 });
 
 describe('debug option', () => {
+  beforeEach(() => {
+    delete process.env.DEBUG;
+  });
   afterEach(() => {
     delete process.env.DEBUG;
   });
@@ -399,6 +453,9 @@ describe('debug option', () => {
 });
 
 describe('sample rate option', () => {
+  beforeEach(() => {
+    delete process.env.SAMPLE_RATE;
+  });
   afterEach(() => {
     delete process.env.SAMPLE_RATE;
   });
@@ -463,6 +520,9 @@ describe('sample rate option', () => {
 });
 
 describe('local visualizations option', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
+  });
   afterEach(() => {
     delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
   });
@@ -501,6 +561,9 @@ describe('local visualizations option', () => {
 });
 
 describe('protocol', () => {
+  beforeEach(() => {
+    delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
+  });
   afterEach(() => {
     delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
   });

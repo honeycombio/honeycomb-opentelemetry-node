@@ -7,10 +7,12 @@ export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
 export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 type OtlpProtocol = typeof OtlpProtocols[number];
 
+export const IGNORED_DATASET_ERROR =
+  'WARN: Dataset is ignored in favor of service name.';
 export const MISSING_API_KEY_ERROR =
   'WARN: Missing api key. Specify either HONEYCOMB_API_KEY environment variable or apiKey in the options parameter.';
-export const MISSING_DATASET_NAME_ERROR =
-  'WARN: Missing dataset name. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
+export const MISSING_DATASET_ERROR =
+  'WARN: Missing dataset. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
 export const MISSING_SERVICE_NAME_ERROR =
   'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter.  If left unset, this will show up in Honeycomb as unknown_service:node';
 
@@ -98,22 +100,24 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
       false,
   };
 
-  // TODO: add isPresent in JavaScript (not Java)
-  //   public static boolean isPresent(String value) {
-  //     return value != null && !value.isEmpty();
-  // }
-
+  // warn if api key is missing
   if (!opts.apiKey) {
     console.warn(MISSING_API_KEY_ERROR);
   }
 
+  // warn if service name is missing
   if (!opts.serviceName) {
     console.warn(MISSING_SERVICE_NAME_ERROR);
   }
 
-  if (!opts.dataset) {
-    //todo: only for classic
-    console.warn(MISSING_DATASET_NAME_ERROR);
+  // warn if dataset is set while using an environment-aware key
+  if (opts.apiKey && !isClassic(opts.apiKey) && opts.dataset) {
+    console.warn(IGNORED_DATASET_ERROR);
+  }
+
+  // warn if dataset is missing if using classic key
+  if (opts.apiKey && isClassic(opts.apiKey) && !opts.dataset) {
+    console.warn(MISSING_DATASET_ERROR);
   }
 
   return opts;
