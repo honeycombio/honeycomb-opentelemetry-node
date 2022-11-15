@@ -59,19 +59,17 @@ smoke-sdk-grpc: smoke-tests/collector/data.json
 
 smoke-sdk-http: smoke-tests/collector/data.json
 	@echo ""
-	@echo "+++ NOT PLACEHOLDER FORREALZ: Running HTTP smoke tests."
+	@echo "+++ Running HTTP smoke tests."
 	@echo ""
 	cd smoke-tests && bats ./smoke-sdk-http.bats --report-formatter junit --output ./
 
 smoke-sdk: smoke-sdk-grpc smoke-sdk-http
 
-smoke-later: smoke-sdk
-
 smoke: docker_compose_present
 	@echo ""
-	@echo "+++ Placeholder for Smoking all the tests."
+	@echo "+++ Smoking all the tests."
 	@echo ""
-	cd smoke-tests && docker-compose up --detach --build && docker-compose down --volumes
+	cd smoke-tests && bats . --report-formatter junit --output ./
 
 unsmoke: docker_compose_present
 	@echo ""
