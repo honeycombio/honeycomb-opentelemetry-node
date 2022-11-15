@@ -46,6 +46,8 @@ squeaky-clean: clean clean-smoke-tests
 	rm -rf ./examples/node_modules
 	rm -rf ./examples/hello-node/dist
 	rm -rf ./examples/hello-node/node_modules
+	rm -rf ./examples/hello-node-express/dist
+	rm -rf ./examples/hello-node-express/node_modules
 
 smoke-tests/collector/data.json:
 	@echo ""
