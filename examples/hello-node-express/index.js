@@ -7,7 +7,7 @@ const {
 const sdk = new HoneycombSDK({
   apiKey: process.env.HONEYCOMB_API_KEY || '',
   serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express',
-  debug: true,
+  // debug: true,
   instrumentations: [getNodeAutoInstrumentations()],
 });
 
@@ -24,17 +24,25 @@ app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
-  tracer.startActiveSpan('main', (span) => {
+  tracer.startActiveSpan('sleep', (span) => {
     console.log('saying hello to the world');
     span.setAttribute('message', 'hello-world');
+    span.setAttribute('delay_ms', 100);
+    sleepy();
     span.end();
   });
   sayHello();
   res.end('Hello, World!\n');
 });
 
+async function sleepy() {
+  await setTimeout(() => {
+    console.log('sleeping a bit');
+  }, 100);
+}
+
 app.listen(port, hostname, () => {
-  console.log(`Listening on http://${hostname}:${port}/`);
+  console.log(`Now listening on: http://${hostname}:${port}/`);
 });
 
 sdk

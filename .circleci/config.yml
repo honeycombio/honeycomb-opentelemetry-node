@@ -80,8 +80,8 @@ jobs:
             which bats
             bats --version
       - run:
-          name: Smoke Test Placeholder
-          command: make smoke
+          name: Smoke Test http
+          command: make smoke-sdk-http
       # - store_test_results:
       #     path: ./smoke-tests/
       # - store_artifacts:

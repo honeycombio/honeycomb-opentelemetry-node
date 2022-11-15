@@ -6,14 +6,14 @@ x-env-base: &env_base
   HONEYCOMB_DATASET: bogus_dataset
   HONEYCOMB_METRICS_DATASET: bogus_dataset
   OTEL_METRIC_EXPORT_INTERVAL: 100
-  OTEL_SERVICE_NAME: "hello-node-example"
+  OTEL_SERVICE_NAME: "hello-node-express"
   DEBUG: "true"
 
 x-app-base: &app_base
   build:
     context: ../
-    dockerfile: ./examples/hello-node/Dockerfile
-  image: honeycomb/hello-node
+    dockerfile: ./examples/hello-node-express/Dockerfile
+  image: honeycomb/hello-node-express
   depends_on:
     - collector
 
@@ -35,14 +35,14 @@ services:
       # volumes:
       # - ../dist:/usr/dist/src
 
-  # app-sdk-http:
-  #   <<: *app_base
-  #   environment:
-  #     <<: *env_base
-  #     HONEYCOMB_API_ENDPOINT: http://collector:4318
-  #     OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
-  #   ports:
-  #     - "127.0.0.1:5001:5001"
+  app-sdk-http:
+    <<: *app_base
+    environment:
+      <<: *env_base
+      HONEYCOMB_API_ENDPOINT: http://collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+    ports:
+      - "127.0.0.1:3000:3000"
 
   # app-sdk-grpc:
   #   <<: *app_base

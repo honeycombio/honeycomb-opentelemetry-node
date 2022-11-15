@@ -57,10 +57,11 @@ smoke-sdk-grpc: smoke-tests/collector/data.json
 	@echo "+++ PLACEHOLDER: Running gRPC smoke tests."
 	@echo ""
 
-smoke-sdk-http: smoke-tests/collector/data.json
+smoke-sdk-http: install build smoke-tests/collector/data.json
 	@echo ""
-	@echo "+++ PLACEHOLDER: Running HTTP smoke tests."
+	@echo "+++ NOT PLACEHOLDER FORREALZ: Running HTTP smoke tests."
 	@echo ""
+	cd smoke-tests && bats ./smoke-sdk-http.bats --report-formatter junit --output ./
 
 smoke-sdk: smoke-sdk-grpc smoke-sdk-http
 
