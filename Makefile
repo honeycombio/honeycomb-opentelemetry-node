@@ -57,7 +57,7 @@ smoke-sdk-grpc: smoke-tests/collector/data.json
 	@echo "+++ PLACEHOLDER: Running gRPC smoke tests."
 	@echo ""
 
-smoke-sdk-http: install build smoke-tests/collector/data.json
+smoke-sdk-http: smoke-tests/collector/data.json
 	@echo ""
 	@echo "+++ NOT PLACEHOLDER FORREALZ: Running HTTP smoke tests."
 	@echo ""

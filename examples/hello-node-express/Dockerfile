@@ -24,8 +24,11 @@ COPY . .
 
 EXPOSE 3000
 
+RUN cd ./examples/hello-node-express/ && npm install
+
 # run example script from root package.json
 # CMD [ "npm", "run", "example-node-express" ]
 # CMD [ "npm", "install", "&&", "npm", "start" ]
 # CMD [ "npm", "start" ]
-CMD [ "npm", "run", "example-ci" ]
+# CMD [ "npm", "run", "example-ci" ]
+CMD [ "node", "./examples/hello-node-express/index.js" ]
