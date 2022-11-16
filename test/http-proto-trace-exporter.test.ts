@@ -18,6 +18,10 @@ test('it should return an OTLPTraceExporter', () => {
 });
 
 describe('with a regular apikey', () => {
+  beforeEach(() => {
+    delete process.env.HONEYCOMB_API_KEY;
+    delete process.env.HONEYCOMB_DATASET;
+  });
   test('it should set the team and not the dataset headers', () => {
     const traceExporter = configureHoneycombHttpProtoTraceExporter({
       apiKey: apikey,

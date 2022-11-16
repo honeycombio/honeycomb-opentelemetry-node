@@ -1,10 +1,19 @@
 import {
   computeOptions,
   HoneycombOptions,
+  IGNORED_DATASET_ERROR,
   isClassic,
   maybeAppendMetricsPath,
   maybeAppendTracesPath,
+  MISSING_API_KEY_ERROR,
+  MISSING_DATASET_ERROR,
+  MISSING_SERVICE_NAME_ERROR,
 } from '../src/honeycomb-options';
+
+// classic keys are 32 chars long
+const classicApiKey = 'this is a string that is 32 char';
+// non-classic keys are 22 chars log
+const apiKey = 'an api key for 22 char';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,17 +24,89 @@ test('it should have an apiKey property on the HoneycombOptions object', () => {
   expect(testApiKey).toEqual(true);
 });
 
+describe('missing option warnings', () => {
+  const consoleSpy = jest
+    .spyOn(console, 'warn')
+    .mockImplementation(() => undefined);
+
+  afterEach(() => {
+    consoleSpy.mockClear();
+  });
+
+  afterAll(() => {
+    consoleSpy.mockRestore();
+  });
+
+  describe('API Key', () => {
+    it('warns on missing API Key', () => {
+      computeOptions({});
+      expect(consoleSpy).toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
+    });
+    it('does not warn if api key is present', () => {
+      computeOptions({ apiKey: 'test-key' });
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
+    });
+  });
+  describe('service name', () => {
+    it('warns on missing service name', () => {
+      computeOptions({});
+      expect(consoleSpy).toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
+    });
+    it('does not warn if service name is present', () => {
+      computeOptions({ serviceName: 'heeeeey' });
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
+    });
+  });
+
+  describe('dataset name', () => {
+    describe('classic key', () => {
+      it('warns on missing dataset', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
+
+      it('does not warn if dataset is present', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+          dataset: 'totally-present',
+        });
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
+      it('warns if dataset is an empty string', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+          dataset: '',
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
+    });
+    describe('environment key', () => {
+      it('does not warn on missing dataset', () => {
+        computeOptions({
+          apiKey: apiKey,
+        });
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
+      it('warns if dataset is present', () => {
+        computeOptions({
+          apiKey: apiKey,
+          dataset: 'unnecessary dataset',
+        });
+        expect(consoleSpy).toHaveBeenCalledWith(IGNORED_DATASET_ERROR);
+      });
+    });
+  });
+});
+
 describe('isClassic', () => {
   it('should return true for a clasic key', () => {
-    // classic keys are 32 chars long
-    const apikey = '00000000000000000000000000000000';
-    expect(isClassic(apikey)).toBe(true);
+    expect(isClassic(classicApiKey)).toBe(true);
   });
 
   it('should return false for a non-classic key', () => {
-    // non-classic keys are 22 chars log
-    const apikey = '0000000000000000000000';
-    expect(isClassic(apikey)).toBe(false);
+    expect(isClassic(apiKey)).toBe(false);
   });
 
   it('should return false for an undefined key', () => {
@@ -34,10 +115,6 @@ describe('isClassic', () => {
 });
 
 describe('apikey', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.apiKey).toBeUndefined();
@@ -66,11 +143,6 @@ describe('apikey', () => {
 });
 
 describe('traces apikey', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_TRACES_APIKEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.tracesApiKey).toBeUndefined();
@@ -112,11 +184,6 @@ describe('traces apikey', () => {
 });
 
 describe('metrics apikey', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_METRICS_APIKEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.metricsApiKey).toBeUndefined();
@@ -158,10 +225,6 @@ describe('metrics apikey', () => {
 });
 
 describe('endpoint', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-  });
-
   it('defaults to https://api.honeycomb.io', () => {
     const options = computeOptions();
     expect(options.endpoint).toBe('https://api.honeycomb.io');
@@ -190,11 +253,6 @@ describe('endpoint', () => {
 });
 
 describe('traces endpoint', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_TRACES_ENDPOINT;
-  });
-
   it('defaults to endpoint with v1/traces path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
@@ -239,11 +297,6 @@ describe('traces endpoint', () => {
 });
 
 describe('metrics endpoint', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_METRICS_ENDPOINT;
-  });
-
   it('defaults to endpoint with v1/metrics path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
@@ -288,10 +341,6 @@ describe('metrics endpoint', () => {
 });
 
 describe('debug option', () => {
-  afterEach(() => {
-    delete process.env.DEBUG;
-  });
-
   it('defaults to false', () => {
     const options = computeOptions();
     expect(options.debug).toBe(false);
@@ -326,10 +375,6 @@ describe('debug option', () => {
 });
 
 describe('sample rate option', () => {
-  afterEach(() => {
-    delete process.env.SAMPLE_RATE;
-  });
-
   it('uses default if not set', () => {
     const options = computeOptions();
     expect(options.sampleRate).toBe(1);
@@ -390,10 +435,6 @@ describe('sample rate option', () => {
 });
 
 describe('local visualizations option', () => {
-  afterEach(() => {
-    delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
-  });
-
   it('defaults to false', () => {
     const options = computeOptions();
     expect(options.localVisualizations).toBe(false);
@@ -428,10 +469,6 @@ describe('local visualizations option', () => {
 });
 
 describe('protocol', () => {
-  afterEach(() => {
-    delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
-  });
-
   it('defaults to protocol of http/protobuf', () => {
     const options = computeOptions();
     expect(options.protocol).toBe('http/protobuf');

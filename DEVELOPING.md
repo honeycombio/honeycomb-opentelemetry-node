@@ -47,7 +47,7 @@ Format and lint scripts
 
 Testing scripts
 
-`npm run test` will run the unit tests
+`npm run test` will run the unit tests, it is on silent by default for verbose output of console logs and warnings use `npm run test-verbose`
 
 ## Example Applications
 
