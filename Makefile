@@ -56,8 +56,9 @@ smoke-tests/collector/data.json:
 
 smoke-sdk-grpc: smoke-tests/collector/data.json
 	@echo ""
-	@echo "+++ PLACEHOLDER: Running gRPC smoke tests."
+	@echo "+++ Running gRPC smoke tests."
 	@echo ""
+	cd smoke-tests && bats ./smoke-sdk-grpc.bats --report-formatter junit --output ./
 
 smoke-sdk-http: smoke-tests/collector/data.json
 	@echo ""
