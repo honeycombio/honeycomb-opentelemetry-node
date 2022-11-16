@@ -54,7 +54,6 @@ describe('missing option warnings', () => {
       computeOptions({ serviceName: 'heeeeey' });
       expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
     });
-    it.todo('warns if service name is present but empty string');
   });
 
   describe('dataset name', () => {
