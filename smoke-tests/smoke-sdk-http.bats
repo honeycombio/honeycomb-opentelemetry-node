@@ -7,7 +7,7 @@ TRACER_NAME="hello-world-tracer"
 
 setup_file() {
 	echo "# 🚧" >&3
-	docker-compose up --detach collector ${CONTAINER_NAME}
+	docker-compose up --build --detach collector ${CONTAINER_NAME}
 	wait_for_ready_app ${CONTAINER_NAME}
 	curl --silent "http://localhost:3000"
 	wait_for_traces
