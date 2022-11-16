@@ -10,6 +10,7 @@
     "clean": "tsc --build --clean",
     "check-format": "prettier --list-different \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "example-node": "cd ./examples/hello-node/ && npm run setup && npm start",
+    "example-node-express": "cd ./examples/hello-node-express/ && npm run setup && npm start",
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",

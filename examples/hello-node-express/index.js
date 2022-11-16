@@ -24,17 +24,25 @@ app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
-  tracer.startActiveSpan('main', (span) => {
+  tracer.startActiveSpan('sleep', (span) => {
     console.log('saying hello to the world');
     span.setAttribute('message', 'hello-world');
+    span.setAttribute('delay_ms', 100);
+    sleepy().then(() => console.log('sleeping a bit!'));
     span.end();
   });
   sayHello();
   res.end('Hello, World!\n');
 });
 
+async function sleepy() {
+  await setTimeout(() => {
+    console.log('awake now!');
+  }, 100);
+}
+
 app.listen(port, hostname, () => {
-  console.log(`Listening on http://${hostname}:${port}/`);
+  console.log(`Now listening on: http://${hostname}:${port}/`);
 });
 
 sdk

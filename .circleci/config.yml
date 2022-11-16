@@ -80,14 +80,14 @@ jobs:
             which bats
             bats --version
       - run:
-          name: Smoke Test Placeholder
-          command: make smoke
-      # - store_test_results:
-      #     path: ./smoke-tests/
-      # - store_artifacts:
-      #     path: ./smoke-tests/report.xml
-      # - store_artifacts:
-      #     path: ./smoke-tests/collector/data-results
+          name: Smoke Test
+          command: make smoke-sdk-http
+      - store_test_results:
+          path: ./smoke-tests/
+      - store_artifacts:
+          path: ./smoke-tests/report.xml
+      - store_artifacts:
+          path: ./smoke-tests/collector/data-results
       - run:
           name: Extinguish the flames
           command: make unsmoke
