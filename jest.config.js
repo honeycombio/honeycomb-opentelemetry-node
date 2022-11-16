@@ -6,4 +6,5 @@ module.exports = {
   },
   transformIgnorePatterns: ['^.+\\.js$'],
   preset: 'ts-jest/presets/js-with-ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup-jest.ts'],
 };

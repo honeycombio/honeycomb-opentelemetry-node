@@ -36,12 +36,6 @@ describe('missing option warnings', () => {
   });
 
   describe('API Key', () => {
-    beforeEach(() => {
-      delete process.env.HONEYCOMB_API_KEY;
-    });
-    afterEach(() => {
-      delete process.env.HONEYCOMB_API_KEY;
-    });
     it('warns on missing API Key', () => {
       computeOptions({});
       expect(consoleSpy).toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
@@ -52,12 +46,6 @@ describe('missing option warnings', () => {
     });
   });
   describe('service name', () => {
-    beforeEach(() => {
-      delete process.env.OTEL_SERVICE_NAME;
-    });
-    afterEach(() => {
-      delete process.env.OTEL_SERVICE_NAME;
-    });
     it('warns on missing service name', () => {
       computeOptions({});
       expect(consoleSpy).toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
@@ -70,12 +58,6 @@ describe('missing option warnings', () => {
   });
 
   describe('dataset name', () => {
-    beforeEach(() => {
-      delete process.env.HONEYCOMB_API_KEY;
-    });
-    afterEach(() => {
-      delete process.env.HONEYCOMB_API_KEY;
-    });
     describe('classic key', () => {
       it('warns on missing dataset', () => {
         computeOptions({
@@ -136,13 +118,6 @@ describe('isClassic', () => {
 });
 
 describe('apikey', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.apiKey).toBeUndefined();
@@ -171,15 +146,6 @@ describe('apikey', () => {
 });
 
 describe('traces apikey', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_TRACES_APIKEY;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_TRACES_APIKEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.tracesApiKey).toBeUndefined();
@@ -221,15 +187,6 @@ describe('traces apikey', () => {
 });
 
 describe('metrics apikey', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_METRICS_APIKEY;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_KEY;
-    delete process.env.HONEYCOMB_METRICS_APIKEY;
-  });
-
   it('has no default', () => {
     const options = computeOptions();
     expect(options.metricsApiKey).toBeUndefined();
@@ -271,13 +228,6 @@ describe('metrics apikey', () => {
 });
 
 describe('endpoint', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-  });
-
   it('defaults to https://api.honeycomb.io', () => {
     const options = computeOptions();
     expect(options.endpoint).toBe('https://api.honeycomb.io');
@@ -306,15 +256,6 @@ describe('endpoint', () => {
 });
 
 describe('traces endpoint', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_TRACES_ENDPOINT;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_TRACES_ENDPOINT;
-  });
-
   it('defaults to endpoint with v1/traces path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
@@ -359,15 +300,6 @@ describe('traces endpoint', () => {
 });
 
 describe('metrics endpoint', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_METRICS_ENDPOINT;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_API_ENDPOINT;
-    delete process.env.HONEYCOMB_METRICS_ENDPOINT;
-  });
-
   it('defaults to endpoint with v1/metrics path', () => {
     const options = computeOptions({
       endpoint: 'my-custom-endpoint',
@@ -412,13 +344,6 @@ describe('metrics endpoint', () => {
 });
 
 describe('debug option', () => {
-  beforeEach(() => {
-    delete process.env.DEBUG;
-  });
-  afterEach(() => {
-    delete process.env.DEBUG;
-  });
-
   it('defaults to false', () => {
     const options = computeOptions();
     expect(options.debug).toBe(false);
@@ -453,13 +378,6 @@ describe('debug option', () => {
 });
 
 describe('sample rate option', () => {
-  beforeEach(() => {
-    delete process.env.SAMPLE_RATE;
-  });
-  afterEach(() => {
-    delete process.env.SAMPLE_RATE;
-  });
-
   it('uses default if not set', () => {
     const options = computeOptions();
     expect(options.sampleRate).toBe(1);
@@ -520,13 +438,6 @@ describe('sample rate option', () => {
 });
 
 describe('local visualizations option', () => {
-  beforeEach(() => {
-    delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
-  });
-  afterEach(() => {
-    delete process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS;
-  });
-
   it('defaults to false', () => {
     const options = computeOptions();
     expect(options.localVisualizations).toBe(false);
@@ -561,13 +472,6 @@ describe('local visualizations option', () => {
 });
 
 describe('protocol', () => {
-  beforeEach(() => {
-    delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
-  });
-  afterEach(() => {
-    delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
-  });
-
   it('defaults to protocol of http/protobuf', () => {
     const options = computeOptions();
     expect(options.protocol).toBe('http/protobuf');
