@@ -10,8 +10,10 @@ import {
   MISSING_SERVICE_NAME_ERROR,
 } from '../src/honeycomb-options';
 
+// classic keys are 32 chars long
 const classicApiKey = 'this is a string that is 32 char';
-const apiKey = 'testkey';
+// non-classic keys are 22 chars log
+const apiKey = 'an api key for 22 char';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -100,15 +102,11 @@ describe('missing option warnings', () => {
 
 describe('isClassic', () => {
   it('should return true for a clasic key', () => {
-    // classic keys are 32 chars long
-    const apikey = '00000000000000000000000000000000';
-    expect(isClassic(apikey)).toBe(true);
+    expect(isClassic(classicApiKey)).toBe(true);
   });
 
   it('should return false for a non-classic key', () => {
-    // non-classic keys are 22 chars log
-    const apikey = '0000000000000000000000';
-    expect(isClassic(apikey)).toBe(false);
+    expect(isClassic(apiKey)).toBe(false);
   });
 
   it('should return false for an undefined key', () => {
