@@ -6,12 +6,6 @@ on:
       - opened
       - edited
       - synchronize
-  # Using `pull_request_target` so that PRs from forked repos are validated
-  pull_request_target:
-    types:
-      - opened
-      - edited
-      - synchronize
 
 jobs:
   main:
