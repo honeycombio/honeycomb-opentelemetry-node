@@ -1,5 +1,5 @@
 const { HoneycombSDK } = require('@honeycombio/opentelemetry-node');
-const { trace } = require('@opentelemetry/api');
+const { context, propagation, trace } = require('@opentelemetry/api');
 const {
   getNodeAutoInstrumentations,
 } = require('@opentelemetry/auto-instrumentations-node');
@@ -24,12 +24,22 @@ app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
-  tracer.startActiveSpan('sleep', (span) => {
-    console.log('saying hello to the world');
-    span.setAttribute('message', 'hello-world');
-    span.setAttribute('delay_ms', 100);
-    sleepy().then(() => console.log('sleeping a bit!'));
-    span.end();
+  // new context based on current, with key/values added to baggage
+  const ctx = propagation.setBaggage(
+    context.active(),
+    propagation.createBaggage({
+      for_the_children: { value: 'another important value' },
+    }),
+  );
+  // within the new context, do some "work"
+  context.with(ctx, () => {
+    tracer.startActiveSpan('sleep', (span) => {
+      console.log('saying hello to the world');
+      span.setAttribute('message', 'hello-world');
+      span.setAttribute('delay_ms', 100);
+      sleepy().then(() => console.log('sleeping a bit!'));
+      span.end();
+    });
   });
   sayHello();
   res.end('Hello, World!\n');
