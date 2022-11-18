@@ -55,6 +55,34 @@ Testing scripts
 
 To run the example from the root directory, run `npm run example-node`.
 
+- [Hello World Express](./examples/hello-node-express/) is a simple javascript application that uses Express.
+
+To run the example from the root directory, run `npm run example-node-express`.
+
+## Building a Tarball for Local Development
+
+To get a tarball to use as a local dependency, after cleaning and building run `npm pack`:
+
+```sh
+npm install
+npm run clean
+npm run build
+npm pack
+```
+
+This creates a file in the root directory like this: `honeycombio-opentelemetry-node-0.1.42-beta.tgz`
+To use as a dependency in another project, install it with `npm`:
+
+`npm install honeycombio-opentelemetry-node-0.1.1-beta.tgz`
+
+This will create a dependency in your `package.json` like this:
+
+```json
+  "dependencies": {
+    "@honeycombio/opentelemetry-node": "file:honeycombio-opentelemetry-node-0.1.42-beta.tgz",
+  }
+```
+
 ## Make is Cool
 
 This is one of several projects maintained by the same group of people.
