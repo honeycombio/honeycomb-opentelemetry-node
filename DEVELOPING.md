@@ -55,6 +55,10 @@ Testing scripts
 
 To run the example from the root directory, run `npm run example-node`.
 
+- [Hello World Express](./examples/hello-node-express/) is a simple javascript application that uses Express.
+
+To run the example from the root directory, run `npm run example-node-express`.
+
 ## Building a Tarball for Local Development
 
 To get a tarball to use as a local dependency, after cleaning and building run `npm pack`:
