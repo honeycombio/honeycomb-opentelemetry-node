@@ -1,5 +1,11 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.1.2-beta - 2022-11-18
+
+### Maintenance
+
+- maint: update opentelemetry dependencies (#109) | [@JamieDanielson](https://github.com/JamieDanielson)
+
 ## v0.1.1-beta - 2022-11-18
 
 ### Fixed
