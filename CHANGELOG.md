@@ -1,6 +1,6 @@
 # honeycomb-opentelemetry-node changelog
 
-## v0.2.0-beta - 2022-11-18
+## v0.1.1-beta - 2022-11-18
 
 ### Fixed
 
