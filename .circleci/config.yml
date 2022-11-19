@@ -43,7 +43,6 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: npm run build
       - run: npm run lint
 
   test:
