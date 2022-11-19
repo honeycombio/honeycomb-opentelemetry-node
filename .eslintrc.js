@@ -5,7 +5,12 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  extends: ['eslint:recommended', 'plugin:import/recommended', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:import/recommended',
+    'prettier',
+    'plugin:import/typescript',
+  ],
   rules: {
     'sort-imports': [
       'error',
@@ -14,14 +19,6 @@ module.exports = {
         ignoreDeclarationSort: true,
       },
     ],
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "paths": ["dist/src"],
-        "extensions": [".ts", ".js"]
-      }
-    }
   },
   overrides: [
     // turn off noisy rules for now
