@@ -2,6 +2,7 @@
 node_modules
 dist
 coverage
+examples/hello-node-express-ts
 
 
 packages/**/.eslintrc.js
