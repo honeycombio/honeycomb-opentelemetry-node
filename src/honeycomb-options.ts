@@ -1,11 +1,16 @@
 import { NodeSDKConfiguration } from '@opentelemetry/sdk-node';
 
+export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
+export enum OtlpProtocolKind {
+  Grpc = 'grpc',
+  HttpProtobuf = 'http/protobuf',
+  HttpJson = 'http/json'
+}
+export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number]
+
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
-export const DEFAULT_OTLP_EXPORTER_PROTOCOL = 'http/protobuf';
-
-export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
-type OtlpProtocol = typeof OtlpProtocols[number];
+export const DEFAULT_OTLP_EXPORTER_PROTOCOL = OtlpProtocolKind.HttpProtobuf;
 
 export const IGNORED_DATASET_ERROR =
   'WARN: Dataset is ignored in favor of service name.';
