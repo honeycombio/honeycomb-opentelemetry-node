@@ -5,12 +5,7 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:import/recommended',
-    'prettier',
-    'plugin:import/typescript',
-  ],
+  extends: ['eslint:recommended', 'plugin:import/recommended', 'prettier'],
   rules: {
     'sort-imports': [
       'error',
