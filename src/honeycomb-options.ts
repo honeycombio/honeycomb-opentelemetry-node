@@ -4,9 +4,9 @@ export const OtlpProtocols = ['grpc', 'http/protobuf', 'http/json'] as const;
 export enum OtlpProtocolKind {
   Grpc = 'grpc',
   HttpProtobuf = 'http/protobuf',
-  HttpJson = 'http/json'
+  HttpJson = 'http/json',
 }
-export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number]
+export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number];
 
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
