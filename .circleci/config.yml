@@ -42,9 +42,8 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: npm i
+      - run: npm ci
       - run: npm run build
-      - run: ls dist
       - run: npm run lint
 
   test:

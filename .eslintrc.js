@@ -15,6 +15,14 @@ module.exports = {
       },
     ],
   },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["dist/src"],
+        "extensions": [".ts", ".js"]
+      }
+    }
+  },
   overrides: [
     // turn off noisy rules for now
     {
