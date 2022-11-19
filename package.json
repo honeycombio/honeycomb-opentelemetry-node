@@ -18,7 +18,7 @@
     "example-node-express": "cd ./examples/hello-node-express/ && npm run setup && npm start",
     "format": "prettier --write \"./**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "lint-fix": "eslint . --fix --debug",
     "test": "jest --config ./jest.config.js --no-cache -u --silent",
     "test-verbose": "jest --config ./jest.config.js --no-cache -u",
     "test-ci": "jest --config ./jest.config.js --ci --runInBand --reporters=default --reporters=jest-junit --no-cache -u --silent"
