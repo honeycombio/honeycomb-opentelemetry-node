@@ -1,5 +1,6 @@
 import { context, propagation, trace } from '@opentelemetry/api';
 import express from 'express';
+import asyncHandler from 'express-async-handler';
 
 const app = express();
 const hostname = '0.0.0.0';
@@ -7,7 +8,7 @@ const port = 3000;
 
 const tracer = trace.getTracer('hello-world-tracer');
 
-app.get('/', (_req, res) => {
+app.get('/', asyncHandler(async (_req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
@@ -19,23 +20,24 @@ app.get('/', (_req, res) => {
     }),
   );
   // within the new context, do some "work"
-  context.with(ctx, () => {
-    tracer.startActiveSpan('sleep', (span) => {
+  await context.with(ctx, async () => {
+    await tracer.startActiveSpan('sleep', async (span) => {
       console.log('saying hello to the world');
       span.setAttribute('message', 'hello-world');
       span.setAttribute('delay_ms', 100);
-      sleepy().then(() => console.log('sleeping a bit!'));
+      console.log('sleeping a bit!')
+      await sleepy();
       span.end();
     });
   });
   sayHello();
   res.end('Hello, World!\n');
-});
+}));
 
-async function sleepy() {
-  await setTimeout(() => {
+function sleepy() {
+  return new Promise(() => setTimeout(() => {
     console.log('awake now!');
-  }, 100);
+  }, 100));
 }
 
 app.listen(port, hostname, () => {
