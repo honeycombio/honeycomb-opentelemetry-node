@@ -62,13 +62,25 @@ smoke-sdk-grpc: smoke-tests/collector/data.json
 	@echo ""
 	cd smoke-tests && bats ./smoke-sdk-grpc.bats --report-formatter junit --output ./
 
+smoke-sdk-grpc-ts: smoke-tests/collector/data.json
+	@echo ""
+	@echo "+++ Running gRPC smoke tests for TypeScript."
+	@echo ""
+	cd smoke-tests && bats ./smoke-sdk-grpc-ts.bats --report-formatter junit --output ./
+
 smoke-sdk-http: smoke-tests/collector/data.json
 	@echo ""
 	@echo "+++ Running HTTP smoke tests."
 	@echo ""
 	cd smoke-tests && bats ./smoke-sdk-http.bats --report-formatter junit --output ./
 
-smoke-sdk: smoke-sdk-grpc smoke-sdk-http
+smoke-sdk-http-ts: smoke-tests/collector/data.json
+	@echo ""
+	@echo "+++ Running HTTP smoke tests for TypeScript."
+	@echo ""
+	cd smoke-tests && bats ./smoke-sdk-http-ts.bats --report-formatter junit --output ./
+
+smoke-sdk: smoke-sdk-grpc smoke-sdk-grpc-ts smoke-sdk-http smoke-sdk-http-ts
 
 smoke: docker_compose_present
 	@echo ""
