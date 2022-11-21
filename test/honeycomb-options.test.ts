@@ -338,6 +338,7 @@ describe('metrics endpoint', () => {
       protocol: OtlpProtocolKind.Grpc,
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+    expect(options.protocol).toBe('grpc');
   });
 });
 
