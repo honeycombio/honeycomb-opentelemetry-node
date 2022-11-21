@@ -20,7 +20,7 @@ COPY . .
 EXPOSE 3000
 
 # symlink honeycomb sdk dependency
-RUN cd ./examples/hello-node-express-ts/ && npm install
+RUN cd ./examples/hello-node-express-ts/ && npm install && npm run build
 
 # run example express app
-CMD [ "ts-node", "-r", "./instrumentation.ts", "index.ts" ]
+CMD [ "node", "-r", "./examples/hello-node-express-ts/dist/instrumentation.js", "./examples/hello-node-express-ts/dist/index.js" ]
