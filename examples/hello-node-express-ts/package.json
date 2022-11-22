@@ -14,8 +14,9 @@
   "dependencies": {
     "@honeycombio/opentelemetry-node": "file:../../dist/src",
     "@opentelemetry/auto-instrumentations-node": "^0.34.0",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
     "express": "^4.18.2",
-    "express-async-handler": "^1.2.0",
     "ts-node": "^10.9.1"
   }
 }

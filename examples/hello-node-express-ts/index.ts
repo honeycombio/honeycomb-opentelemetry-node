@@ -1,48 +1,45 @@
-import { context, propagation, trace } from '@opentelemetry/api';
-import express from 'express';
-import asyncHandler from 'express-async-handler';
 
-const app = express();
+import { Context, context, propagation, trace, Tracer } from '@opentelemetry/api';
+import express, { Express, Request, Response } from 'express';
+
+const app: Express = express();
 const hostname = '0.0.0.0';
 const port = 3000;
 
-const tracer = trace.getTracer('hello-world-tracer');
-
-app.get(
-  '/',
-  asyncHandler(async (_req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    const sayHello = () => 'Hello world!';
-    // new context based on current, with key/values added to baggage
-    const ctx = propagation.setBaggage(
-      context.active(),
-      propagation.createBaggage({
-        for_the_children: { value: 'another important value' },
-      }),
-    );
-    // within the new context, do some "work"
-    await context.with(ctx, async () => {
-      await tracer.startActiveSpan('sleep', async (span) => {
-        console.log('saying hello to the world');
-        span.setAttribute('message', 'hello-world');
-        span.setAttribute('delay_ms', 100);
-        console.log('sleeping a bit!');
-        await sleepy();
-        span.end();
-      });
+app.get('/', (req: Request, res: Response) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  const sayHello = () => 'Hello world!';
+  const tracer: Tracer = trace.getTracer('hello-world-tracer');
+  // new context based on current, with key/values added to baggage
+  const ctx: Context = propagation.setBaggage(
+    context.active(),
+    propagation.createBaggage({
+      for_the_children: { value: 'another important value' },
+    }),
+  );
+  // within the new context, do some "work"
+  context.with(ctx, async () => {
+    tracer.startActiveSpan('sleep', async (span) => {
+      console.log('saying hello to the world');
+      span.setAttribute('message', 'hello-world');
+      span.setAttribute('delay_ms', 100);
+      await sleepy();
+      console.log('sleeping a bit!');
+      span.end();
     });
-    sayHello();
-    res.end('Hello, World!\n');
-  }),
-);
+  });
+  sayHello();
+  res.end('Hello, World!\n');
+})
 
-function sleepy() {
-  return new Promise(() =>
+function sleepy(): Promise<void> {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log('awake now!');
-    }, 100),
-  );
+    }, 100)
+    resolve();
+  });
 }
 
 app.listen(port, hostname, () => {
