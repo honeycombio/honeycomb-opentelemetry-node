@@ -15,6 +15,8 @@ module.exports = {
       },
     ],
   },
+  // do not lint dist files
+  ignorePatterns: ['**/examples/**/dist/*.js'],
   overrides: [
     // turn off noisy rules for now
     {
@@ -31,9 +33,6 @@ module.exports = {
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-var-requires': 'off',
       },
-    },
-    {
-      files: ['*.js'],
     },
   ],
   parser: '@typescript-eslint/parser',

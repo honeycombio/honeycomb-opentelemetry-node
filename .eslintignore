@@ -2,8 +2,3 @@
 node_modules
 dist
 coverage
-
-packages/**/.eslintrc.js
-
-# TODO let's not keep this ignored forever
-examples/hello-node-express-ts
