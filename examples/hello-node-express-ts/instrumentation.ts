@@ -4,7 +4,7 @@ import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentation
 
 const sdk: NodeSDK = new HoneycombSDK({
   apiKey: process.env.HONEYCOMB_API_KEY || '',
-  serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express',
+  serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express-ts',
   debug: true,
   instrumentations: [getNodeAutoInstrumentations()],
 });
