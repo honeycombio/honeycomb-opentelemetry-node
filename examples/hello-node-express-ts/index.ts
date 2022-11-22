@@ -43,7 +43,7 @@ app.get(
 );
 
 function sleepy(): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       console.log('awake now!');
     }, 100);
