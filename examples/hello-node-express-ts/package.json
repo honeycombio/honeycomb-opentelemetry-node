@@ -4,10 +4,12 @@
   "description": "Honeycomb OpenTelemetry Distro for JavaScript example",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc --build",
     "setup": "npm install && cd ../.. && npm install && npm run build",
-    "start": "ts-node ./instrumentation.ts index.ts"
+    "start": "ts-node -r ./instrumentation.ts index.ts",
+    "start-js": "node -r ./dist/instrumentation.js ./dist/index.js"
   },
   "dependencies": {
     "@honeycombio/opentelemetry-node": "file:../../dist/src",
