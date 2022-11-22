@@ -8,6 +8,7 @@ import {
   MISSING_API_KEY_ERROR,
   MISSING_DATASET_ERROR,
   MISSING_SERVICE_NAME_ERROR,
+  OtlpProtocolKind,
 } from '../src/honeycomb-options';
 
 // classic keys are 32 chars long
@@ -334,9 +335,10 @@ describe('metrics endpoint', () => {
   it('does not append path for grpc exporter protocol', () => {
     const options = computeOptions({
       metricsEndpoint: 'my-custom-endpoint',
-      protocol: 'grpc',
+      protocol: OtlpProtocolKind.Grpc,
     });
     expect(options.metricsEndpoint).toBe('my-custom-endpoint');
+    expect(options.protocol).toBe('grpc');
   });
 });
 
