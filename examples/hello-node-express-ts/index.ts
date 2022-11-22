@@ -1,5 +1,10 @@
-
-import { Context, context, propagation, trace, Tracer } from '@opentelemetry/api';
+import {
+  Context,
+  context,
+  propagation,
+  trace,
+  Tracer,
+} from '@opentelemetry/api';
 import express, { Express, Request, Response } from 'express';
 
 const app: Express = express();
@@ -31,13 +36,13 @@ app.get('/', (req: Request, res: Response) => {
   });
   sayHello();
   res.end('Hello, World!\n');
-})
+});
 
 function sleepy(): Promise<void> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log('awake now!');
-    }, 100)
+    }, 100);
     resolve();
   });
 }

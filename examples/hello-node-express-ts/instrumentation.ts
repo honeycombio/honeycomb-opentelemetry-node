@@ -9,7 +9,8 @@ const sdk: NodeSDK = new HoneycombSDK({
   instrumentations: [getNodeAutoInstrumentations()],
 });
 
-sdk.start()
+sdk
+  .start()
   .then(() => {
     console.log('Tracing initialized');
   })
