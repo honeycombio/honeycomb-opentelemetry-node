@@ -3,7 +3,7 @@
 [![OSS Lifecycle](https://img.shields.io/osslifecycle/honeycombio/honeycomb-opentelemetry-node)](https://github.com/honeycombio/home/blob/main/honeycomb-oss-lifecycle-and-practices.md)
 [![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node)
 
-This is Honeycomb's Distribution of OpenTelemetry for Node.js
+This is Honeycomb's Distribution of OpenTelemetry for Node.js.
 It makes getting started with OpenTelemetry and Honeycomb easier!
 
 ## Getting Started
