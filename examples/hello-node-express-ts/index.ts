@@ -4,7 +4,7 @@ import {
   propagation,
   Span,
   trace,
-  Tracer
+  Tracer,
 } from '@opentelemetry/api';
 import express, { Express, NextFunction, Request, Response } from 'express';
 
