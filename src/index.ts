@@ -3,3 +3,4 @@ export { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exp
 export { configureDeterministicSampler } from './deterministic-sampler';
 export { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
 export { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
+export { HoneycombOptions } from './honeycomb-options';

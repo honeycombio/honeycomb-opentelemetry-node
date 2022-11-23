@@ -1,11 +1,12 @@
 import {
-  Context,
   context,
+  Context,
   propagation,
+  Span,
   trace,
-  Tracer,
+  Tracer
 } from '@opentelemetry/api';
-import express, { Express, Request, Response } from 'express';
+import express, { Express, NextFunction, Request, Response } from 'express';
 
 const app: Express = express();
 const hostname = '0.0.0.0';
@@ -13,7 +14,7 @@ const port = 3000;
 
 // express supports async handlers but the @types definition is wrong: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50871
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.get('/', async (_req: Request, res: Response, next: any) => {
+app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
@@ -28,7 +29,7 @@ app.get('/', async (_req: Request, res: Response, next: any) => {
     );
     // within the new context, do some "work"
     await context.with(ctx, async () => {
-      await tracer.startActiveSpan('sleep', async (span) => {
+      await tracer.startActiveSpan('sleep', async (span: Span) => {
         console.log('saying hello to the world');
         span.setAttribute('message', 'hello-world');
         span.setAttribute('delay_ms', 100);
