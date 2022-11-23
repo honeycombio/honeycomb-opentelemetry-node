@@ -1,5 +1,13 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.2.0-beta - 2022-11-23
+
+### Enhancements
+
+- feat: Export `HoneycombOptions` type (#114) | [@pkanal](https://github.com/pkanal)
+- feat: add typescript example and smoky boi (#112) | [@cartermp](https://github.com/cartermp)
+- feat: support enum-style protocol specification (#111) | [@cartermp](https://github.com/cartermp)
+
 ## v0.1.2-beta - 2022-11-18
 
 ### Maintenance
