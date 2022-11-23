@@ -2,6 +2,3 @@
 node_modules
 dist
 coverage
-
-
-packages/**/.eslintrc.js

@@ -17,6 +17,14 @@ x-app-base: &app_base
   depends_on:
     - collector
 
+x-app-base-ts: &app_base_ts
+  build:
+    context: ../
+    dockerfile: ./examples/hello-node-express-ts/Dockerfile
+  image: honeycomb/hello-node-express-ts
+  depends_on:
+    - collector
+
 services:
   collector:
     image: otel/opentelemetry-collector:0.52.0
@@ -32,6 +40,13 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
 
+  app-hellonode-ts:
+    <<: *app_base_ts
+    environment:
+      <<: *env_base
+    ports:
+      - "127.0.0.1:3000:3000"
+
   app-sdk-http:
     <<: *app_base
     environment:
@@ -41,8 +56,26 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
 
+  app-sdk-http-ts:
+    <<: *app_base_ts
+    environment:
+      <<: *env_base
+      HONEYCOMB_API_ENDPOINT: http://collector:4318
+      OTEL_EXPORTER_OTLP_PROTOCOL: http/protobuf
+    ports:
+      - "127.0.0.1:3000:3000"
+
   app-sdk-grpc:
     <<: *app_base
+    environment:
+      <<: *env_base
+      HONEYCOMB_API_ENDPOINT: http://collector:4317
+      OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+    ports:
+      - "127.0.0.1:3000:3000"
+
+  app-sdk-grpc-ts:
+    <<: *app_base_ts
     environment:
       <<: *env_base
       HONEYCOMB_API_ENDPOINT: http://collector:4317
