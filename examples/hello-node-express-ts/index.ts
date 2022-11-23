@@ -6,15 +6,15 @@ import {
   Tracer,
 } from '@opentelemetry/api';
 import express, { Express, Request, Response } from 'express';
-import asyncHandler from 'express-async-handler';
 
 const app: Express = express();
 const hostname = '0.0.0.0';
 const port = 3000;
 
-app.get(
-  '/',
-  asyncHandler(async (_req: Request, res: Response) => {
+// express supports async handlers but the @types definition is wrong: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50871
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.get('/', async (_req: Request, res: Response, next: any) => {
+  try {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     const sayHello = () => 'Hello world!';
@@ -39,8 +39,10 @@ app.get(
     });
     sayHello();
     res.end('Hello, World!\n');
-  }),
-);
+  } catch (err) {
+    next(err);
+  }
+});
 
 function sleepy(): Promise<void> {
   return new Promise((resolve) => {
