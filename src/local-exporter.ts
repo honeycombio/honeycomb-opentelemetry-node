@@ -53,7 +53,7 @@ class ConsoleTraceLinkExporter implements SpanExporter {
             );
           } else {
             console.log(
-              'WARN: failed to extract team from Honeycom auth response',
+              'WARN: failed to extract team from Honeycomb auth response',
             );
           }
         }
@@ -89,7 +89,7 @@ class ConsoleTraceLinkExporter implements SpanExporter {
 /**
  * Builds and returns a URL that is used to log when a trace is completed in the {@link ConsoleTraceLinkExporter}.
  *
- * @param apikey the Honeycom API key used to retrieve the Honeycomb team and environment
+ * @param apikey the Honeycomb API key used to retrieve the Honeycomb team and environment
  * @param serviceName the Honeycomb service name (or classic dataset) where data is stored
  * @param team the Honeycomb team
  * @param environment the Honeycomb environment
