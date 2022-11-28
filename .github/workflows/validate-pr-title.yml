@@ -42,8 +42,11 @@ jobs:
             Thank you for contributing to the project! 🎉
 
             We require pull request titles to follow the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/) and it looks like your proposed title needs to be adjusted.
-            Make sure to prepend with "feat:", "fix:", or another option in the list below.
+
+            Make sure to prepend with `feat:`, `fix:`, or another option in the list below.
+
             Once you update the title, this workflow will re-run automatically and validate the updated title.
+
             Details:
 
             ```
