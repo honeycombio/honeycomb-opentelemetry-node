@@ -1,10 +1,12 @@
 import {
   context,
   Context,
+  Meter,
+  metrics,
   propagation,
   Span,
   trace,
-  Tracer,
+  Tracer
 } from '@opentelemetry/api';
 import express, { Express, NextFunction, Request, Response } from 'express';
 
@@ -20,6 +22,12 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     res.setHeader('Content-Type', 'text/plain');
     const sayHello = () => 'Hello world!';
     const tracer: Tracer = trace.getTracer('hello-world-tracer');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const meter: Meter = metrics.getMeter('hello-world-meter');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const counter = meter.createCounter('events.counter');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    counter.add(1);
     // new context based on current, with key/values added to baggage
     const ctx: Context = propagation.setBaggage(
       context.active(),
