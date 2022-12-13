@@ -11,7 +11,7 @@ const config: HoneycombOptions = {
   debug: true,
   instrumentations: [getNodeAutoInstrumentations()],
   metricsDataset:
-    process.env.METRICS_DATASET || 'hello-node-express-ts-metrics',
+    process.env.HONEYCOMB_METRICS_DATASET || 'hello-node-express-ts-metrics',
 };
 
 const sdk: NodeSDK = new HoneycombSDK(config);
