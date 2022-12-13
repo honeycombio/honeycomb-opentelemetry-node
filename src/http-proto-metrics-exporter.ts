@@ -1,5 +1,4 @@
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import {
   DATASET_HEADER_KEY,
   OTLP_HEADER_KEY,
@@ -8,6 +7,11 @@ import {
 } from './exporter-utils';
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 
+/**
+ * Builds and returns an OTLP Metric exporter that sends data over http/protobuf
+ * @param options The {@link HoneycombOptions} used to configure the exporter
+ * @returns an {@link OTLPMetricExporter} configured to send telemetry to Honeycomb over http/protobuf
+ */
 export function configureHoneycombHttpProtoMetricExporter(
   options?: HoneycombOptions,
 ): OTLPMetricExporter {
@@ -19,18 +23,5 @@ export function configureHoneycombHttpProtoMetricExporter(
       [TEAM_HEADER_KEY]: opts?.metricsApiKey,
       [DATASET_HEADER_KEY]: opts?.metricsDataset,
     },
-  });
-}
-
-/**
- * Builds and returns an OTLP Metric reader that configures a metric exporter to send data over http/protobuf periodically
- * @param options The {@link HoneycombOptions} used to configure the exporter
- * @returns a {@link PeriodicExportingMetricReader} configured to send telemetry to Honeycomb over http/protobuf
- */
-export function configureHoneycombHttpProtoMetricReader(
-  options?: HoneycombOptions,
-): PeriodicExportingMetricReader {
-  return new PeriodicExportingMetricReader({
-    exporter: configureHoneycombHttpProtoMetricExporter(options),
   });
 }

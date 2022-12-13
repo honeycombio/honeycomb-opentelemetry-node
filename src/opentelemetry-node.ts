@@ -3,7 +3,7 @@ import { configureDeterministicSampler } from './deterministic-sampler';
 import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
-import { configureHoneycombHttpProtoMetricReader } from './http-proto-metrics-exporter';
+import { getHoneycombMetricReader } from './exporter-utils';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 
 /**
@@ -20,7 +20,9 @@ export class HoneycombSDK extends NodeSDK {
       serviceName: opts?.serviceName,
       resource: configureHoneycombResource(),
       // only enable metrics if a metrics dataset has been set
-      metricReader: opts?.metricsDataset ? configureHoneycombHttpProtoMetricReader(opts) : undefined,
+      metricReader: opts?.metricsDataset
+        ? getHoneycombMetricReader(opts)
+        : undefined,
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
     });
