@@ -6,26 +6,31 @@ import {
   OTLP_PROTO_VERSION,
   TEAM_HEADER_KEY,
 } from './exporter-utils';
-import {
-  HoneycombOptions,
-} from './honeycomb-options';
+import { computeOptions, HoneycombOptions } from './honeycomb-options';
 
-//TODOs:
-// - add tests for http/proto
-// - add grpc metric reader + tests
-// - add test to check that metrics are not enabled unless a metrics dataset is provided
-// - test otel env variables work for metrics timeout
-// - smoke tests?
+export function configureHoneycombHttpProtoMetricExporter(
+  options?: HoneycombOptions,
+): OTLPMetricExporter {
+  const opts = computeOptions(options);
+  return new OTLPMetricExporter({
+    url: opts?.metricsEndpoint,
+    headers: {
+      [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
+      [TEAM_HEADER_KEY]: opts?.metricsApiKey,
+      [DATASET_HEADER_KEY]: opts?.metricsDataset,
+    },
+  });
+}
 
-export function configureHoneycombHttpProtoMetricReader(options?: HoneycombOptions): PeriodicExportingMetricReader {
+/**
+ * Builds and returns an OTLP Metric reader that configures a metric exporter to send data over http/protobuf periodically
+ * @param options The {@link HoneycombOptions} used to configure the exporter
+ * @returns a {@link PeriodicExportingMetricReader} configured to send telemetry to Honeycomb over http/protobuf
+ */
+export function configureHoneycombHttpProtoMetricReader(
+  options?: HoneycombOptions,
+): PeriodicExportingMetricReader {
   return new PeriodicExportingMetricReader({
-    exporter: new OTLPMetricExporter({
-      url: options?.metricsEndpoint,
-      headers: {
-        [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
-        [TEAM_HEADER_KEY]: options?.metricsApiKey,
-        [DATASET_HEADER_KEY]: options?.metricsDataset,
-      }
-    }),
+    exporter: configureHoneycombHttpProtoMetricExporter(options),
   });
 }

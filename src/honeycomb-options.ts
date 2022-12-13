@@ -174,7 +174,7 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     HONEYCOMB_METRICS_APIKEY:
       process.env.HONEYCOMB_METRICS_APIKEY || process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_DATASET: process.env.HONEYCOMB_DATASET,
-    HONEYCOMB_METRICS_DATASET: process.env.HOENYCOMB_METRICS_DATASET,
+    HONEYCOMB_METRICS_DATASET: process.env.HONEYCOMB_METRICS_DATASET,
     SAMPLE_RATE: parseSampleRate(process.env.SAMPLE_RATE),
     DEBUG: parseBoolean(process.env.DEBUG),
     HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
