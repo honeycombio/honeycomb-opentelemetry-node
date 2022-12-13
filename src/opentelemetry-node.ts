@@ -19,10 +19,7 @@ export class HoneycombSDK extends NodeSDK {
       ...opts,
       serviceName: opts?.serviceName,
       resource: configureHoneycombResource(),
-      // only enable metrics if a metrics dataset has been set
-      metricReader: opts?.metricsDataset
-        ? getHoneycombMetricReader(opts)
-        : undefined,
+      metricReader: getHoneycombMetricReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
     });

@@ -35,8 +35,14 @@ describe('getHoneycombSpanExporter', () => {
 });
 
 describe('getHoneycombMetricReader', () => {
-  it('returns a PeriodicExportingMetricReader', () => {
-    const metricReader = getHoneycombMetricReader();
+  it('returns a PeriodicExportingMetricReader if dataset provided', () => {
+    const metricReader = getHoneycombMetricReader({
+      metricsDataset: 'metrics-dataset',
+    });
     expect(metricReader).toBeInstanceOf(PeriodicExportingMetricReader);
+  });
+  it('returns a undefined if theres no metrics dataset provided', () => {
+    const metricReader = getHoneycombMetricReader();
+    expect(metricReader).toBeUndefined();
   });
 });

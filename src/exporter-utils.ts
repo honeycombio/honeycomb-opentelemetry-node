@@ -33,7 +33,13 @@ export function getHoneycombSpanExporter(
  * @param options The {@link HoneycombOptions} used to configure the exporter
  * @returns a {@link PeriodicExportingMetricReader} configured to send telemetry to Honeycomb over http/protobuf
  */
-export function getHoneycombMetricReader(options?: HoneycombOptions) {
+export function getHoneycombMetricReader(
+  options?: HoneycombOptions,
+): PeriodicExportingMetricReader | undefined {
+  if (!options?.metricsDataset) {
+    // only enable metrics if a metrics dataset has been set
+    return undefined;
+  }
   return new PeriodicExportingMetricReader({
     // when we add grpc exporter support, we can do the check here to deicde which exporter to pass in
     exporter: configureHoneycombHttpProtoMetricExporter(options),
