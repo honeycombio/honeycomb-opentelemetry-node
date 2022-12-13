@@ -74,12 +74,12 @@ describe('metrics exporter tests', () => {
 
     test('it should prefer metricsApiKey over apiKey', () => {
       const metricExporter = configureHoneycombHttpProtoMetricExporter({
-        apiKey: 'apikey',
-        metricsApiKey: apikey,
+        apiKey: 'genericApiKey',
+        metricsApiKey: 'metricsApiKey',
         metricsDataset: dataset,
       });
       expect(metricExporter._otlpExporter.headers[TEAM_HEADER_KEY]).toBe(
-        apikey,
+        'metricsApiKey',
       );
     });
   });
