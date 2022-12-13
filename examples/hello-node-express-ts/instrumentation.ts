@@ -10,7 +10,8 @@ const config: HoneycombOptions = {
   serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express-ts',
   debug: true,
   instrumentations: [getNodeAutoInstrumentations()],
-  metricsDataset: process.env.METRICS_DATASET || 'hello-node-express-ts-metrics'
+  metricsDataset:
+    process.env.METRICS_DATASET || 'hello-node-express-ts-metrics',
 };
 
 const sdk: NodeSDK = new HoneycombSDK(config);
