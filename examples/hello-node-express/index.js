@@ -1,5 +1,5 @@
 const { HoneycombSDK } = require('@honeycombio/opentelemetry-node');
-const { context, propagation, trace } = require('@opentelemetry/api');
+const { context, metrics, propagation, trace } = require('@opentelemetry/api');
 const {
   getNodeAutoInstrumentations,
 } = require('@opentelemetry/auto-instrumentations-node');
@@ -9,9 +9,12 @@ const sdk = new HoneycombSDK({
   serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express',
   debug: true,
   instrumentations: [getNodeAutoInstrumentations()],
+  metricsDataset:
+    process.env.HONEYCOMB_METRICS_DATASET || 'hello-node-express-ts-metrics',
 });
 
-// alternatively, use HONEYCOMB_API_KEY and OTEL_SERVICE_NAME and DEBUG environment variables
+// alternatively, use environment variables for
+// HONEYCOMB_API_KEY, OTEL_SERVICE_NAME, DEBUG, and HONEYCOMB_METRICS_DATASET
 // const sdk = new HoneycombSDK();
 
 const express = require('express');
@@ -24,6 +27,9 @@ app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   const sayHello = () => 'Hello world!';
   const tracer = trace.getTracer('hello-world-tracer');
+  const meter = metrics.getMeter('hello-world-meter');
+  const counter = meter.createCounter('sheep');
+  counter.add(1);
   // new context based on current, with key/values added to baggage
   const ctx = propagation.setBaggage(
     context.active(),
