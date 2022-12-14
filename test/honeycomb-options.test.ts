@@ -545,3 +545,35 @@ describe('maybeAppendMetricsPath', () => {
     expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
   });
 });
+
+describe('metrics interval and timeout options', () => {
+  it('uses default values if not set', () => {
+    const options = computeOptions();
+    expect(options.metricsInterval).toBe(60000);
+    expect(options.metricsTimeout).toBe(30000);
+  });
+
+  it('uses metrics interval and timeout from env vars', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '2000';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '1000';
+    const options = computeOptions();
+    expect(options.metricsInterval).toBe(2000);
+    expect(options.metricsTimeout).toBe(1000);
+  });
+
+  it('uses default values if set to negative numbers', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '-2000';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '-1000';
+    const options = computeOptions();
+    expect(options.metricsInterval).toBe(60000);
+    expect(options.metricsTimeout).toBe(30000);
+  });
+
+  it('uses default values if set to zero', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '0';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '0';
+    const options = computeOptions();
+    expect(options.metricsInterval).toBe(60000);
+    expect(options.metricsTimeout).toBe(30000);
+  });
+});
