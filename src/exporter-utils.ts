@@ -43,7 +43,7 @@ export function getHoneycombMetricReader(
   return new PeriodicExportingMetricReader({
     // when we add grpc exporter support, we can do the check here to deicde which exporter to pass in
     exporter: configureHoneycombHttpProtoMetricExporter(options),
-    exportIntervalMillis: options?.metricsInterval || 60000,
-    exportTimeoutMillis: options?.metricsTimeout || 30000,
+    exportIntervalMillis: options?.metricsInterval,
+    exportTimeoutMillis: options?.metricsTimeout,
   });
 }
