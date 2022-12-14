@@ -15,4 +15,4 @@ updates:
       - "honeycombio/telemetry-team"
     commit-message:
       prefix: "maint"
-      include_scope: true
+      include: "scope"
