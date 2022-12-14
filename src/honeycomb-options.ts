@@ -106,8 +106,8 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
-    metricInterval: getMetricInterval(env),
-    metricTimeout: getMetricTimeout(env),
+    metricsInterval: getMetricsInterval(env),
+    metricsTimeout: getMetricsTimeout(env),
     debug: env.DEBUG || options?.debug || false,
     localVisualizations:
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
@@ -351,14 +351,14 @@ function isHttpProtocol(protcol?: OtlpProtocol): boolean {
   return false;
 }
 
-function getMetricInterval(env: HoneycombEnvironmentOptions): number {
+function getMetricsInterval(env: HoneycombEnvironmentOptions): number {
   // TODO: must be less than OTEL_METRIC_EXPORT_TIMEOUT
   if (env.OTEL_METRIC_EXPORT_INTERVAL && env.OTEL_METRIC_EXPORT_INTERVAL > 0) {
     return env.OTEL_METRIC_EXPORT_INTERVAL;
   } else return DEFAULT_METRIC_INTERVAL;
 }
 
-function getMetricTimeout(env: HoneycombEnvironmentOptions): number {
+function getMetricsTimeout(env: HoneycombEnvironmentOptions): number {
   // TODO: must be greater than OTEL_METRIC_EXPORT_INTERVAL
   if (env.OTEL_METRIC_EXPORT_TIMEOUT && env.OTEL_METRIC_EXPORT_TIMEOUT > 0) {
     return env.OTEL_METRIC_EXPORT_TIMEOUT;
