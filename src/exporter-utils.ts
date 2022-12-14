@@ -2,7 +2,7 @@ import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { SpanExporter } from '@opentelemetry/sdk-trace-base';
 import { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
 import { HoneycombOptions } from './honeycomb-options';
-import { configureHoneycombHttpProtoMetricExporter } from './http-proto-metrics-exporter';
+import { configureHoneycombHttpProtoMetricExporter } from './http-proto-metric-exporter';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 
 export const TEAM_HEADER_KEY = 'x-honeycomb-team';

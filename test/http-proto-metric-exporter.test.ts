@@ -5,7 +5,7 @@ import {
   TEAM_HEADER_KEY,
 } from '../src/exporter-utils';
 import { DEFAULT_API_ENDPOINT } from '../src/honeycomb-options';
-import { configureHoneycombHttpProtoMetricExporter } from '../src/http-proto-metrics-exporter';
+import { configureHoneycombHttpProtoMetricExporter } from '../src/http-proto-metric-exporter';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 
 const dataset = 'my-dataset';
