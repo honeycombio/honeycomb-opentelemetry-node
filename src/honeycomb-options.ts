@@ -11,6 +11,8 @@ export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number];
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
 export const DEFAULT_OTLP_EXPORTER_PROTOCOL = OtlpProtocolKind.HttpProtobuf;
+export const DEFAULT_METRIC_INTERVAL = 60000;
+export const DEFAULT_METRIC_TIMEOUT = 30000;
 
 export const IGNORED_DATASET_ERROR =
   'WARN: Dataset is ignored in favor of service name.';
@@ -61,6 +63,12 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
   /** The OTLP protocol used to send telemetry to Honeycomb. The default is 'http/protobuf'. */
   protocol?: OtlpProtocol;
 
+  /** Number of milliseconds for the metric reader to initiate metric collection. Defaults to 60000. */
+  metricsInterval?: number;
+
+  /** Number of milliseconds for the async observable callback to timeout. Defaults to 30000. */
+  metricsTimeout?: number;
+
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
   localVisualizations?: boolean;
 }
@@ -98,6 +106,8 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
+    metricInterval: getMetricInterval(env),
+    metricTimeout: getMetricTimeout(env),
     debug: env.DEBUG || options?.debug || false,
     localVisualizations:
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
@@ -156,6 +166,9 @@ export type HoneycombEnvironmentOptions = {
 
   OTEL_SERVICE_NAME?: string;
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
+
+  OTEL_METRIC_EXPORT_INTERVAL?: number;
+  OTEL_METRIC_EXPORT_TIMEOUT?: number;
 };
 
 /**
@@ -185,6 +198,13 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     OTEL_EXPORTER_OTLP_PROTOCOL: parseOtlpProtocol(
       process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
     ),
+
+    OTEL_METRIC_EXPORT_INTERVAL: parseMetricValue(
+      process.env.OTEL_METRIC_EXPORT_INTERVAL,
+    ),
+    OTEL_METRIC_EXPORT_TIMEOUT: parseMetricValue(
+      process.env.OTEL_METRIC_EXPORT_TIMEOUT,
+    ),
   };
 };
 
@@ -211,6 +231,15 @@ function parseBoolean(value?: string): boolean | undefined {
 function parseOtlpProtocol(protocol?: string): OtlpProtocol | undefined {
   if (OtlpProtocols.includes(protocol as OtlpProtocol)) {
     return protocol as OtlpProtocol;
+  }
+}
+
+function parseMetricValue(metricStr?: string): number | undefined {
+  if (metricStr) {
+    const metricValue = parseInt(metricStr);
+    if (!isNaN(metricValue) && metricValue > 0) {
+      return metricValue;
+    }
   }
 }
 
@@ -320,6 +349,20 @@ function isHttpProtocol(protcol?: OtlpProtocol): boolean {
       return true;
   }
   return false;
+}
+
+function getMetricInterval(env: HoneycombEnvironmentOptions): number {
+  // TODO: must be less than OTEL_METRIC_EXPORT_TIMEOUT
+  if (env.OTEL_METRIC_EXPORT_INTERVAL && env.OTEL_METRIC_EXPORT_INTERVAL > 0) {
+    return env.OTEL_METRIC_EXPORT_INTERVAL;
+  } else return DEFAULT_METRIC_INTERVAL;
+}
+
+function getMetricTimeout(env: HoneycombEnvironmentOptions): number {
+  // TODO: must be greater than OTEL_METRIC_EXPORT_INTERVAL
+  if (env.OTEL_METRIC_EXPORT_TIMEOUT && env.OTEL_METRIC_EXPORT_TIMEOUT > 0) {
+    return env.OTEL_METRIC_EXPORT_TIMEOUT;
+  } else return DEFAULT_METRIC_TIMEOUT;
 }
 
 /**
