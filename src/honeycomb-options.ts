@@ -63,10 +63,10 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
   /** The OTLP protocol used to send telemetry to Honeycomb. The default is 'http/protobuf'. */
   protocol?: OtlpProtocol;
 
-  /** Number of milliseconds for the metric reader to initiate metric collection. Defaults to 60000. */
+  /** Number of milliseconds for the metric reader to initiate metric collection. Defaults to 60000. Must be greater than metricsTimeout. */
   metricsInterval?: number;
 
-  /** Number of milliseconds for the async observable callback to timeout. Defaults to 30000. */
+  /** Number of milliseconds for the async observable callback to timeout. Defaults to 30000. Must be less than metricsInterval. */
   metricsTimeout?: number;
 
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
@@ -93,6 +93,14 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     options?.protocol ||
     DEFAULT_OTLP_EXPORTER_PROTOCOL;
 
+  let metricsInterval = getMetricsInterval(env);
+  let metricsTimeout = getMetricsTimeout(env);
+  if (metricsInterval < metricsTimeout) {
+    // metrics interval must be larger than metrics timeout
+    metricsInterval = DEFAULT_METRIC_INTERVAL;
+    metricsTimeout = DEFAULT_METRIC_TIMEOUT;
+  }
+
   const opts = {
     ...options,
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
@@ -106,8 +114,8 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
-    metricsInterval: getMetricsInterval(env),
-    metricsTimeout: getMetricsTimeout(env),
+    metricsInterval: metricsInterval,
+    metricsTimeout: metricsTimeout,
     debug: env.DEBUG || options?.debug || false,
     localVisualizations:
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
@@ -352,16 +360,16 @@ function isHttpProtocol(protcol?: OtlpProtocol): boolean {
 }
 
 function getMetricsInterval(env: HoneycombEnvironmentOptions): number {
-  // TODO: must be less than OTEL_METRIC_EXPORT_TIMEOUT
-  if (env.OTEL_METRIC_EXPORT_INTERVAL && env.OTEL_METRIC_EXPORT_INTERVAL > 0) {
-    return env.OTEL_METRIC_EXPORT_INTERVAL;
+  const metricInterval = env.OTEL_METRIC_EXPORT_INTERVAL;
+  if (metricInterval && metricInterval > 0) {
+    return metricInterval;
   } else return DEFAULT_METRIC_INTERVAL;
 }
 
 function getMetricsTimeout(env: HoneycombEnvironmentOptions): number {
-  // TODO: must be greater than OTEL_METRIC_EXPORT_INTERVAL
-  if (env.OTEL_METRIC_EXPORT_TIMEOUT && env.OTEL_METRIC_EXPORT_TIMEOUT > 0) {
-    return env.OTEL_METRIC_EXPORT_TIMEOUT;
+  const metricTimeout = env.OTEL_METRIC_EXPORT_TIMEOUT;
+  if (metricTimeout && metricTimeout > 0) {
+    return metricTimeout;
   } else return DEFAULT_METRIC_TIMEOUT;
 }
 

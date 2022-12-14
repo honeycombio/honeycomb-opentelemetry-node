@@ -576,4 +576,12 @@ describe('metrics interval and timeout options', () => {
     expect(options.metricsInterval).toBe(60000);
     expect(options.metricsTimeout).toBe(30000);
   });
+
+  it('uses default values if interval is lower than timeout', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '1000';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '2000';
+    const options = computeOptions();
+    expect(options.metricsInterval).toBe(60000);
+    expect(options.metricsTimeout).toBe(30000);
+  });
 });
