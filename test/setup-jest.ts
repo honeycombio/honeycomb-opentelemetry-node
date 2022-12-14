@@ -15,4 +15,7 @@ afterEach(() => {
 
   delete process.env.OTEL_SERVICE_NAME;
   delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL;
+
+  delete process.env.OTEL_METRIC_EXPORT_INTERVAL;
+  delete process.env.OTEL_METRIC_EXPORT_TIMEOUT;
 });
