@@ -1,4 +1,4 @@
-beforeEach(() => {
+afterEach(() => {
   // Prevents local envs from affecting tests
   // HoneycombEnvironmentOptions
   delete process.env.HONEYCOMB_API_KEY;

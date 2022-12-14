@@ -1,6 +1,10 @@
 import { OTLPTraceExporter as GrpcOTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import { OTLPTraceExporter as HttpProtoOTLPExporter } from '@opentelemetry/exporter-trace-otlp-proto';
-import { getHoneycombSpanExporter } from '../src/exporter-utils';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import {
+  getHoneycombMetricReader,
+  getHoneycombSpanExporter,
+} from '../src/exporter-utils';
 
 beforeEach(() => {
   // enable fake timers so timeouts work more relieably. This is required
@@ -27,5 +31,18 @@ describe('getHoneycombSpanExporter', () => {
       protocol: 'http/json',
     });
     expect(exporter).toBeInstanceOf(HttpProtoOTLPExporter);
+  });
+});
+
+describe('getHoneycombMetricReader', () => {
+  it('returns a PeriodicExportingMetricReader if dataset provided', () => {
+    const metricReader = getHoneycombMetricReader({
+      metricsDataset: 'metrics-dataset',
+    });
+    expect(metricReader).toBeInstanceOf(PeriodicExportingMetricReader);
+  });
+  it('returns a undefined if theres no metrics dataset provided', () => {
+    const metricReader = getHoneycombMetricReader();
+    expect(metricReader).toBeUndefined();
   });
 });

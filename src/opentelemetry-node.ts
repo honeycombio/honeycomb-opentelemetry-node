@@ -3,6 +3,7 @@ import { configureDeterministicSampler } from './deterministic-sampler';
 import { configureBatchWithBaggageSpanProcessor } from './baggage-span-processor';
 import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { configureHoneycombResource } from './resource-builder';
+import { getHoneycombMetricReader } from './exporter-utils';
 import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 
 /**
@@ -18,7 +19,7 @@ export class HoneycombSDK extends NodeSDK {
       ...opts,
       serviceName: opts?.serviceName,
       resource: configureHoneycombResource(),
-      // metricReader: honeycombMetricsReader(opts),
+      metricReader: getHoneycombMetricReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
     });
