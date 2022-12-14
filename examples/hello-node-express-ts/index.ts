@@ -1,6 +1,7 @@
 import {
   context,
   Context,
+  Counter,
   Meter,
   metrics,
   propagation,
@@ -23,7 +24,8 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     const sayHello = () => 'Hello world!';
     const tracer: Tracer = trace.getTracer('hello-world-tracer');
     const meter: Meter = metrics.getMeter('hello-world-meter');
-    const counter = meter.createCounter('events.counter');
+    const counter: Counter = meter.createCounter('sheep');
+
     counter.add(1);
     // new context based on current, with key/values added to baggage
     const ctx: Context = propagation.setBaggage(
