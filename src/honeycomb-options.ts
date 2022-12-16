@@ -156,6 +156,9 @@ export type HoneycombEnvironmentOptions = {
 
   OTEL_SERVICE_NAME?: string;
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
+
+  OTEL_METRIC_EXPORT_INTERVAL?: number;
+  OTEL_METRIC_EXPORT_TIMEOUT?: number;
 };
 
 /**
@@ -175,7 +178,7 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
       process.env.HONEYCOMB_METRICS_APIKEY || process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_DATASET: process.env.HONEYCOMB_DATASET,
     HONEYCOMB_METRICS_DATASET: process.env.HONEYCOMB_METRICS_DATASET,
-    SAMPLE_RATE: parseSampleRate(process.env.SAMPLE_RATE),
+    SAMPLE_RATE: parseStringToPositiveNumber(process.env.SAMPLE_RATE, 1),
     DEBUG: parseBoolean(process.env.DEBUG),
     HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
       process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS,
@@ -185,14 +188,33 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     OTEL_EXPORTER_OTLP_PROTOCOL: parseOtlpProtocol(
       process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
     ),
+
+    OTEL_METRIC_EXPORT_INTERVAL: parseStringToPositiveNumber(
+      process.env.OTEL_METRIC_EXPORT_INTERVAL,
+      0,
+    ),
+    OTEL_METRIC_EXPORT_TIMEOUT: parseStringToPositiveNumber(
+      process.env.OTEL_METRIC_EXPORT_TIMEOUT,
+      0,
+    ),
   };
 };
 
-function parseSampleRate(sampleRateStr?: string): number | undefined {
-  if (sampleRateStr) {
-    const sampleRate = parseInt(sampleRateStr);
-    if (!isNaN(sampleRate) && sampleRate > 1) {
-      return sampleRate;
+/**
+ *
+ * @param envStr environment variable value to parse as number
+ * @param minVal minimum valid number e.g. 0 for positive numbers
+ * This only parses positive numbers, with a default minimum of 0
+ * @returns a positive number or undefined
+ */
+function parseStringToPositiveNumber(
+  envStr?: string,
+  minVal = 0,
+): number | undefined {
+  if (envStr) {
+    const parsedValue = parseInt(envStr);
+    if (!isNaN(parsedValue) && parsedValue > minVal) {
+      return parsedValue;
     }
   }
 }
@@ -350,4 +372,20 @@ export function maybeAppendMetricsPath(url: string, protocol: OtlpProtocol) {
     return url.endsWith('/') ? url + 'v1/metrics' : url + '/v1/metrics';
   }
   return url;
+}
+
+/**
+ * temporary functions while awaiting support from OpenTelemetry
+ *
+ * @returns the metric interval and metric timeout if provided
+ */
+
+export function getMetricsInterval(): number | undefined {
+  const env = getHoneycombEnv();
+  return env.OTEL_METRIC_EXPORT_INTERVAL;
+}
+
+export function getMetricsTimeout(): number | undefined {
+  const env = getHoneycombEnv();
+  return env.OTEL_METRIC_EXPORT_TIMEOUT;
 }

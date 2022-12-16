@@ -1,5 +1,7 @@
 import {
   computeOptions,
+  getMetricsInterval,
+  getMetricsTimeout,
   HoneycombOptions,
   IGNORED_DATASET_ERROR,
   isClassic,
@@ -543,5 +545,41 @@ describe('maybeAppendMetricsPath', () => {
       'http/json',
     );
     expect(endpoint).toBe('https://api.honeycomb.io/v1/metrics');
+  });
+});
+
+describe('metrics interval and timeout options', () => {
+  it('is undefined if not set', () => {
+    const metricInterval = getMetricsInterval();
+    const metricTimeout = getMetricsTimeout();
+    expect(metricInterval).toBeUndefined();
+    expect(metricTimeout).toBeUndefined();
+  });
+
+  it('uses metrics interval and timeout from env vars', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '2000';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '1000';
+    const metricInterval = getMetricsInterval();
+    const metricTimeout = getMetricsTimeout();
+    expect(metricInterval).toBe(2000);
+    expect(metricTimeout).toBe(1000);
+  });
+
+  it('is undefined if set to negative numbers', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '-2000';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '-1000';
+    const metricInterval = getMetricsInterval();
+    const metricTimeout = getMetricsTimeout();
+    expect(metricInterval).toBeUndefined();
+    expect(metricTimeout).toBeUndefined();
+  });
+
+  it('is undefined if set to zero', () => {
+    process.env.OTEL_METRIC_EXPORT_INTERVAL = '0';
+    process.env.OTEL_METRIC_EXPORT_TIMEOUT = '0';
+    const metricInterval = getMetricsInterval();
+    const metricTimeout = getMetricsTimeout();
+    expect(metricInterval).toBeUndefined();
+    expect(metricTimeout).toBeUndefined();
   });
 });
