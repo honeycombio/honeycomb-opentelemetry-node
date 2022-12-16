@@ -1,7 +1,11 @@
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { SpanExporter } from '@opentelemetry/sdk-trace-base';
 import { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
-import { HoneycombOptions } from './honeycomb-options';
+import {
+  getMetricsInterval,
+  getMetricsTimeout,
+  HoneycombOptions,
+} from './honeycomb-options';
 import { configureHoneycombHttpProtoMetricExporter } from './http-proto-metric-exporter';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
 
@@ -41,9 +45,9 @@ export function getHoneycombMetricReader(
     return undefined;
   }
   return new PeriodicExportingMetricReader({
-    // when we add grpc exporter support, we can do the check here to deicde which exporter to pass in
+    // when we add grpc exporter support, we can do the check here to decide which exporter to pass in
     exporter: configureHoneycombHttpProtoMetricExporter(options),
-    exportIntervalMillis: options?.metricsInterval,
-    exportTimeoutMillis: options?.metricsTimeout,
+    exportIntervalMillis: getMetricsInterval(),
+    exportTimeoutMillis: getMetricsTimeout(),
   });
 }

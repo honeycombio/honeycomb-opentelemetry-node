@@ -11,8 +11,6 @@ export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number];
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
 export const DEFAULT_OTLP_EXPORTER_PROTOCOL = OtlpProtocolKind.HttpProtobuf;
-export const DEFAULT_METRIC_INTERVAL = 60000;
-export const DEFAULT_METRIC_TIMEOUT = 30000;
 
 export const IGNORED_DATASET_ERROR =
   'WARN: Dataset is ignored in favor of service name.';
@@ -63,12 +61,6 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
   /** The OTLP protocol used to send telemetry to Honeycomb. The default is 'http/protobuf'. */
   protocol?: OtlpProtocol;
 
-  /** Number of milliseconds for the metric reader to initiate metric collection. Defaults to 60000. Must be greater than metricsTimeout. */
-  metricsInterval?: number;
-
-  /** Number of milliseconds for the async observable callback to timeout. Defaults to 30000. Must be less than metricsInterval. */
-  metricsTimeout?: number;
-
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
   localVisualizations?: boolean;
 }
@@ -93,14 +85,6 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     options?.protocol ||
     DEFAULT_OTLP_EXPORTER_PROTOCOL;
 
-  let metricsInterval = getMetricsInterval(env);
-  let metricsTimeout = getMetricsTimeout(env);
-  if (metricsInterval < metricsTimeout) {
-    // metrics interval must be larger than metrics timeout
-    metricsInterval = DEFAULT_METRIC_INTERVAL;
-    metricsTimeout = DEFAULT_METRIC_TIMEOUT;
-  }
-
   const opts = {
     ...options,
     serviceName: env.OTEL_SERVICE_NAME || options?.serviceName,
@@ -114,8 +98,6 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
     dataset: env.HONEYCOMB_DATASET || options?.dataset,
     metricsDataset: env.HONEYCOMB_METRICS_DATASET || options?.metricsDataset,
     sampleRate: getSampleRate(env, options),
-    metricsInterval: metricsInterval,
-    metricsTimeout: metricsTimeout,
     debug: env.DEBUG || options?.debug || false,
     localVisualizations:
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
@@ -196,7 +178,7 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
       process.env.HONEYCOMB_METRICS_APIKEY || process.env.HONEYCOMB_API_KEY,
     HONEYCOMB_DATASET: process.env.HONEYCOMB_DATASET,
     HONEYCOMB_METRICS_DATASET: process.env.HONEYCOMB_METRICS_DATASET,
-    SAMPLE_RATE: parseSampleRate(process.env.SAMPLE_RATE),
+    SAMPLE_RATE: parseStringToPositiveNumber(process.env.SAMPLE_RATE, 1),
     DEBUG: parseBoolean(process.env.DEBUG),
     HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
       process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS,
@@ -207,20 +189,32 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
       process.env.OTEL_EXPORTER_OTLP_PROTOCOL,
     ),
 
-    OTEL_METRIC_EXPORT_INTERVAL: parseMetricValue(
+    OTEL_METRIC_EXPORT_INTERVAL: parseStringToPositiveNumber(
       process.env.OTEL_METRIC_EXPORT_INTERVAL,
+      0,
     ),
-    OTEL_METRIC_EXPORT_TIMEOUT: parseMetricValue(
+    OTEL_METRIC_EXPORT_TIMEOUT: parseStringToPositiveNumber(
       process.env.OTEL_METRIC_EXPORT_TIMEOUT,
+      0,
     ),
   };
 };
 
-function parseSampleRate(sampleRateStr?: string): number | undefined {
-  if (sampleRateStr) {
-    const sampleRate = parseInt(sampleRateStr);
-    if (!isNaN(sampleRate) && sampleRate > 1) {
-      return sampleRate;
+/**
+ *
+ * @param envStr environment variable value to parse as number
+ * @param minVal minimum valid number e.g. 0 for positive numbers
+ * This only parses positive numbers, with a default minimum of 0
+ * @returns a positive number or undefined
+ */
+function parseStringToPositiveNumber(
+  envStr?: string,
+  minVal = 0,
+): number | undefined {
+  if (envStr) {
+    const parsedValue = parseInt(envStr);
+    if (!isNaN(parsedValue) && parsedValue > minVal) {
+      return parsedValue;
     }
   }
 }
@@ -239,15 +233,6 @@ function parseBoolean(value?: string): boolean | undefined {
 function parseOtlpProtocol(protocol?: string): OtlpProtocol | undefined {
   if (OtlpProtocols.includes(protocol as OtlpProtocol)) {
     return protocol as OtlpProtocol;
-  }
-}
-
-function parseMetricValue(metricStr?: string): number | undefined {
-  if (metricStr) {
-    const metricValue = parseInt(metricStr);
-    if (!isNaN(metricValue) && metricValue > 0) {
-      return metricValue;
-    }
   }
 }
 
@@ -359,20 +344,6 @@ function isHttpProtocol(protcol?: OtlpProtocol): boolean {
   return false;
 }
 
-function getMetricsInterval(env: HoneycombEnvironmentOptions): number {
-  const metricInterval = env.OTEL_METRIC_EXPORT_INTERVAL;
-  if (metricInterval && metricInterval > 0) {
-    return metricInterval;
-  } else return DEFAULT_METRIC_INTERVAL;
-}
-
-function getMetricsTimeout(env: HoneycombEnvironmentOptions): number {
-  const metricTimeout = env.OTEL_METRIC_EXPORT_TIMEOUT;
-  if (metricTimeout && metricTimeout > 0) {
-    return metricTimeout;
-  } else return DEFAULT_METRIC_TIMEOUT;
-}
-
 /**
  * Checks for and appends v1/traces to provided URL if missing when using an HTTP
  * based exporter protocol.
@@ -401,4 +372,20 @@ export function maybeAppendMetricsPath(url: string, protocol: OtlpProtocol) {
     return url.endsWith('/') ? url + 'v1/metrics' : url + '/v1/metrics';
   }
   return url;
+}
+
+/**
+ * temporary functions while awaiting support from OpenTelemetry
+ *
+ * @returns the metric interval and metric timeout if provided
+ */
+
+export function getMetricsInterval(): number | undefined {
+  const env = getHoneycombEnv();
+  return env.OTEL_METRIC_EXPORT_INTERVAL;
+}
+
+export function getMetricsTimeout(): number | undefined {
+  const env = getHoneycombEnv();
+  return env.OTEL_METRIC_EXPORT_TIMEOUT;
 }
