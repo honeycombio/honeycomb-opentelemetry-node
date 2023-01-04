@@ -8,8 +8,8 @@ import {
 import {
   computeOptions,
   HoneycombOptions,
-  isClassic }
-from './honeycomb-options';
+  isClassic,
+} from './honeycomb-options';
 import { Metadata } from '@grpc/grpc-js';
 
 /**

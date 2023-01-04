@@ -9,7 +9,7 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-grpc';
 
 const dataset = 'my-metrics-dataset';
 const apikey = '0000000000000000000000'; // 22 chars
-const metricsApiKey = '1111111111111111111111' // 22 chars
+const metricsApiKey = '1111111111111111111111'; // 22 chars
 const endpoint = 'my-generic-endpoint.com';
 const metricsEndpoint = 'my-metrics-endpoint.com';
 
@@ -33,11 +33,17 @@ describe('with a regular apikey', () => {
   test('it should set the team and dataset headers', () => {
     const metricExporter = configureHoneycombGrpcMetricExporter({
       apiKey: apikey,
-      metricsDataset: dataset
+      metricsDataset: dataset,
     });
-    expect(metricExporter._otlpExporter.metadata?.get(OTLP_HEADER_KEY)[0]).toBe(OTLP_PROTO_VERSION);
-    expect(metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0]).toBe(apikey);
-    expect(metricExporter._otlpExporter.metadata?.get(DATASET_HEADER_KEY)[0]).toBe(dataset);
+    expect(metricExporter._otlpExporter.metadata?.get(OTLP_HEADER_KEY)[0]).toBe(
+      OTLP_PROTO_VERSION,
+    );
+    expect(metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0]).toBe(
+      apikey,
+    );
+    expect(
+      metricExporter._otlpExporter.metadata?.get(DATASET_HEADER_KEY)[0],
+    ).toBe(dataset);
   });
 
   test('it should use the default URL if no url is specified', () => {
@@ -77,7 +83,9 @@ describe('with a regular apikey', () => {
       metricsDataset: dataset,
     });
 
-    expect(metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0]).toBe(metricsApiKey);
+    expect(metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0]).toBe(
+      metricsApiKey,
+    );
   });
 
   describe('when env vars are set', () => {
@@ -97,9 +105,15 @@ describe('with a regular apikey', () => {
         metricsDataset: 'something else',
       });
       expect(metricExporter._otlpExporter.url).toBe('api.honeycomb.io');
-      expect(metricExporter._otlpExporter.metadata?.get(OTLP_HEADER_KEY)[0]).toBe(OTLP_PROTO_VERSION);
-      expect(metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0]).toBe(apikey);
-      expect(metricExporter._otlpExporter.metadata?.get(DATASET_HEADER_KEY)[0]).toBe(dataset);
+      expect(
+        metricExporter._otlpExporter.metadata?.get(OTLP_HEADER_KEY)[0],
+      ).toBe(OTLP_PROTO_VERSION);
+      expect(
+        metricExporter._otlpExporter.metadata?.get(TEAM_HEADER_KEY)[0],
+      ).toBe(apikey);
+      expect(
+        metricExporter._otlpExporter.metadata?.get(DATASET_HEADER_KEY)[0],
+      ).toBe(dataset);
     });
   });
 });

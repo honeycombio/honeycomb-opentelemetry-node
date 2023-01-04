@@ -48,9 +48,9 @@ export function getHoneycombMetricReader(
   }
 
   const exporter =
-    options?.protocol === OtlpProtocolKind.Grpc ?
-      configureHoneycombGrpcMetricExporter(options) :
-      configureHoneycombHttpProtoMetricExporter(options);
+    options?.protocol === OtlpProtocolKind.Grpc
+      ? configureHoneycombGrpcMetricExporter(options)
+      : configureHoneycombHttpProtoMetricExporter(options);
 
   return new PeriodicExportingMetricReader({
     exporter: exporter,
