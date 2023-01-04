@@ -1,10 +1,12 @@
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { SpanExporter } from '@opentelemetry/sdk-trace-base';
+import { configureHoneycombGrpcMetricExporter } from './grpc-metric-exporter';
 import { configureHoneycombGrpcTraceExporter } from './grpc-trace-exporter';
 import {
   getMetricsInterval,
   getMetricsTimeout,
   HoneycombOptions,
+  OtlpProtocolKind,
 } from './honeycomb-options';
 import { configureHoneycombHttpProtoMetricExporter } from './http-proto-metric-exporter';
 import { configureHoneycombHttpProtoTraceExporter } from './http-proto-trace-exporter';
@@ -26,7 +28,7 @@ export const OTLP_PROTO_VERSION = '0.16.0';
 export function getHoneycombSpanExporter(
   options?: HoneycombOptions,
 ): SpanExporter {
-  if (options?.protocol == 'grpc') {
+  if (options?.protocol == OtlpProtocolKind.Grpc) {
     return configureHoneycombGrpcTraceExporter(options);
   }
   return configureHoneycombHttpProtoTraceExporter(options);
@@ -44,9 +46,14 @@ export function getHoneycombMetricReader(
     // only enable metrics if a metrics dataset has been set
     return undefined;
   }
+
+  const exporter =
+    options?.protocol === OtlpProtocolKind.Grpc ?
+      configureHoneycombGrpcMetricExporter(options) :
+      configureHoneycombHttpProtoMetricExporter(options);
+
   return new PeriodicExportingMetricReader({
-    // when we add grpc exporter support, we can do the check here to decide which exporter to pass in
-    exporter: configureHoneycombHttpProtoMetricExporter(options),
+    exporter: exporter,
     exportIntervalMillis: getMetricsInterval(),
     exportTimeoutMillis: getMetricsTimeout(),
   });
