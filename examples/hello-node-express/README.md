@@ -23,3 +23,10 @@ Alternatively, to export telemetry using `gRPC` instead of `http/protobuf`:
 ```bash
 HONEYCOMB_API_KEY={apikey} OTEL_SERVICE_NAME="hello-node-express" OTEL_EXPORTER_OTLP_PROTOCOL=grpc npm start
 ```
+
+You can now curl the app:
+
+```bash
+curl localhost:3000
+Hello, World!
+```
