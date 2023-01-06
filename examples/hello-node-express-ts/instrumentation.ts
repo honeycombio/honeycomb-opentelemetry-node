@@ -4,6 +4,7 @@ import {
   HoneycombSDK,
 } from '@honeycombio/opentelemetry-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { Resource } from '@opentelemetry/resources';
 
 const config: HoneycombOptions = {
   apiKey: process.env.HONEYCOMB_API_KEY || '',
@@ -12,6 +13,10 @@ const config: HoneycombOptions = {
   instrumentations: [getNodeAutoInstrumentations()],
   metricsDataset:
     process.env.HONEYCOMB_METRICS_DATASET || 'hello-node-express-ts-metrics',
+  // add app level attributes to appear on every span
+  resource: new Resource({
+    'global.build_id': process.env.APP_BUILD_ID,
+  }),
 };
 
 const sdk: NodeSDK = new HoneycombSDK(config);
