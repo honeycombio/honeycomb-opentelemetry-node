@@ -3,6 +3,7 @@ const { context, metrics, propagation, trace } = require('@opentelemetry/api');
 const {
   getNodeAutoInstrumentations,
 } = require('@opentelemetry/auto-instrumentations-node');
+const { Resource } = require('@opentelemetry/resources');
 
 const sdk = new HoneycombSDK({
   apiKey: process.env.HONEYCOMB_API_KEY || '',
@@ -11,6 +12,10 @@ const sdk = new HoneycombSDK({
   instrumentations: [getNodeAutoInstrumentations()],
   metricsDataset:
     process.env.HONEYCOMB_METRICS_DATASET || 'hello-node-express-ts-metrics',
+  // add app level attributes to appear on every span
+  resource: new Resource({
+    'global.build_id': process.env.APP_BUILD_ID,
+  }),
 });
 
 // alternatively, use environment variables for
