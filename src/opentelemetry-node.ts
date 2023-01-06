@@ -18,7 +18,7 @@ export class HoneycombSDK extends NodeSDK {
     super({
       ...opts,
       serviceName: opts?.serviceName,
-      resource: configureHoneycombResource(),
+      resource: configureHoneycombResource(opts),
       metricReader: getHoneycombMetricReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
