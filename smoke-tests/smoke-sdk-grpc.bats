@@ -48,3 +48,8 @@ teardown_file() {
 	result=$(span_attributes_for ${TRACER_NAME} | jq "select(.key == \"for_the_children\").value.stringValue")
 	assert_equal "$result" '"another important value"'
 }
+
+@test "Manual instrumentation produces metrics" {
+    result=$(metric_names_for ${METER_NAME})
+    assert_equal "$result" '"sheep"'
+}
