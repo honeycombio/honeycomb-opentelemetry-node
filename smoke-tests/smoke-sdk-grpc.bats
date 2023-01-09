@@ -4,6 +4,7 @@ load test_helpers/utilities
 
 CONTAINER_NAME="app-sdk-grpc"
 TRACER_NAME="hello-world-tracer"
+METER_NAME="hello-world-meter"
 
 setup_file() {
 	echo "# 🚧" >&3
