@@ -1,3 +1,5 @@
+import {OTLPMetricExporter as GrpcMetricExporter} from '@opentelemetry/exporter-metrics-otlp-grpc';
+import { OTLPMetricExporter as HttpProtoMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { SpanExporter } from '@opentelemetry/sdk-trace-base';
 import { configureHoneycombGrpcMetricExporter } from './grpc-metric-exporter';
@@ -35,6 +37,24 @@ export function getHoneycombSpanExporter(
 }
 
 /**
+ * Configures and returns a metric exporter based on the OTLP protocol
+ * provided via options.
+ * 
+ * Defaults to a http/profobuf exporter if not configured.
+ * 
+ * @param options the {@link HoneycombOptions} used to configure the exporter 
+ * @returns a metrics exporter configured to send telemetry to Honeycomb
+ */
+export function getHoneycombMetricExporter(
+  options?: HoneycombOptions,
+): GrpcMetricExporter | HttpProtoMetricExporter {
+  if (options?.protocol == OtlpProtocolKind.Grpc) {
+    return configureHoneycombGrpcMetricExporter(options);
+  }
+  return configureHoneycombHttpProtoMetricExporter(options);
+}
+
+/**
  * Builds and returns an OTLP Metric reader that configures a metric exporter to send data over http/protobuf periodically
  * @param options The {@link HoneycombOptions} used to configure the exporter
  * @returns a {@link PeriodicExportingMetricReader} configured to send telemetry to Honeycomb over http/protobuf
@@ -47,13 +67,8 @@ export function getHoneycombMetricReader(
     return undefined;
   }
 
-  const exporter =
-    options?.protocol === OtlpProtocolKind.Grpc
-      ? configureHoneycombGrpcMetricExporter(options)
-      : configureHoneycombHttpProtoMetricExporter(options);
-
   return new PeriodicExportingMetricReader({
-    exporter: exporter,
+    exporter: getHoneycombMetricExporter(options),
     exportIntervalMillis: getMetricsInterval(),
     exportTimeoutMillis: getMetricsTimeout(),
   });
