@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- fix: Allow user specified resource attributes (#152) |[@pkanal]](https://github.com/pkanal)
+- fix: Allow user specified resource attributes (#152) |[@pkanal](https://github.com/pkanal)
 
 ### Maintenance
 
