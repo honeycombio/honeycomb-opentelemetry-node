@@ -1,4 +1,4 @@
-import {OTLPMetricExporter as GrpcMetricExporter} from '@opentelemetry/exporter-metrics-otlp-grpc';
+import { OTLPMetricExporter as GrpcMetricExporter } from '@opentelemetry/exporter-metrics-otlp-grpc';
 import { OTLPMetricExporter as HttpProtoMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { SpanExporter } from '@opentelemetry/sdk-trace-base';
@@ -39,10 +39,10 @@ export function getHoneycombSpanExporter(
 /**
  * Configures and returns a metric exporter based on the OTLP protocol
  * provided via options.
- * 
+ *
  * Defaults to a http/profobuf exporter if not configured.
- * 
- * @param options the {@link HoneycombOptions} used to configure the exporter 
+ *
+ * @param options the {@link HoneycombOptions} used to configure the exporter
  * @returns a metrics exporter configured to send telemetry to Honeycomb
  */
 export function getHoneycombMetricExporter(
