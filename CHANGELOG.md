@@ -1,5 +1,20 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.3.1-beta - 2023-01-09
+
+### Fixed
+
+- fix: Allow user specified resource attributes (#152) |[@pkanal]](https://github.com/pkanal)
+
+### Maintenance
+
+- maint(deps-dev): bump @typescript-eslint/eslint-plugin from 5.43.0 to 5.48.0 (#153) | [@dependabot](https://github.com/dependabot)
+- maint(deps-dev): bump @types/jest from 29.2.4 to 29.2.5 (#147) | [@dependabot](https://github.com/dependabot)
+- maint(deps): bump axios from 1.2.1 to 1.2.2 (#148) | [@dependabot](https://github.com/dependabot)
+- maint(deps-dev): bump jest-junit from 14.0.1 to 15.0.0 (#146) | [@dependabot](https://github.com/dependabot)
+- maint(deps): bump json5 from 1.0.1 to 1.0.2 (#154) | [@dependabot](https://github.com/dependabot)
+- maint(deps-dev): bump eslint from 8.29.0 to 8.31.0 (#145) | [@dependabot](https://github.com/dependabot)
+
 ## v0.3.0-beta - 2022-12-19
 
 ### Enhancements
