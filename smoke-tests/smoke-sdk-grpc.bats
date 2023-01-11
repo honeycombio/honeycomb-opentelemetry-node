@@ -27,13 +27,13 @@ teardown_file() {
 @test "Auto instrumentation produces 3 Express middleware spans" {
   result=$(span_names_for "@opentelemetry/instrumentation-express")
   assert_equal "$result" '"middleware - query"
-  "middleware - expressInit"
-  "request handler - /"'
+"middleware - expressInit"
+"request handler - /"'
 }
 
 @test "Auto instrumentation produces an http request span" {
-    result=$(span_names_for "@opentelemetry/instrumentation-http")
-    assert_equal "$result" '"GET /"'
+  result=$(span_names_for "@opentelemetry/instrumentation-http")
+  assert_equal "$result" '"GET /"'
 }
 
 @test "Manual instrumentation produces span with name of span" {
