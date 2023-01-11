@@ -4,6 +4,7 @@ load test_helpers/utilities
 
 CONTAINER_NAME="app-sdk-grpc"
 TRACER_NAME="hello-world-tracer"
+METER_NAME="hello-world-meter"
 
 setup_file() {
 	echo "# 🚧" >&3
@@ -11,6 +12,7 @@ setup_file() {
 	wait_for_ready_app ${CONTAINER_NAME}
 	curl --silent "http://localhost:3000"
 	wait_for_traces
+	wait_for_metrics 15
 }
 
 teardown_file() {
@@ -47,4 +49,9 @@ teardown_file() {
 @test "BaggageSpanProcessor: key-values added to baggage appear on child spans" {
 	result=$(span_attributes_for ${TRACER_NAME} | jq "select(.key == \"for_the_children\").value.stringValue")
 	assert_equal "$result" '"another important value"'
+}
+
+@test "Manual instrumentation produces metrics" {
+    result=$(metric_names_for ${METER_NAME})
+    assert_equal "$result" '"sheep"'
 }
