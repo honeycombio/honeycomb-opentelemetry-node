@@ -12,6 +12,7 @@ setup_file() {
 	wait_for_ready_app ${CONTAINER_NAME}
 	curl --silent "http://localhost:3000"
 	wait_for_traces
+	wait_for_metrics 15
 }
 
 teardown_file() {
@@ -24,15 +25,15 @@ teardown_file() {
 # TESTS
 
 @test "Auto instrumentation produces 3 Express middleware spans" {
-  result=$(span_names_for "@opentelemetry/instrumentation-express")
-  assert_equal "$result" '"middleware - query"
-"middleware - expressInit"
-"request handler - /"'
+    result=$(span_names_for "@opentelemetry/instrumentation-express")
+    assert_equal "$result" '"middleware - query"
+    "middleware - expressInit"
+    "request handler - /"'
 }
 
 @test "Auto instrumentation produces an http request span" {
-  result=$(span_names_for "@opentelemetry/instrumentation-http")
-  assert_equal "$result" '"GET /"'
+    result=$(span_names_for "@opentelemetry/instrumentation-http")
+    assert_equal "$result" '"GET /"'
 }
 
 @test "Manual instrumentation produces span with name of span" {
