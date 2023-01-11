@@ -40,7 +40,7 @@ export function getHoneycombSpanExporter(
  * Configures and returns a metric exporter based on the OTLP protocol
  * provided via options.
  *
- * Defaults to a http/profobuf exporter if not configured.
+ * Defaults to a http/protobuf exporter if not configured.
  *
  * @param options the {@link HoneycombOptions} used to configure the exporter
  * @returns a metrics exporter configured to send telemetry to Honeycomb

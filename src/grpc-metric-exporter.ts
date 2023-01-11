@@ -5,11 +5,7 @@ import {
   OTLP_PROTO_VERSION,
   TEAM_HEADER_KEY,
 } from './exporter-utils';
-import {
-  computeOptions,
-  HoneycombOptions,
-  isClassic,
-} from './honeycomb-options';
+import { computeOptions, HoneycombOptions } from './honeycomb-options';
 import { Metadata } from '@grpc/grpc-js';
 
 /**
