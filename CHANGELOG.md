@@ -1,5 +1,11 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.3.2-beta - 2023-01-19
+
+### Enhancements
+
+- Add gRPC metrics export support (#150) | [@cartermp](https://github.com/cartermp)
+
 ## v0.3.1-beta - 2023-01-09
 
 ### Fixed
