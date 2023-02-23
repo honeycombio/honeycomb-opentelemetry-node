@@ -8,6 +8,7 @@ import {
   Span,
   trace,
   Tracer,
+  ValueType,
 } from '@opentelemetry/api';
 import express, { Express, NextFunction, Request, Response } from 'express';
 
@@ -24,9 +25,23 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     const sayHello = () => 'Hello world!';
     const tracer: Tracer = trace.getTracer('hello-world-tracer');
     const meter: Meter = metrics.getMeter('hello-world-meter');
+    const nodeMonitorMeter: Meter = metrics.getMeter('node-monitor-meter');
     const counter: Counter = meter.createCounter('sheep');
 
     counter.add(1);
+
+    const gauge = nodeMonitorMeter.createObservableGauge(
+      'process.runtime.nodejs.memory.heap.total',
+      {
+        unit: 'By',
+        valueType: ValueType.INT,
+      },
+    );
+    gauge.addCallback((result) => {
+      console.log('Getting value of process.memoryUsage().heapTotal');
+      result.observe(process.memoryUsage().heapTotal);
+    });
+
     // new context based on current, with key/values added to baggage
     const ctx: Context = propagation.setBaggage(
       context.active(),
