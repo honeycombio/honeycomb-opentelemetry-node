@@ -5,6 +5,7 @@ load test_helpers/utilities
 CONTAINER_NAME="app-sdk-http-ts"
 TRACER_NAME="hello-world-tracer"
 METER_NAME="hello-world-meter"
+NODE_METER_NAME="node-monitor-meter"
 
 setup_file() {
 	echo "# 🚧" >&3
@@ -51,7 +52,11 @@ teardown_file() {
 	assert_equal "$result" '"another important value"'
 }
 
-@test "Manual instrumentation produces metrics" {
+@test "Manual instrumentation produces metrics for counter" {
     result=$(metric_names_for ${METER_NAME})
     assert_equal "$result" '"sheep"'
+}
+@test "Manual instrumentation produces metrics for observable gauge" {
+    result=$(metric_names_for ${NODE_METER_NAME})
+    assert_equal "$result" '"process.runtime.nodejs.memory.heap.total"'
 }
