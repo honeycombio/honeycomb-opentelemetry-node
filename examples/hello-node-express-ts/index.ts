@@ -19,13 +19,13 @@ const port = 3000;
 // express supports async handlers but the @types definition is wrong: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/50871
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
+  const tracer: Tracer = trace.getTracer('hello-world-tracer');
+  const meter: Meter = metrics.getMeter('hello-world-meter');
+  const nodeMonitorMeter: Meter = metrics.getMeter('node-monitor-meter');
   try {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
     const sayHello = () => 'Hello world!';
-    const tracer: Tracer = trace.getTracer('hello-world-tracer');
-    const meter: Meter = metrics.getMeter('hello-world-meter');
-    const nodeMonitorMeter: Meter = metrics.getMeter('node-monitor-meter');
     const counter: Counter = meter.createCounter('sheep');
 
     counter.add(1);
