@@ -6,6 +6,7 @@ import {
   metrics,
   propagation,
   Span,
+  SpanStatusCode,
   trace,
   Tracer,
   ValueType,
@@ -63,6 +64,16 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
     sayHello();
     res.end('Hello, World!\n');
   } catch (err) {
+    tracer.startActiveSpan('error', (span) => {
+      span.recordException(err as Error);
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: 'i tried and i failed',
+      });
+      span.end();
+    });
+    res.status(418);
+    res.send('There was an error. Please try again later!\n');
     next(err);
   }
 });
