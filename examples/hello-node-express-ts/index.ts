@@ -4,6 +4,7 @@ import {
   Counter,
   Meter,
   metrics,
+  ObservableGauge,
   propagation,
   Span,
   SpanStatusCode,
@@ -31,7 +32,7 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
 
     counter.add(1);
 
-    const gauge = nodeMonitorMeter.createObservableGauge(
+    const gauge: ObservableGauge = nodeMonitorMeter.createObservableGauge(
       'process.runtime.nodejs.memory.heap.total',
       {
         unit: 'By',
