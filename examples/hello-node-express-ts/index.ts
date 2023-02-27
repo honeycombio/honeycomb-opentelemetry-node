@@ -24,59 +24,60 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   const tracer: Tracer = trace.getTracer('hello-world-tracer');
   const meter: Meter = metrics.getMeter('hello-world-meter');
   const nodeMonitorMeter: Meter = metrics.getMeter('node-monitor-meter');
-  try {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    const sayHello = () => 'Hello world!';
-    const counter: Counter = meter.createCounter('sheep');
+  await tracer.startActiveSpan('try-catch', async (span: Span) => {
+    try {
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain');
+      const sayHello = () => 'Hello world!';
+      const counter: Counter = meter.createCounter('sheep');
 
-    counter.add(1);
+      counter.add(1);
 
-    const gauge: ObservableGauge = nodeMonitorMeter.createObservableGauge(
-      'process.runtime.nodejs.memory.heap.total',
-      {
-        unit: 'By',
-        valueType: ValueType.INT,
-      },
-    );
-    gauge.addCallback((result) => {
-      console.log('Getting value of process.memoryUsage().heapTotal');
-      result.observe(process.memoryUsage().heapTotal);
-    });
-
-    // new context based on current, with key/values added to baggage
-    const ctx: Context = propagation.setBaggage(
-      context.active(),
-      propagation.createBaggage({
-        for_the_children: { value: 'another important value' },
-      }),
-    );
-    // within the new context, do some "work"
-    await context.with(ctx, async () => {
-      await tracer.startActiveSpan('sleep', async (span: Span) => {
-        console.log('saying hello to the world');
-        span.setAttribute('message', 'hello-world');
-        span.setAttribute('delay_ms', 100);
-        await sleepy();
-        console.log('sleeping a bit!');
-        span.end();
+      const gauge: ObservableGauge = nodeMonitorMeter.createObservableGauge(
+        'process.runtime.nodejs.memory.heap.total',
+        {
+          unit: 'By',
+          valueType: ValueType.INT,
+        },
+      );
+      gauge.addCallback((result) => {
+        console.log('Getting value of process.memoryUsage().heapTotal');
+        result.observe(process.memoryUsage().heapTotal);
       });
-    });
-    sayHello();
-    res.end('Hello, World!\n');
-  } catch (err) {
-    tracer.startActiveSpan('error', (span) => {
+
+      // new context based on current, with key/values added to baggage
+      const ctx: Context = propagation.setBaggage(
+        context.active(),
+        propagation.createBaggage({
+          for_the_children: { value: 'another important value' },
+        }),
+      );
+      // within the new context, do some "work"
+      await context.with(ctx, async () => {
+        await tracer.startActiveSpan('sleep', async (span: Span) => {
+          console.log('saying hello to the world');
+          span.setAttribute('message', 'hello-world');
+          span.setAttribute('delay_ms', 100);
+          await sleepy();
+          console.log('sleeping a bit!');
+          span.end();
+        });
+      });
+      sayHello();
+      res.end('Hello, World!\n');
+      span.end();
+    } catch (err) {
       span.recordException(err as Error);
       span.setStatus({
         code: SpanStatusCode.ERROR,
         message: 'i tried and i failed',
       });
       span.end();
-    });
-    res.status(418);
-    res.send('There was an error. Please try again later!\n');
-    next(err);
-  }
+      res.status(418);
+      res.send('There was an error. Please try again later!\n');
+      next(err);
+    }
+  });
 });
 
 function sleepy(): Promise<void> {
