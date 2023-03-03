@@ -40,7 +40,7 @@ teardown_file() {
 @test "Manual instrumentation produces span with name of span" {
 	result=$(span_names_for ${TRACER_NAME})
 	assert_equal "$result" '"sleep"
-"try-catch"'
+"request-handler"'
 }
 
 @test "Manual instrumentation adds custom attribute" {
