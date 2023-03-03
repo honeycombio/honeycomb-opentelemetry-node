@@ -24,7 +24,7 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
   const tracer: Tracer = trace.getTracer('hello-world-tracer');
   const meter: Meter = metrics.getMeter('hello-world-meter');
   const nodeMonitorMeter: Meter = metrics.getMeter('node-monitor-meter');
-  await tracer.startActiveSpan('try-catch', async (span: Span) => {
+  await tracer.startActiveSpan('request-handler', async (span: Span) => {
     try {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
@@ -64,19 +64,20 @@ app.get('/', async (_req: Request, res: Response, next: NextFunction) => {
         });
       });
       sayHello();
+      span.setAttribute('request-handler.status', 'success');
       res.end('Hello, World!\n');
-      span.end();
     } catch (err) {
       span.recordException(err as Error);
       span.setStatus({
         code: SpanStatusCode.ERROR,
         message: 'i tried and i failed',
       });
-      span.end();
+      span.setAttribute('request-handler.status', 'failure');
       res.status(418);
       res.send('There was an error. Please try again later!\n');
       next(err);
     }
+    span.end();
   });
 });
 
