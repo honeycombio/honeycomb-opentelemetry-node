@@ -6,7 +6,7 @@ export enum OtlpProtocolKind {
   HttpProtobuf = 'http/protobuf',
   HttpJson = 'http/json',
 }
-export type OtlpProtocol = OtlpProtocolKind | typeof OtlpProtocols[number];
+export type OtlpProtocol = OtlpProtocolKind | (typeof OtlpProtocols)[number];
 
 export const DEFAULT_API_ENDPOINT = 'https://api.honeycomb.io';
 export const DEFAULT_SAMPLE_RATE = 1;
@@ -31,13 +31,13 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
   /** The API key used to send traces telemetry to Honeycomb. Defaults to apikey if not set. */
   tracesApiKey?: string;
 
-  /** The API key used to send merics telemetry to Honeycomb. Defaults to apikey if not set. */
+  /** The API key used to send metrics telemetry to Honeycomb. Defaults to apikey if not set. */
   metricsApiKey?: string;
 
   /** The API endpoint where telemetry is sent. Defaults to 'https://api.honeycomb.io' */
   endpoint?: string;
 
-  /** The API endpint where traces telemetry is sent. Defaults to endpoint if not set. */
+  /** The API endpoint where traces telemetry is sent. Defaults to endpoint if not set. */
   tracesEndpoint?: string;
 
   /** The API endpoint where metrics telemetry is sent. Defaults to endpoint if not set. */
@@ -129,7 +129,7 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
 }
 
 /**
- * Determins whether the passed in apikey is clasic (32 chars) or not.
+ * Determines whether the passed in apikey is classic (32 chars) or not.
  *
  * @param apikey the apikey
  * @returns a boolean to indicate if the apikey was a classic key
@@ -335,8 +335,8 @@ function getSampleRate(
   return DEFAULT_SAMPLE_RATE;
 }
 
-function isHttpProtocol(protcol?: OtlpProtocol): boolean {
-  switch (protcol) {
+function isHttpProtocol(protocol?: OtlpProtocol): boolean {
+  switch (protocol) {
     case 'http/json':
     case 'http/protobuf':
       return true;
@@ -360,7 +360,7 @@ export function maybeAppendTracesPath(url: string, protocol: OtlpProtocol) {
 }
 
 /**
- * Checks for and appends v1/metrics to provided URL if missingwhen using an HTTP
+ * Checks for and appends v1/metrics to provided URL if missing when using an HTTP
  * based exporter protocol.
  *
  * @param url the base URL to append traces path to if missing
