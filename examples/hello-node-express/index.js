@@ -66,7 +66,4 @@ app.listen(port, hostname, () => {
   console.log(`Now listening on: http://${hostname}:${port}/`);
 });
 
-sdk
-  .start()
-  .then(() => console.log('Tracing initialized'))
-  .catch((error) => console.log('Error initializing tracing', error));
+sdk.start();

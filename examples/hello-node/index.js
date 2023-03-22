@@ -37,7 +37,4 @@ server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-sdk
-  .start()
-  .then(() => console.log('Tracing initialized'))
-  .catch((error) => console.log('Error initializing tracing', error));
+sdk.start();

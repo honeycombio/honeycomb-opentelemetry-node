@@ -21,9 +21,4 @@ const config: HoneycombOptions = {
 
 const sdk: NodeSDK = new HoneycombSDK(config);
 
-sdk
-  .start()
-  .then(() => {
-    console.log('Tracing initialized');
-  })
-  .catch((error) => console.log('Error initializing tracing', error));
+sdk.start();
