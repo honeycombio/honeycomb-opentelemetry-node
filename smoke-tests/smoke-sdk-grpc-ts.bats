@@ -12,7 +12,7 @@ setup_file() {
 	docker-compose up --build --detach collector ${CONTAINER_NAME}
 	wait_for_ready_app ${CONTAINER_NAME}
 	curl --silent "http://localhost:3000"
-	wait_for_traces
+	wait_for_traces 15
 	wait_for_metrics 15
 }
 
