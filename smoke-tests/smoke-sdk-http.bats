@@ -12,7 +12,7 @@ setup_file() {
 	wait_for_ready_app ${CONTAINER_NAME}
 	curl --silent "http://localhost:3000"
 	wait_for_traces
-    wait_for_metrics 15
+  wait_for_metrics 15
 }
 
 teardown_file() {

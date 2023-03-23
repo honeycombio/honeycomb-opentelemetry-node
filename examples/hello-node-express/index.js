@@ -9,7 +9,15 @@ const sdk = new HoneycombSDK({
   apiKey: process.env.HONEYCOMB_API_KEY || '',
   serviceName: process.env.OTEL_SERVICE_NAME || 'hello-node-express',
   debug: true,
-  instrumentations: [getNodeAutoInstrumentations()],
+  instrumentations: [
+    getNodeAutoInstrumentations({
+      // disabling fs autoinstrumentation since it can be noisy
+      // and expensive during startup
+      '@opentelemetry/instrumentation-fs': {
+        enabled: false,
+      },
+    }),
+  ],
   metricsDataset:
     process.env.HONEYCOMB_METRICS_DATASET || 'hello-node-express-metrics',
   // add app level attributes to appear on every span
