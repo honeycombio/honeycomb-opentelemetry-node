@@ -5,6 +5,8 @@
 ### Breaking Changes
 
 - fix: update dependencies to latest upstream releases (#172) | [Phillip Carter](https://github.com/cartermp)
+  - This change is breaking because starting the SDK is now synchronous. See this [upstream PR](https://github.com/open-telemetry/opentelemetry-js/pull/3460) for more details.
+
 
 ### Maintenance
 
