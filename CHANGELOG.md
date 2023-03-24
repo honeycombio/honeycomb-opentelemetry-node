@@ -1,5 +1,22 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.4.0-beta - 2023-03-23
+
+### Breaking Changes
+
+- fix: update dependencies to latest upstream releases (#172) | [Phillip Carter](https://github.com/cartermp)
+  - This change is breaking because starting the SDK is now synchronous. See this [upstream PR](https://github.com/open-telemetry/opentelemetry-js/pull/3460) for more details.
+
+
+### Maintenance
+
+- maint(deps-dev): bump ts-jest from 29.0.3 to 29.0.5 (#158) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump @typescript-eslint/eslint-plugin from 5.48.0 to 5.56.0 (#173) | [dependabot[bot]](https://github.com/dependabot)
+- maint: bump prettier from 2.8.1 to 2.8.4 (#170) | [Jamie Danielson](https://github.com/JamieDanielson)
+- maint: add observable gauge example (#167) | [Jamie Danielson](https://github.com/JamieDanielson)
+- chore(deps): bump @sideway/formula from 3.0.0 to 3.0.1 in /examples/hello-node-express (#164) | [dependabot[bot]](https://github.com/dependabot)
+- chore(deps): bump @sideway/formula from 3.0.0 to 3.0.1 in /examples/hello-node-express-ts (#163) | [dependabot[bot]](https://github.com/dependabot)
+
 ## v0.3.2-beta - 2023-01-19
 
 ### Enhancements
