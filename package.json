@@ -67,7 +67,7 @@
     "@opentelemetry/exporter-trace-otlp-proto": "^0.36.1",
     "@opentelemetry/resources": "^1.10.1",
     "@opentelemetry/sdk-metrics": "^1.10.1",
-    "@opentelemetry/sdk-node": "^0.36.1",
+    "@opentelemetry/sdk-node": "^0.37.0",
     "@opentelemetry/sdk-trace-base": "^1.10.1",
     "axios": "^1.1.3"
   }
