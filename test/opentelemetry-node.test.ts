@@ -33,7 +33,7 @@ describe('debugging', () => {
 
   test('debug set to true outputs options to the console', () => {
     new HoneycombSDK({ apiKey: 'FINDME', debug: true });
-    expect(diag.debug).toHaveBeenCalledTimes(4); // diag.setLogger also tells you about itself
-    expect(diagSpy.mock.calls[3][0]).toContain('FINDME');
+    expect(diag.debug).toHaveBeenCalledTimes(2); // diag.setLogger also tells you about itself
+    expect(diagSpy.mock.calls[1][0]).toContain('FINDME');
   });
 });
