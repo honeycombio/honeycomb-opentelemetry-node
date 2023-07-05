@@ -92,6 +92,13 @@ describe('missing option warnings', () => {
         });
         expect(consoleSpy).toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
+      it('does not warn if dataset is missing and skip validation is true', () => {
+        computeOptions({
+          apiKey: classicApiKey,
+          skipOptionsValidation: true,
+        });
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
+      });
     });
     describe('environment key', () => {
       it('does not warn on missing dataset', () => {
@@ -106,6 +113,14 @@ describe('missing option warnings', () => {
           dataset: 'unnecessary dataset',
         });
         expect(consoleSpy).toHaveBeenCalledWith(IGNORED_DATASET_ERROR);
+      });
+      it('does not warn if dataset is present and skip validation is tre', () => {
+        computeOptions({
+          apiKey: apiKey,
+          dataset: 'unnecessary dataset',
+          skipOptionsValidation: true,
+        });
+        expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
     });
   });
