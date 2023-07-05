@@ -51,7 +51,7 @@ describe('missing option warnings', () => {
     });
     it('does not warn if api key is missing wehen ignore warnings is true', () => {
       computeOptions({ skipOptionsValidation: true });
-      expect(consoleSpy).toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_API_KEY_ERROR);
     });
   });
   describe('service name', () => {
@@ -65,7 +65,7 @@ describe('missing option warnings', () => {
     });
     it('does not warn on missing service name when ignore warnings is true', () => {
       computeOptions({ skipOptionsValidation: true });
-      expect(consoleSpy).toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
+      expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_SERVICE_NAME_ERROR);
     });
   });
 
