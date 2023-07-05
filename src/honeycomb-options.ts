@@ -63,6 +63,12 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
 
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
   localVisualizations?: boolean;
+
+  /** Skip options validation warnings (eg no API key configured). This is useful when the SDK is being
+   * used in conjuction with an OpenTelemetry Collector (which will handle the API key and dataset configuration).
+   * Defaults to 'false'.
+   */
+  skipOptionsValidation?: boolean;
 }
 
 /**
@@ -103,7 +109,16 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
       options?.localVisualizations ||
       false,
+    skipOptionsValidation:
+      env.HONEYCOMB_SKIP_OPTIONS_VALIDATION ||
+      options?.skipOptionsValidation ||
+      false,
   };
+
+  // skip options validation if requested
+  if (opts.skipOptionsValidation) {
+    return opts;
+  }
 
   // warn if api key is missing
   if (!opts.apiKey) {
@@ -153,6 +168,7 @@ export type HoneycombEnvironmentOptions = {
   SAMPLE_RATE?: number;
   DEBUG?: boolean;
   HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS?: boolean;
+  HONEYCOMB_SKIP_OPTIONS_VALIDATION?: boolean;
 
   OTEL_SERVICE_NAME?: string;
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
@@ -182,6 +198,9 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     DEBUG: parseBoolean(process.env.DEBUG),
     HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
       process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS,
+    ),
+    HONEYCOMB_SKIP_OPTIONS_VALIDATION: parseBoolean(
+      process.env.HONEYCOMB_SKIP_OPTIONS_VALIDATION,
     ),
 
     OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
