@@ -16,12 +16,11 @@ export class HoneycombSDK extends NodeSDK {
   constructor(options?: HoneycombOptions) {
     const opts = computeOptions(options);
     super({
-      ...opts,
-      serviceName: opts?.serviceName,
       resource: configureHoneycombResource(opts),
       metricReader: getHoneycombMetricReader(opts),
       spanProcessor: configureBatchWithBaggageSpanProcessor(opts),
       sampler: configureDeterministicSampler(opts?.sampleRate),
+      ...opts,
     });
 
     if (opts.debug) {
