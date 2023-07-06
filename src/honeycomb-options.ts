@@ -20,6 +20,8 @@ export const MISSING_DATASET_ERROR =
   'WARN: Missing dataset. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
 export const MISSING_SERVICE_NAME_ERROR =
   'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter.  If left unset, this will show up in Honeycomb as unknown_service:node';
+export const SKIPPING_OPTIONS_VALIDATION_MSG =
+  'DEBUG: Skipping options validation. To re-enable, set skipOptionsValidation option or HONEYCOMB_SKIP_OPTIONS_VALIDATION to false.';
 
 /**
  * The options used to configure the Honeycomb Node SDK.
@@ -117,6 +119,9 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
 
   // skip options validation if requested
   if (opts.skipOptionsValidation) {
+    if (opts.debug) {
+      console.debug(SKIPPING_OPTIONS_VALIDATION_MSG);
+    }
     return opts;
   }
 
