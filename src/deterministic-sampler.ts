@@ -5,13 +5,16 @@ import {
   Sampler,
   SamplingResult,
   TraceIdRatioBasedSampler,
+  ParentBasedSampler,
 } from '@opentelemetry/sdk-trace-base';
 import { DEFAULT_SAMPLE_RATE } from './honeycomb-options';
 
 export function configureDeterministicSampler(sampleRate?: number) {
-  return new DeterministicSampler(
-    sampleRate === undefined ? DEFAULT_SAMPLE_RATE : sampleRate,
-  );
+  return new ParentBasedSampler({
+    root: new DeterministicSampler(
+      sampleRate === undefined ? DEFAULT_SAMPLE_RATE : sampleRate,
+    ),
+  });
 }
 
 export class DeterministicSampler implements Sampler {
