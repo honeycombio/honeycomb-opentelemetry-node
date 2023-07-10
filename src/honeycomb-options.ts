@@ -20,6 +20,8 @@ export const MISSING_DATASET_ERROR =
   'WARN: Missing dataset. Specify either HONEYCOMB_DATASET environment variable or dataset in the options parameter.';
 export const MISSING_SERVICE_NAME_ERROR =
   'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter.  If left unset, this will show up in Honeycomb as unknown_service:node';
+export const SKIPPING_OPTIONS_VALIDATION_MSG =
+  'DEBUG: Skipping options validation. To re-enable, set skipOptionsValidation option or HONEYCOMB_SKIP_OPTIONS_VALIDATION to false.';
 
 /**
  * The options used to configure the Honeycomb Node SDK.
@@ -63,6 +65,12 @@ export interface HoneycombOptions extends Partial<NodeSDKConfiguration> {
 
   /** The local visualizations flag enables logging Honeycomb URLs for completed traces. Do not use in production. */
   localVisualizations?: boolean;
+
+  /** Skip options validation warnings (eg no API key configured). This is useful when the SDK is being
+   * used in conjuction with an OpenTelemetry Collector (which will handle the API key and dataset configuration).
+   * Defaults to 'false'.
+   */
+  skipOptionsValidation?: boolean;
 }
 
 /**
@@ -103,7 +111,19 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
       env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS ||
       options?.localVisualizations ||
       false,
+    skipOptionsValidation:
+      env.HONEYCOMB_SKIP_OPTIONS_VALIDATION ||
+      options?.skipOptionsValidation ||
+      false,
   };
+
+  // skip options validation if requested
+  if (opts.skipOptionsValidation) {
+    if (opts.debug) {
+      console.debug(SKIPPING_OPTIONS_VALIDATION_MSG);
+    }
+    return opts;
+  }
 
   // warn if api key is missing
   if (!opts.apiKey) {
@@ -153,6 +173,7 @@ export type HoneycombEnvironmentOptions = {
   SAMPLE_RATE?: number;
   DEBUG?: boolean;
   HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS?: boolean;
+  HONEYCOMB_SKIP_OPTIONS_VALIDATION?: boolean;
 
   OTEL_SERVICE_NAME?: string;
   OTEL_EXPORTER_OTLP_PROTOCOL?: OtlpProtocol;
@@ -182,6 +203,9 @@ export const getHoneycombEnv = (): HoneycombEnvironmentOptions => {
     DEBUG: parseBoolean(process.env.DEBUG),
     HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS: parseBoolean(
       process.env.HONEYCOMB_ENABLE_LOCAL_VISUALIZATIONS,
+    ),
+    HONEYCOMB_SKIP_OPTIONS_VALIDATION: parseBoolean(
+      process.env.HONEYCOMB_SKIP_OPTIONS_VALIDATION,
     ),
 
     OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
