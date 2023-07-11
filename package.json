@@ -64,7 +64,7 @@
     "@opentelemetry/exporter-metrics-otlp-grpc": "^0.39.1",
     "@opentelemetry/exporter-metrics-otlp-proto": "^0.39.1",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.41.0",
-    "@opentelemetry/exporter-trace-otlp-proto": "^0.39.1",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.41.0",
     "@opentelemetry/resources": "^1.13.0",
     "@opentelemetry/sdk-metrics": "^1.13.0",
     "@opentelemetry/sdk-node": "^0.39.1",
