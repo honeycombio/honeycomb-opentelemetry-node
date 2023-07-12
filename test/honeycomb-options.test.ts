@@ -11,7 +11,9 @@ import {
   MISSING_DATASET_ERROR,
   MISSING_SERVICE_NAME_ERROR,
   OtlpProtocolKind,
+  SAMPLER_OVERRIDE_WARNING,
 } from '../src/honeycomb-options';
+import { AlwaysOnSampler } from '@opentelemetry/sdk-trace-base';
 
 // classic keys are 32 chars long
 const classicApiKey = 'this is a string that is 32 char';
@@ -27,7 +29,7 @@ test('it should have an apiKey property on the HoneycombOptions object', () => {
   expect(testApiKey).toEqual(true);
 });
 
-describe('missing option warnings', () => {
+describe('options warnings', () => {
   const consoleSpy = jest
     .spyOn(console, 'warn')
     .mockImplementation(() => undefined);
@@ -122,6 +124,20 @@ describe('missing option warnings', () => {
         });
         expect(consoleSpy).not.toHaveBeenCalledWith(MISSING_DATASET_ERROR);
       });
+    });
+  });
+
+  describe('custom sampler', () => {
+    it('warns if a custom sampler is provided', () => {
+      const customSampler = new AlwaysOnSampler();
+      computeOptions({
+        sampler: customSampler,
+      });
+      expect(consoleSpy).toHaveBeenCalledWith(SAMPLER_OVERRIDE_WARNING);
+    });
+    it('does not warn if the default sampler is being used', () => {
+      computeOptions({});
+      expect(consoleSpy).not.toHaveBeenCalledWith(SAMPLER_OVERRIDE_WARNING);
     });
   });
 });
