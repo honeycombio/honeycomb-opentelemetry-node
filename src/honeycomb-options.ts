@@ -23,7 +23,7 @@ export const MISSING_SERVICE_NAME_ERROR =
 export const SKIPPING_OPTIONS_VALIDATION_MSG =
   'DEBUG: Skipping options validation. To re-enable, set skipOptionsValidation option or HONEYCOMB_SKIP_OPTIONS_VALIDATION to false.';
 export const SAMPLER_OVERRIDE_WARNING =
-  'WARN: Default deterministic sampler has been overridden. Make sure the sampleRate option is set and matches the sampleRate of  the custom sampler. Non-deterministic sampleRate could lead to missing spans in Honeycomb.';
+  'WARN: Default deterministic sampler has been overridden. Honeycomb requires a resource attribute called SampleRate to properly show weighted values. Non-deterministic sampleRate could lead to missing spans in Honeycomb. See our docs for more details.';
 /**
  * The options used to configure the Honeycomb Node SDK.
  */
