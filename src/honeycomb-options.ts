@@ -22,7 +22,8 @@ export const MISSING_SERVICE_NAME_ERROR =
   'WARN: Missing service name. Specify either OTEL_SERVICE_NAME environment variable or serviceName in the options parameter.  If left unset, this will show up in Honeycomb as unknown_service:node';
 export const SKIPPING_OPTIONS_VALIDATION_MSG =
   'DEBUG: Skipping options validation. To re-enable, set skipOptionsValidation option or HONEYCOMB_SKIP_OPTIONS_VALIDATION to false.';
-
+export const SAMPLER_OVERRIDE_WARNING =
+  'WARN: Default deterministic sampler has been overridden. Honeycomb requires a resource attribute called SampleRate to properly show weighted values. Non-deterministic sampleRate could lead to missing spans in Honeycomb. See our docs for more details. https://docs.honeycomb.io/getting-data-in/opentelemetry/node-distro/#sampling-without-the-honeycomb-sdk';
 /**
  * The options used to configure the Honeycomb Node SDK.
  */
@@ -143,6 +144,11 @@ export function computeOptions(options?: HoneycombOptions): HoneycombOptions {
   // warn if dataset is missing if using classic key
   if (opts.apiKey && isClassic(opts.apiKey) && !opts.dataset) {
     console.warn(MISSING_DATASET_ERROR);
+  }
+
+  // warn if custom sampler provided
+  if (opts.sampler) {
+    console.warn(SAMPLER_OVERRIDE_WARNING);
   }
 
   return opts;
