@@ -1,5 +1,41 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.5.0-beta - 2023-07-17
+
+### Enhancements
+
+- feat: Add option to skip options validation (#202) | [@MikeGoldsmith](https://github.com/MikeGoldsmith)
+- fix: allow overriding node sdk properties (#204) | [@JGAntunes](https://github.com/JGAntunes)
+
+### Fixed
+
+- fix: add @opentelemetry/core as a dependency (#207) | [@pkanal](https://github.com/pkanal)
+
+### Maintenance
+
+- maint: add custom sampler warning (#213) | [@pkanal](https://github.com/pkanal)
+- maint(deps-dev): bump @typescript-eslint/parser from 5.46.1 to 5.62.0 (#220) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump prettier from 2.8.8 to 3.0.0 (#216) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry/core from 1.13.0 to 1.15.0 (#217) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry/exporter-metrics-otlp-grpc from 0.39.1 to 0.41.0 (#214) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump jest and @types/jest (#208) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump ts-jest from 29.1.0 to 29.1.1 (#209) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry/exporter-trace-otlp-proto from 0.39.1 to 0.41.0 (#211) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry/exporter-trace-otlp-grpc from 0.39.1 to 0.41.0 (#210) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump prettier from 2.8.4 to 2.8.8 (#194) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump jest from 29.3.1 to 29.5.0 (#196) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump eslint-config-prettier from 8.7.0 to 8.8.0 (#197) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump eslint from 8.31.0 to 8.44.0 (#199) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @grpc/grpc-js from 1.8.0 to 1.8.17 (#200) | [dependabot[bot]](https://github.com/dependabot)
+- maint: ignore smoke test output (#193) | @(vreynolds@users.noreply.github.com)
+- maint(deps): bump axios from 1.2.2 to 1.4.0 (#191) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry from 1.11.0/0.37.0 to 1.13.0/0.39.1 (#192) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump ts-jest from 29.0.5 to 29.1.0 (#189) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump eslint-plugin-import from 2.26.0 to 2.27.5 (#190) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump jest-junit from 15.0.0 to 16.0.0 (#187) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps-dev): bump @typescript-eslint/eslint-plugin from 5.56.0 to 5.57.1 (#185) | [dependabot[bot]](https://github.com/dependabot)
+- maint(deps): bump @opentelemetry from 1.10.1/0.36.1 to 1.11.0/0.37.0 (#181) | [dependabot[bot]](https://github.com/dependabot)
+
 ## v0.4.0-beta - 2023-03-23
 
 ### Breaking Changes
