@@ -16,3 +16,43 @@ updates:
     commit-message:
       prefix: "maint"
       include: "scope"
+    groups:
+      otel:
+        patterns:
+          - "@opentelemetry/*"
+
+  - package-ecosystem: "npm"
+    directory: "/examples/hello-node"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type: dependencies"
+    reviewers:
+      - "honeycombio/telemetry-team"
+    commit-message:
+      prefix: "maint"
+      include: "scope"
+
+  - package-ecosystem: "npm"
+    directory: "/examples/hello-node-express"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type: dependencies"
+    reviewers:
+      - "honeycombio/telemetry-team"
+    commit-message:
+      prefix: "maint"
+      include: "scope"
+
+  - package-ecosystem: "npm"
+    directory: "/examples/hello-node-express-ts"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "type: dependencies"
+    reviewers:
+      - "honeycombio/telemetry-team"
+    commit-message:
+      prefix: "maint"
+      include: "scope"
