@@ -10,6 +10,15 @@ You're welcome to try it, and let us know your feedback in the issues!
 This is Honeycomb's Distribution of OpenTelemetry for Node.js.
 It makes getting started with OpenTelemetry and Honeycomb easier!
 
+Latest release:
+
+- built with OpenTelemetry JS [Stable v1.13.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/v1.13.0), [Experimental v0.41.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.41.0), [API v1.6.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/api%2Fv1.4.1)
+- compatible with OpenTelemetry Auto-Instrumentations for Node [^0.37.0](https://github.com/open-telemetry/opentelemetry-js-contrib/releases/tag/auto-instrumentations-node-v0.39.3)
+
+## Requirements
+
+- Node 14 or higher
+
 ## Getting Started
 
 Honeycomb's Distribution of OpenTelemetry for Node.js allows you to streamline configuration and to instrument as quickly and easily as possible.

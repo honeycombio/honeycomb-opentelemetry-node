@@ -11,6 +11,7 @@
 - Update `CHANGELOG.md` with the changes since the last release. Consider automating with a command such as these two:
   - `git log $(git describe --tags --abbrev=0)..HEAD --no-merges --oneline > new-in-this-release.log`
   - `git log --pretty='%C(green)%d%Creset- %s | [%an](https://github.com/)'`
+- If the upstream OpenTelemetry package versions have changed, update README with new versions and links.
 - Commit changes, push, and open a release preparation pull request for review.
 - Once the pull request is merged, fetch the updated `main` branch.
 - Apply a tag for the new version on the merged commit (e.g. `git tag -a v2.3.1 -m "v2.3.1"`)
