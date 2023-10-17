@@ -13,8 +13,9 @@
   },
   "dependencies": {
     "@honeycombio/opentelemetry-node": "file:../../dist/src",
+    "@opentelemetry/api": "^1.6.0",
     "@opentelemetry/auto-instrumentations-node": "^0.39.4",
-    "@opentelemetry/sdk-metrics": "^1.17.1",
+    "@opentelemetry/resources": "^1.17.1",
     "express": "^4.18.2"
   },
   "devDependencies": {

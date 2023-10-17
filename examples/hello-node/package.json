@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@honeycombio/opentelemetry-node": "file:../../dist/src",
+    "@opentelemetry/api": "^1.6.0",
     "@opentelemetry/instrumentation-http": "^0.44.0"
   }
 }
