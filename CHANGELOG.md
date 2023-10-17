@@ -1,5 +1,22 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.6.0-beta - 2023-10-17
+
+### Maintenance
+
+- maint: Bump OTel libraries (#241) | Mike Goldsmith
+- maint(deps-dev): bump eslint from 8.44.0 to 8.50.0 (#235) | dependabot[bot]
+- maint(deps): bump @grpc/grpc-js from 1.8.17 to 1.9.5 (#238) | dependabot[bot]
+- maint(deps-dev): bump typescript from 4.9.4 to 5.2.2 (#231) | dependabot[bot]
+- maint: add dependabot groups and example deps (#237) | Jamie Danielson
+- maint(deps-dev): bump prettier from 3.0.0 to 3.0.3 (#233) | dependabot[bot]
+- maint(deps): bump @opentelemetry/exporter-metrics-otlp-grpc from 0.41.0 to 0.41.1 (#227) | dependabot[bot]
+- maint(deps): bump @opentelemetry/core from 1.15.0 to 1.15.1 (#225) | dependabot[bot]
+- maint(deps-dev): bump @typescript-eslint/eslint-plugin from 6.1.0 to 6.2.1 (#228) | dependabot[bot]
+- maint(deps-dev): bump eslint-config-prettier from 8.8.0 to 8.9.0 (#224) | dependabot[bot]
+- maint(deps): bump @opentelemetry/exporter-trace-otlp-grpc from 0.41.0 to 0.41.1 (#226) | dependabot[bot]
+- maint(deps-dev): bump @typescript-eslint/eslint-plugin from 5.57.1 to 6.1.0 (#223) | dependabot[bot]
+
 ## v0.5.0-beta - 2023-07-17
 
 ### Enhancements
