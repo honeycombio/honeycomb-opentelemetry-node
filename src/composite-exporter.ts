@@ -5,7 +5,6 @@ import { ReadableSpan, SpanExporter } from '@opentelemetry/sdk-trace-base';
  * Builds and returns a new {@link SpanExporter} that wraps the provided array
  * of {@link SpanExporter}s
  *
- * @remark This is not for production use.
  * @param exporters the exporters to wrap with the composite exporter
  * @returns the configured {@link SpanExporter} instance
  */
@@ -17,9 +16,7 @@ export function configureCompositeExporter(
 
 /**
  * A custom SpanExporter that wraps a number of other exporters and calls export and shutdown
- * for each when.
- *
- * @remarks Not for production use.
+ * for each.
  */
 class CompositeSpanExporter implements SpanExporter {
   private _exporters: SpanExporter[];
