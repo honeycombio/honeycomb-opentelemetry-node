@@ -20,7 +20,14 @@ updates:
       otel:
         patterns:
           - "@opentelemetry/*"
-
+      dev-dependencies:
+        patterns:
+          - "@type*"
+          - "eslint*"
+          - "jest*"
+          - "prettier"
+          - "ts-*"
+          - "typescript"
   - package-ecosystem: "npm"
     directory: "/examples/hello-node"
     schedule:
@@ -32,6 +39,10 @@ updates:
     commit-message:
       prefix: "maint"
       include: "scope"
+    groups:
+      examples:
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/examples/hello-node-express"
@@ -44,6 +55,10 @@ updates:
     commit-message:
       prefix: "maint"
       include: "scope"
+    groups:
+      examples:
+        patterns:
+          - "*"
 
   - package-ecosystem: "npm"
     directory: "/examples/hello-node-express-ts"
@@ -56,3 +71,7 @@ updates:
     commit-message:
       prefix: "maint"
       include: "scope"
+    groups:
+      examples:
+        patterns:
+          - "*"
