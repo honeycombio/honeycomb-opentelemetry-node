@@ -12,8 +12,8 @@ It makes getting started with OpenTelemetry and Honeycomb easier!
 
 Latest release:
 
-- built with OpenTelemetry JS [Stable v1.17.1](https://github.com/open-telemetry/opentelemetry-js/releases/tag/v1.17.1), [Experimental v0.44.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.44.0), [API v1.6.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/api%2Fv1.6.0)
-- compatible with OpenTelemetry Auto-Instrumentations for Node [^0.39.3](https://github.com/open-telemetry/opentelemetry-js-contrib/releases/tag/auto-instrumentations-node-v0.39.3)
+- built with OpenTelemetry JS [Stable v1.19.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/v1.19.0), [Experimental v0.46.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.46.0), [API v1.7.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/api%2Fv1.7.0)
+- compatible with OpenTelemetry Auto-Instrumentations for Node [~0.40.3](https://github.com/open-telemetry/opentelemetry-js-contrib/releases/tag/auto-instrumentations-node-v0.40.3)
 
 ## Requirements
 
