@@ -1,5 +1,23 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.6.1-beta - 2024-01-11
+
+### Fixes
+
+- fix: avoid dependency conflicts by using tilde for otel packages (#268) | @JamieDanielson
+- fix: composite exporter is for production use (#256) | @cartermp
+
+### Maintenance
+
+- maint(deps): bump @grpc/grpc-js from 1.9.5 to 1.9.13 (#262) | dependabot[bot]
+- maint(deps): bump axios from 1.4.0 to 1.6.5 (#269) | dependabot[bot]
+- maint(deps): update otel and example dependencies (#274) | @JamieDanielson
+- maint(deps-dev): bump the dev-dependencies group with 4 updates (#272) | dependabot[bot]
+- maint(deps-dev): bump the dev-dependencies group with 9 updates (#260) | dependabot[bot]
+- maint: more batching of dependabot groups (#257) | @JamieDanielson
+- maint: update codeowners to pipeline-team (#255) | @JamieDanielson
+- maint: add deps and docs to maintenance in release (#254) | @JamieDanielson
+
 ## v0.6.0-beta - 2023-10-17
 
 ### Maintenance
