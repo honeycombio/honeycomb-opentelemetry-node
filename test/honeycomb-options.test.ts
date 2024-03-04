@@ -15,9 +15,9 @@ import {
 } from '../src/honeycomb-options';
 import { AlwaysOnSampler } from '@opentelemetry/sdk-trace-base';
 
-// classic keys are 32 chars long
+// non-ingest classic keys are 32 chars long
 const classicApiKey = '12345678901234567890123456789012';
-// non-classic keys are 22 chars log
+// non-ingest non-classic keys are 22 chars log
 const apiKey = 'kgvSpPwegJshQkuowXReLD';
 
 test('it should have an apiKey property on the HoneycombOptions object', () => {
