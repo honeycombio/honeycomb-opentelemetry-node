@@ -1,5 +1,18 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.7.0-beta - 2024-03-06
+
+### Enhancements
+
+- feat: add support for classic ingest keys (#289) | @cewkrupa
+
+### Maintenance
+
+- maint(deps): bump the examples group in /examples/hello-node-express with 1 update (#282) | dependabot[bot]
+- maint(deps): bump axios from 1.6.5 to 1.6.7 (#280) | dependabot[bot]
+- maint(deps): bump @grpc/grpc-js from 1.9.13 to 1.9.14 (#281) | dependabot[bot]
+- maint(deps-dev): bump the dev-dependencies group with 5 updates (#279) | dependabot[bot]
+
 ## v0.6.1-beta - 2024-01-11
 
 ### Fixes
