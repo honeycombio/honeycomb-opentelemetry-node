@@ -1,5 +1,15 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.7.1-beta - 2024-03-15
+
+### Maintenance
+
+- maint(deps): bump @grpc/grpc-js from 1.9.14 to 1.10.3 (#297) | dependabot[bot]
+- maint(deps-dev): bump the dev-dependencies group with 4 updates (#284) | dependabot[bot]
+- maint(deps): bump the examples group in /examples/hello-node-express with 1 update (#296) | dependabot[bot]
+- maint(deps): bump the examples group in /examples/hello-node-express-ts with 2 updates (#295) | dependabot[bot]
+- maint(deps): bump the otel group with 10 updates (#286) | dependabot[bot]
+
 ## v0.7.0-beta - 2024-03-06
 
 ### Enhancements
