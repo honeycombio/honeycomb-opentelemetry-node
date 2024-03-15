@@ -20,7 +20,7 @@ export function configureHoneycombHttpProtoTraceExporter(
   options?: HoneycombOptions,
 ): OTLPTraceExporter {
   const opts = computeOptions(options);
-  let headers: Partial<Record<string, unknown>> = {
+  const headers: Partial<Record<string, unknown>> = {
     [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
     [TEAM_HEADER_KEY]: opts.tracesApiKey || '',
   };
