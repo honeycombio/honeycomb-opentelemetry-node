@@ -20,12 +20,15 @@ export function configureHoneycombHttpProtoTraceExporter(
   options?: HoneycombOptions,
 ): OTLPTraceExporter {
   const opts = computeOptions(options);
+  let headers: Partial<Record<string, unknown>> = {
+    [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
+    [TEAM_HEADER_KEY]: opts.tracesApiKey || '',
+  };
+  if (isClassic(opts?.tracesApiKey)) {
+    headers[DATASET_HEADER_KEY] = opts.dataset || '';
+  }
   return new OTLPTraceExporter({
     url: opts.tracesEndpoint,
-    headers: {
-      [OTLP_HEADER_KEY]: OTLP_PROTO_VERSION,
-      [TEAM_HEADER_KEY]: opts.tracesApiKey,
-      [DATASET_HEADER_KEY]: isClassic(opts.apiKey) ? opts.dataset : undefined,
-    },
+    headers: headers,
   });
 }
