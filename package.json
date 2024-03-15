@@ -1,6 +1,6 @@
 {
   "name": "@honeycombio/opentelemetry-node",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Honeycomb OpenTelemetry Distro for Node",
   "author": "Honeycomb <support@honeycomb.io> (https://www.honeycomb.io/)",
   "license": "Apache-2.0",
