@@ -1,5 +1,19 @@
 # honeycomb-opentelemetry-node changelog
 
+## v0.7.2-beta - 2024-04-09
+
+### Fixes
+
+- fix: ease restriction on api version (#299) | @JamieDanielson
+
+### Maintenance
+
+- maint(deps): bump the examples group in /examples/hello-node-express with 1 update (#301) | dependabot[bot]
+- maint(deps): bump the examples group in /examples/hello-node-express-ts with 2 updates (#300) | dependabot[bot]
+- maint(deps): bump axios from 1.6.7 to 1.6.8 (#304) | dependabot[bot]
+- maint(deps): bump @grpc/grpc-js from 1.10.3 to 1.10.4 (#303) | dependabot[bot]
+- maint(deps-dev): bump the dev-dependencies group with 3 updates (#302) | dependabot[bot]
+
 ## v0.7.1-beta - 2024-03-15
 
 ### Maintenance
