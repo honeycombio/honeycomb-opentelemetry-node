@@ -4,6 +4,8 @@
 [![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node)
 [![npm](https://img.shields.io/npm/v/@honeycombio/opentelemetry-node)](https://www.npmjs.com/package/@honeycombio/opentelemetry-node)
 
+STATUS: this project is being Sunset. See #312.
+
 **STATUS: this library is BETA.**
 You're welcome to try it, and let us know your feedback in the issues!
 
