@@ -6,9 +6,6 @@
 
 STATUS: this project is being Sunset. See #312.
 
-**STATUS: this library is BETA.**
-You're welcome to try it, and let us know your feedback in the issues!
-
 This is Honeycomb's Distribution of OpenTelemetry for Node.js.
 It makes getting started with OpenTelemetry and Honeycomb easier!
 
