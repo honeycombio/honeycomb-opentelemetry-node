@@ -14,13 +14,13 @@
   "dependencies": {
     "@honeycombio/opentelemetry-node": "file:../../dist/src",
     "@opentelemetry/api": "^1.8.0",
-    "@opentelemetry/auto-instrumentations-node": "~0.43.0",
+    "@opentelemetry/auto-instrumentations-node": "~0.46.1",
     "@opentelemetry/resources": "^1.22.0",
     "express": "^4.19.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node": "^20.12.2",
+    "@types/node": "^20.13.0",
     "ts-node": "^10.9.2"
   }
 }
