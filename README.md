@@ -4,7 +4,7 @@
 [![CircleCI](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node.svg?style=shield)](https://circleci.com/gh/honeycombio/honeycomb-opentelemetry-node)
 [![npm](https://img.shields.io/npm/v/@honeycombio/opentelemetry-node)](https://www.npmjs.com/package/@honeycombio/opentelemetry-node)
 
-**STATUS**: This project is being Sunset. See [this issue](https://github.com/honeycombio/honeycomb-opentelemetry-node/issues/312) for more details.
+**STATUS**: This project is now archived. See [this issue](https://github.com/honeycombio/honeycomb-opentelemetry-node/issues/312) for more details.
 
 This is Honeycomb's Distribution of OpenTelemetry for Node.js.
 It makes getting started with OpenTelemetry and Honeycomb easier!
